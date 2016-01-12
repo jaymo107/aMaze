@@ -3,7 +3,7 @@
 
 A Maze game written in Java using the JSFML library (http://jsfml.org)
 
-Development team
+->Development team
 
 Name          | Role
 ------------- | -------------
