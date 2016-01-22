@@ -1,7 +1,7 @@
 package com.amaze.main;
 
 /**
- * Created by MatthewFrost on 22/01/16.
+ * This is a class responsible for holding a window for aMaze
  */
 public class Maze {
 }
