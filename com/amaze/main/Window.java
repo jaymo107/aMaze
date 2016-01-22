@@ -14,7 +14,7 @@ import org.jsfml.graphics.*;
  * This is a class responsible for holding a window for aMaze
  */
 
-public class Window {
+public class Window extends RenderWindow{
     private int screenWidth;
     private int screenHeight;
 
@@ -36,19 +36,18 @@ public class Window {
         this.screenHeight = screenHeight;
 
         // Creating a new window
-        RenderWindow window = new RenderWindow();
-        window.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
-        window.setFramerateLimit(30);
+        this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
+        this.setFramerateLimit(30);
 
-        while (window.isOpen( )) {
+        while (this.isOpen( )) {
             // Clear the screen
-            window.clear(Color.BLUE);
-            window.display();
+            this.clear(Color.BLUE);
+            this.display();
 
             // the user pressed the close button
-            for (Event event : window.pollEvents( )) {
+            for (Event event : this.pollEvents( )) {
                 if (event.type == Event.Type.CLOSED) {
-                    window.close( );
+                    this.close( );
                 }
             }
         }
