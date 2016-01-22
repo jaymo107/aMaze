@@ -7,9 +7,14 @@ import org.jsfml.graphics.*;
 public class Menu {
 
     private final int NUMBER_OF_ITEMS = 5; // Number of items available to select in the menu
+    private Button button[];
+    private Window window;
 
-    public Menu() {
 
+    public Menu(Window window) {
+
+        this.window = window;
+        button[0] = new PlayButton(window.getScreenWidth() / 2, window.getScreenHeight() / 2, window, Color.RED);
 
     }
 

@@ -1,4 +1,5 @@
 package com.amaze.main;
+import org.jsfml.graphics.Drawable;
 import org.jsfml.system.*;
 
 /**
@@ -9,6 +10,7 @@ class Driver{
 
     public static void main(String[] args){
 
-        Window maze = new Window(800, 600,25,25);
+        Window window = new Window(800, 600,25,25);
+
     }
 }
