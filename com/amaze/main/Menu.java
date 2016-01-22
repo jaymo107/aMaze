@@ -5,4 +5,9 @@ package com.amaze.main;
  */
 public class Menu {
 
+    private Menu() {
+
+
+    }
+
 }
