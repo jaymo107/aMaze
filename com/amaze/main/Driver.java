@@ -2,7 +2,7 @@ package com.amaze.main;
 import org.jsfml.system.*;
 
 /**
- * This is a test comment! Please format comments in this style! stuff
+ * This is a test comment! Please format comments in this style!
  */
 
 class Driver{
