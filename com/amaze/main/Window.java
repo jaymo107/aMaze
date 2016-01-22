@@ -13,11 +13,11 @@ import org.jsfml.graphics.*;
 /**
  * This is a class responsible for holding a window for aMaze
  */
-public class Maze {
+public class Window {
     private int screenWidth = 800;
     private int screenHeight = 600;
 
-    public Maze(int screenWidth, int screenHeight) {
+    public Window(int screenWidth, int screenHeight) {
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
