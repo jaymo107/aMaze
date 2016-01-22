@@ -3,8 +3,12 @@ import org.jsfml.system.*;
 
 /**
  * This is a test comment! Please format comments in this style!
+<<<<<<< Updated upstream
  * Pasha
- * Jay is here
+=======
+ *
+ * KIRAN WA5 HERE
+>>>>>>> Stashed changes
  */
 
 class Driver{
