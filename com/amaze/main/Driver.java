@@ -2,7 +2,7 @@ package com.amaze.main;
 import org.jsfml.system.*;
 
 /**
- * This class is responsible for creating an instace of a Maze.
+ * This class is responsible for creating an instace of a Maze. test
  */
 
 class Driver{
