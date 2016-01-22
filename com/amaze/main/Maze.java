@@ -29,7 +29,7 @@ public class Maze {
 
         while (window.isOpen( )) {
             // Clear the screen
-            window.clear(Color.WHITE);
+            window.clear(Color.RED);
             window.display();
 
             // the user pressed the close button
