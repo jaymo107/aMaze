@@ -1,13 +1,7 @@
 package com.amaze.main;
 
 /**
- * This is a test comment! Please format comments in this style!
- * Pasha
- * Tom D
- * Matthew Frost
- * KIRAN WA5 HERE
- * JAY WAS HERE TOOOOOO
- * Kiran
+ * This class is responsible for creating an instace of a Maze.
  */
 
 class Driver{
