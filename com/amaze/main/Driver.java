@@ -22,14 +22,5 @@ class Driver{
     
         System.out.println("This should run without any errors if JSFML is used correctly:\n"+result.toString());
     }
-}
-
-private static class Jay {
-
-	public Jay(){}
-
-	public String toString() {
-		return "Jay hates static\n";
-	}
 
 }
