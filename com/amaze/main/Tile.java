@@ -1,7 +1,9 @@
 package com.amaze.main;
 
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Image;
 import org.jsfml.graphics.RectangleShape;
+import org.jsfml.system.Vector2f;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,7 +14,7 @@ import java.nio.file.Paths;
 /**
  * Created by Kiran on 22/01/2016.
  */
-public abstract class Tile extends RectangleShape{
+public class Tile extends RectangleShape{
     /*
     @todo:
         - Collision detection
@@ -24,6 +26,8 @@ public abstract class Tile extends RectangleShape{
     Image icon; //Icon shown on the block
     private int currentX;
     private int currentY;
+    private Vector2f position;
+    private Vector2f size;
 
     /**
      *
@@ -33,13 +37,20 @@ public abstract class Tile extends RectangleShape{
      * @throws IOException
      */
     public Tile(String filePath, int originX, int originY) throws IOException{
-        Path imagePath = Paths.get(URI.create(filePath));
-        icon.loadFromFile(imagePath);
+        //Path imagePath = Paths.get(URI.create(filePath));
+        //icon.loadFromFile(imagePath);
+        this.currentX = originX;
+        this.currentY = originY;
+        position = new Vector2f(originX,originY);
+        size = new Vector2f(20,20);
+
+        this.setSize(size);
+
+        this.setPosition(position);
 
 
-    }
-
-    private void loadImage(){
+        this.setFillColor(Color.YELLOW);
+        this.setOutlineColor(Color.RED);
 
     }
 

@@ -11,6 +11,8 @@ import org.jsfml.window.event.*;
 import org.jsfml.graphics.*;
 import org.w3c.dom.css.Rect;
 
+import javax.swing.border.TitledBorder;
+
 /**
  * This is a class responsible for holding a window for aMaze
  */
@@ -38,9 +40,18 @@ public class Window extends RenderWindow{
 
     private ArrayList<Tile> drawList; //Array list holding Tiles.
 
-    public Window(int screenWidth, int screenHeight, int actualX, int actualY) {
+    public Window(int screenWidth, int screenHeight, int actualX, int actualY) throws IOException{
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+
+        drawList = new ArrayList<Tile>();
+
+        Tile t1 = new Tile("",10,10);
+        Tile t2 = new Tile("",20,10);
+        Tile t3 = new Tile("",50,10);
+        drawList.add(t1);
+        drawList.add(t2);
+        drawList.add(t3);
 
         // Creating a new window
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
@@ -49,8 +60,9 @@ public class Window extends RenderWindow{
         while (this.isOpen( )) {
             // Clear the screen
             this.clear(Color.BLUE);
-            shape.setFillColor(Color.RED);
-            this.draw(shape);
+
+            drawItems(this.drawList);
+
             this.display();
 
             // the user pressed the close button
@@ -68,4 +80,9 @@ public class Window extends RenderWindow{
 
     public int getScreenHeight() {return screenHeight;}
     public int getScreenWidth() {return  screenWidth;}
+    private void drawItems(ArrayList<Tile> list){
+        for(int i = 0; i < list.size() ; i++){
+            this.draw(list.get(i));
+        }
+    }
 }
