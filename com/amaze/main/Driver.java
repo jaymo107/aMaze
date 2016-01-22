@@ -6,7 +6,7 @@ import org.jsfml.system.*;
 <<<<<<< Updated upstream
  * Pasha
 =======
- *
+ * Matthew Frost
  * KIRAN WA5 HERE
 >>>>>>> Stashed changes
  * JAY WAS HERE TOOOOOO, and he made a class.
