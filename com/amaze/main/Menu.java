@@ -1,7 +1,7 @@
 package com.amaze.main;
 
 /**
- * Created by Kiran on 22/01/2016.
+ * This class will handle the menu and buttons associated.
  */
 public class Menu {
 }
