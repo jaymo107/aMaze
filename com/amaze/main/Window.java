@@ -28,7 +28,7 @@ public class Window extends RenderWindow{
      * Example:
      *                maze(1920,1080,25,25)
      *                This would create a window of 1920x1080 pixels but with 25 by 25
-     *                grid to place objects into a maze
+     *                grid to place objects into a maze TEST
      */
 
     public Window(int screenWidth, int screenHeight, int actualX, int actualY) {
