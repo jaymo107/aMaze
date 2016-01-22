@@ -32,7 +32,6 @@ public class Window {
      */
 
     public Window(int screenWidth, int screenHeight, int actualX, int actualY) {
-
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 

@@ -12,4 +12,12 @@ public abstract class Block {
         - Physical Size e.g. 10x10px NOT HOW MANY BLOCKS IT TAKES
      */
 
+    public Block(){
+
+    }
+
+    private void loadImage(){
+
+    }
+
 }
