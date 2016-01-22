@@ -4,15 +4,11 @@ import org.jsfml.system.*;
 /**
  * This is a test comment! Please format comments in this style!
  * Pasha
-<<<<<<< Updated upstream
-=======
+ * Tom D
  * Matthew Frost
  * KIRAN WA5 HERE
->>>>>>> Stashed changes
  * JAY WAS HERE TOOOOOO
-=======
  * Kiran
->>>>>>> Stashed changes
  */
 
 class Driver{
