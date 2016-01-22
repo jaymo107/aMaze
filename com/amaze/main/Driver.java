@@ -9,7 +9,7 @@ import org.jsfml.system.*;
  * Matthew Frost
  * KIRAN WA5 HERE
 >>>>>>> Stashed changes
- * JAY WAS HERE TOOOOOO, and he made a class.
+ * JAY WAS HERE TOOOOOO
  */
 
 class Driver{
