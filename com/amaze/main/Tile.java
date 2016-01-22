@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 /**
  * Created by Kiran on 22/01/2016.
  */
-public abstract class Block extends RectangleShape{
+public abstract class Tile extends RectangleShape{
     /*
     @todo:
         - Collision detection
@@ -22,10 +22,21 @@ public abstract class Block extends RectangleShape{
      */
 
     Image icon; //Icon shown on the block
+    private int currentX;
+    private int currentY;
 
-    public Block(String filePath) throws IOException{
+    /**
+     *
+     * @param filePath Path to image
+     * @param originX Start X pos
+     * @param originY Start Y pos
+     * @throws IOException
+     */
+    public Tile(String filePath, int originX, int originY) throws IOException{
         Path imagePath = Paths.get(URI.create(filePath));
         icon.loadFromFile(imagePath);
+
+
     }
 
     private void loadImage(){

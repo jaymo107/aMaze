@@ -9,6 +9,7 @@ import org.jsfml.system.*;
 import org.jsfml.window.*;
 import org.jsfml.window.event.*;
 import org.jsfml.graphics.*;
+import org.w3c.dom.css.Rect;
 
 /**
  * This is a class responsible for holding a window for aMaze
@@ -31,6 +32,12 @@ public class Window extends RenderWindow{
      *                grid to place objects into a maze
      */
 
+
+    Vector2f vector = new Vector2f(20,20);
+    RectangleShape shape = new RectangleShape(vector);
+
+    private ArrayList<Tile> drawList; //Array list holding Tiles.
+
     public Window(int screenWidth, int screenHeight, int actualX, int actualY) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
@@ -42,6 +49,8 @@ public class Window extends RenderWindow{
         while (this.isOpen( )) {
             // Clear the screen
             this.clear(Color.BLUE);
+            shape.setFillColor(Color.RED);
+            this.draw(shape);
             this.display();
 
             // the user pressed the close button
@@ -51,6 +60,10 @@ public class Window extends RenderWindow{
                 }
             }
         }
+    }
+
+    public void addItem(Tile tile){
+        drawList.add(tile);
     }
 
     public int getScreenHeight() {return screenHeight;}
