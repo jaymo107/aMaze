@@ -9,6 +9,6 @@ class Driver{
 
     public static void main(String[] args){
 
-        Maze maze = new Maze(800, 600,25,25);
+        Window maze = new Window(800, 600,25,25);
     }
 }
