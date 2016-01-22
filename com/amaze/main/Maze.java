@@ -26,7 +26,7 @@ public class Maze {
      * @param actualY Size of y grid overlayed onto window
      *
      * Example:
-     *                maze(1920,1080,25,25)h
+     *                maze(1920,1080,25,25)
      *                This would create a window of 1920x1080 pixels but with 25 by 25
      *                grid to place objects into a maze
      */
