@@ -2,14 +2,17 @@ package com.amaze.main;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Image;
+import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.system.Vector2f;
+import org.jsfml.system.*;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import org.jsfml.*;
 
 /**
  * Created by Kiran on 22/01/2016.
@@ -50,6 +53,20 @@ public class Tile extends RectangleShape{
 
         this.setFillColor(Color.YELLOW);
         this.setOutlineColor(Color.RED);
+
+        Texture jsfmlLogoTexture = new Texture();
+
+        try {
+            //Try to load the texture from file "jsfml.png"
+            jsfmlLogoTexture.loadFromFile(Paths.get("res/circle.png"));
+
+            //Texture was loaded successfully - retrieve and print size
+            Vector2i size = jsfmlLogoTexture.getSize();
+            System.out.println("The texture is " + size.x + "x" + size.y);
+        } catch(IOException ex) {
+            //Ouch! something went wrong
+            ex.printStackTrace();
+        }
 
     }
 
