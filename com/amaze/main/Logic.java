@@ -7,7 +7,7 @@ import java.io.IOException;
  */
 public class Logic implements Runnable{
     Window maze;
-    Tile t1 = new Tile("",10,20,10,20);
+    Tile t1 = new Tile("",10,20,500,500);
 
     public Logic(Window wnd) throws IOException{
         maze = wnd;

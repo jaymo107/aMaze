@@ -58,15 +58,21 @@ public class Tile extends RectangleShape{
 
         try {
             //Try to load the texture from file "jsfml.png"
-            jsfmlLogoTexture.loadFromFile(Paths.get("res/circle.png"));
+            jsfmlLogoTexture.loadFromFile(Paths.get("res/face.png"));
 
             //Texture was loaded successfully - retrieve and print size
             Vector2i size = jsfmlLogoTexture.getSize();
-            System.out.println("The texture is " + size.x + "x" + size.y);
+            //System.out.println("The texture is " + size.x + "x" + size.y);
         } catch(IOException ex) {
             //Ouch! something went wrong
             ex.printStackTrace();
         }
+
+        this.setTexture(jsfmlLogoTexture);
+
+    }
+
+    public void setImage(){
 
     }
 
