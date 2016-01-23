@@ -9,6 +9,9 @@ import org.jsfml.system.*;
 import org.jsfml.window.*;
 import org.jsfml.window.event.*;
 import org.jsfml.graphics.*;
+import org.w3c.dom.css.Rect;
+
+import javax.swing.border.TitledBorder;
 
 /**
  * This is a class responsible for holding a window for aMaze
@@ -31,9 +34,17 @@ public class Window extends RenderWindow{
      *                grid to place objects into a maze
      */
 
-    public Window(int screenWidth, int screenHeight, int actualX, int actualY) {
+
+    Vector2f vector = new Vector2f(20,20);
+    RectangleShape shape = new RectangleShape(vector);
+
+    private ArrayList<Tile> drawList; //Array list holding Tiles.
+
+    public Window(int screenWidth, int screenHeight, int actualX, int actualY) throws IOException {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+
+        drawList = new ArrayList<Tile>();
 
         // Creating a new window
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
@@ -42,6 +53,14 @@ public class Window extends RenderWindow{
         while (this.isOpen( )) {
             // Clear the screen
             this.clear(Color.BLUE);
+
+            drawItems(this.drawList);
+
+            Logic l = new Logic(this);
+
+            Thread t = new Thread(l);
+            t.start();
+
             this.display();
 
             // the user pressed the close button
@@ -53,6 +72,35 @@ public class Window extends RenderWindow{
         }
     }
 
+    /**
+     *
+     * @param tile
+     */
+    public void addItem(Tile tile){
+        drawList.add(tile);
+    }
+
+    /**
+     *
+     * @return
+     */
     public int getScreenHeight() {return screenHeight;}
+
+    /**
+     *
+     * @return
+     */
     public int getScreenWidth() {return  screenWidth;}
+
+    /**
+     *
+     * @param list
+     */
+    private void drawItems(ArrayList<Tile> list){
+        for(int i = 0; i < list.size() ; i++){
+            this.draw(list.get(i));
+        }
+    }
+
+
 }

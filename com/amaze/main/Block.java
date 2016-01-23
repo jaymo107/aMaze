@@ -1,6 +1,7 @@
 package com.amaze.main;
 
 import org.jsfml.graphics.Image;
+import org.jsfml.graphics.RectangleShape;
 
 import java.io.IOException;
 import java.net.URI;
@@ -11,7 +12,7 @@ import java.nio.file.Paths;
 /**
  * Created by Kiran on 22/01/2016.
  */
-public abstract class Block {
+public abstract class Block extends RectangleShape{
     /*
     @todo:
         - Collision detection
