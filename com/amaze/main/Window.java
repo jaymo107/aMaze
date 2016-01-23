@@ -17,7 +17,7 @@ import javax.swing.border.TitledBorder;
  * This is a class responsible for holding a window for aMaze
  */
 
-public class Window extends RenderWindow{
+public class Window extends RenderWindow implements Runnable{
     private int screenWidth;
     private int screenHeight;
 
@@ -40,23 +40,18 @@ public class Window extends RenderWindow{
 
     private ArrayList<Tile> drawList; //Array list holding Tiles.
 
-    public Window(int screenWidth, int screenHeight, int actualX, int actualY) throws IOException{
+    public Window(int screenWidth, int screenHeight, int actualX, int actualY) throws IOException {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
         drawList = new ArrayList<Tile>();
 
-        Tile t1 = new Tile("",10,10);
-        Tile t2 = new Tile("",20,10);
-        Tile t3 = new Tile("",50,10);
-        drawList.add(t1);
-        drawList.add(t2);
-        drawList.add(t3);
-
         // Creating a new window
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
         this.setFramerateLimit(30);
+    }
 
+    public void run(){
         while (this.isOpen( )) {
             // Clear the screen
             this.clear(Color.BLUE);
@@ -85,4 +80,6 @@ public class Window extends RenderWindow{
             this.draw(list.get(i));
         }
     }
+
+
 }

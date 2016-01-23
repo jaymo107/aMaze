@@ -36,18 +36,17 @@ public class Tile extends RectangleShape{
      * @param originY Start Y pos
      * @throws IOException
      */
-    public Tile(String filePath, int originX, int originY) throws IOException{
+    public Tile(String filePath, int originX, int originY, int sizeX, int sizeY) throws IOException{
         //Path imagePath = Paths.get(URI.create(filePath));
         //icon.loadFromFile(imagePath);
         this.currentX = originX;
         this.currentY = originY;
         position = new Vector2f(originX,originY);
-        size = new Vector2f(20,20);
+        size = new Vector2f(sizeX,sizeY);
 
         this.setSize(size);
 
         this.setPosition(position);
-
 
         this.setFillColor(Color.YELLOW);
         this.setOutlineColor(Color.RED);
