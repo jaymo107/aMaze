@@ -38,13 +38,13 @@ public class Window extends RenderWindow{
     Vector2f vector = new Vector2f(20,20);
     RectangleShape shape = new RectangleShape(vector);
 
-    private ArrayList<Tile> drawList; //Array list holding Tiles.
+    private Menu mainMenu; //Array list holding Tiles.
 
     public Window(int screenWidth, int screenHeight, int actualX, int actualY) throws IOException {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
-        drawList = new ArrayList<Tile>();
+        mainMenu = new Menu(this);
 
         // Creating a new window
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
@@ -54,9 +54,9 @@ public class Window extends RenderWindow{
             // Clear the screen
             this.clear(Color.BLUE);
 
-            drawItems(this.drawList);
+            draw(mainMenu);
 
-            Logic l = new Logic(this);
+            GUILogic l = new GUILogic(this);
 
             Thread t = new Thread(l);
             t.start();
@@ -76,8 +76,8 @@ public class Window extends RenderWindow{
      *
      * @param tile
      */
-    public void addItem(Tile tile){
-        drawList.add(tile);
+    public void addItem(Object object){
+        drawList.add(object);
     }
 
     /**

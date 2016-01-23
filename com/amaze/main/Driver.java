@@ -11,7 +11,8 @@ import java.io.IOException;
 class Driver{
 
     public static void main(String[] args) throws IOException{
-        Tile t1 = new Tile("",10,20,10,20);
-        Window maze = new Window(800,600,25,25);
+        //Tile t1 = new Tile("",10,20,10,20);
+        Window window = new Window(800,600,25,25);
+        //Menu mainMenu = new Menu(maze);
     }
 }

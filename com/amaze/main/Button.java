@@ -1,43 +1,46 @@
 package com.amaze.main;
 
 import org.jsfml.graphics.*;
+import org.jsfml.system.Vector2f;
 
 /**
  * This is an abstract class which is responsible for managing all button in the game.
  */
-public abstract class Button {
+public abstract class Button extends RectangleShape {
 
-    private double xCoord;
-    private double yCoord;
+    private float xCoord;
+    private float yCoord;
+    private float width;
+    private float height;
+
     private Color color;
+
     private Window window;
-    private Image image;
 
-    /**
-     * This constructor creates a button given 3 parameters
-     *
-     * @param xCoord - width of the button.
-     * @param yCoord - heigth of the button.
-     * @param image  - image which goes inside the button.
-     */
+    private Vector2f position;
+    private Vector2f size;
 
-    public Button(double xCoord, double yCoord, Window window, Image image) {
-
-        this.xCoord = xCoord;
-        this.yCoord = yCoord;
-        this.window = window;
-        this.image = image;
-    }
 
     /**
      * This is temprorary constructor for testing if a button is properly displayed in the window frame.
      */
-    public Button(double xCoord, double yCoord, Window window, Color color) {
+    public Button(float xCoord, float yCoord, float width, float height, Window window, Color color) {
 
         this.xCoord = xCoord;
         this.yCoord = yCoord;
+        this.width = width;
+        this.height = height;
         this.window = window;
         this.color = color;
+
+        position = new Vector2f(xCoord,yCoord);
+        size = new Vector2f(width,height);
+
+        this.setSize(size);
+        this.setPosition(position);
+
+        this.setFillColor(color);
+
     }
 
     public double getWidth() {

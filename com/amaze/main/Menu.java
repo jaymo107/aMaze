@@ -14,7 +14,7 @@ public class Menu {
     public Menu(Window window) {
 
         this.window = window;
-        button[0] = new PlayButton(window.getScreenWidth() / 2, window.getScreenHeight() / 2, window, Color.RED);
+        button[0] = new PlayButton(window.getScreenWidth() / 2, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1, 100, 20, window, Color.RED);
 
     }
 

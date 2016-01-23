@@ -8,18 +8,10 @@ import org.jsfml.graphics.*;
 public class PlayButton extends Button {
 
     /**
-     * Main constructor
-     */
-    public PlayButton(double xCord, double yCord, Window window, Image image) {
-
-        super(xCord, yCord, window, image);
-    }
-
-    /**
      * Testing constructor
      */
-    public PlayButton(double xCord, double yCord, Window window, Color color) {
+    public PlayButton(float xCoord, float yCoord, float width, float height, Window window, Color color) {
 
-        super(xCord, yCord, window, color);
+        super(xCoord, yCoord, width, height, window, color);
     }
 }

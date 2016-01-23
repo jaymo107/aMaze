@@ -1,13 +1,13 @@
 package com.amaze.main;
 
-import org.jsfml.graphics.Image;
-import org.jsfml.graphics.RectangleShape;
+        import org.jsfml.graphics.Image;
+        import org.jsfml.graphics.RectangleShape;
 
-import java.io.IOException;
-import java.net.URI;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+        import java.io.IOException;
+        import java.net.URI;
+        import java.nio.file.FileSystems;
+        import java.nio.file.Path;
+        import java.nio.file.Paths;
 
 /**
  * Created by Kiran on 22/01/2016.
