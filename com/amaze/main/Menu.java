@@ -38,4 +38,8 @@ public class Menu {
     public void enterPressed() {
 
     }
+    public Button getButtons() {
+
+        return button[0];
+    }
 }

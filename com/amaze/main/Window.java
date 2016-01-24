@@ -18,6 +18,7 @@ import javax.swing.border.TitledBorder;
  */
 
 public class Window extends RenderWindow{
+
     private int screenWidth;
     private int screenHeight;
 
@@ -34,17 +35,13 @@ public class Window extends RenderWindow{
      *                grid to place objects into a maze
      */
 
-
-    Vector2f vector = new Vector2f(20,20);
-    RectangleShape shape = new RectangleShape(vector);
-
-    private Menu mainMenu; //Array list holding Tiles.
+    //private ArrayList<Menu> drawList; //Array list holding Tiles.
+    private Menu mainMenu;
 
     public Window(int screenWidth, int screenHeight, int actualX, int actualY) throws IOException {
+
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-
-        mainMenu = new Menu(this);
 
         // Creating a new window
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
@@ -54,7 +51,7 @@ public class Window extends RenderWindow{
             // Clear the screen
             this.clear(Color.BLUE);
 
-            draw(mainMenu);
+            drawMenu(mainMenu);
 
             GUILogic l = new GUILogic(this);
 
@@ -72,35 +69,8 @@ public class Window extends RenderWindow{
         }
     }
 
-    /**
-     *
-     * @param tile
-     */
-    public void addItem(Object object){
-        drawList.add(object);
-    }
-
-    /**
-     *
-     * @return
-     */
+    public void addItem(Menu obj) {mainMenu = obj;}
     public int getScreenHeight() {return screenHeight;}
-
-    /**
-     *
-     * @return
-     */
     public int getScreenWidth() {return  screenWidth;}
-
-    /**
-     *
-     * @param list
-     */
-    private void drawItems(ArrayList<Tile> list){
-        for(int i = 0; i < list.size() ; i++){
-            this.draw(list.get(i));
-        }
-    }
-
-
+    public void drawMenu(Menu obj) {this.draw(obj.getButtons());}
 }
