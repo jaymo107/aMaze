@@ -15,8 +15,9 @@ import java.nio.file.Paths;
 import org.jsfml.*;
 
 /**
- * Created by Kiran on 22/01/2016.
+ * Created by Kiran
  */
+
 public class Tile extends RectangleShape{
     /*
     @todo:
@@ -32,6 +33,11 @@ public class Tile extends RectangleShape{
     private Vector2f position;
     private Vector2f size;
 
+    public enum BlockType {
+        WALL, FLOOR, DOOR, START,
+        FINISH
+    }
+
     /**
      *
      * @param filePath Path to image
@@ -39,40 +45,50 @@ public class Tile extends RectangleShape{
      * @param originY Start Y pos
      * @throws IOException
      */
-    public Tile(String filePath, int originX, int originY, int sizeX, int sizeY) throws IOException{
-        //Path imagePath = Paths.get(URI.create(filePath));
-        //icon.loadFromFile(imagePath);
+
+    public Tile(String filePath, int originX, int originY, int sizeX, int sizeY, BlockType type) throws IOException{
         this.currentX = originX;
         this.currentY = originY;
         position = new Vector2f(originX,originY);
         size = new Vector2f(sizeX,sizeY);
+        Texture tileTexture = new Texture();
+        tileTexture.setSmooth(true);
 
-        this.setSize(size);
+        //Set image according to type
+        switch (type){
+            case WALL:
+                tileTexture.loadFromFile(Paths.get("res/wall.png"));
+                break;
+            case FLOOR:
+                tileTexture.loadFromFile(Paths.get("res/face.png"));
+                break;
+            case DOOR:
+                break;
+            case START:
+                break;
+            case FINISH:
+                break;
+            default:
+                System.out.print("Block must have type defined");
+                break;
+        }
 
+        Vector2i size = tileTexture.getSize();
+        this.setTexture(tileTexture);
+        this.setSize(new Vector2f(size.x,size.y));
         this.setPosition(position);
 
         this.setFillColor(Color.YELLOW);
         this.setOutlineColor(Color.RED);
+    }
 
-        Texture jsfmlLogoTexture = new Texture();
-
-        try {
-            //Try to load the texture from file "jsfml.png"
-            jsfmlLogoTexture.loadFromFile(Paths.get("res/face.png"));
-
-            //Texture was loaded successfully - retrieve and print size
-            Vector2i size = jsfmlLogoTexture.getSize();
-            //System.out.println("The texture is " + size.x + "x" + size.y);
-        } catch(IOException ex) {
-            //Ouch! something went wrong
-            ex.printStackTrace();
-        }
-
-        this.setTexture(jsfmlLogoTexture);
+    public void deltaX(float x){
+        this.move(x,0);
 
     }
 
-    public void setImage(){
+    public void deltaY(float y){
+        this.move(0,y);
 
     }
 
