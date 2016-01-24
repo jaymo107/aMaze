@@ -5,6 +5,9 @@ import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.View;
 import org.jsfml.system.*;
 
+import com.amaze.display.Window;
+import com.amaze.entities.Tile;
+
 import java.io.IOException;
 
 /**

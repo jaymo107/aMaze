@@ -13,6 +13,8 @@ import org.jsfml.window.event.*;
 import org.jsfml.graphics.*;
 import org.w3c.dom.css.Rect;
 
+import com.amaze.entities.Tile;
+
 import javax.swing.border.TitledBorder;
 
 /**
