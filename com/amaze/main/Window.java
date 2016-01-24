@@ -47,17 +47,17 @@ public class Window extends RenderWindow{
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
         this.setFramerateLimit(30);
 
+        GUILogic l = new GUILogic(this);
+        Thread t = new Thread(l);
+        t.start();
+
         while (this.isOpen( )) {
             // Clear the screen
             this.clear(Color.WHITE);
 
-
-            GUILogic l = new GUILogic(this);
-            Thread t = new Thread(l);
-            t.start();
+            drawMenu(mainMenu);
 
             this.display();
-            drawMenu(mainMenu);
 
             // the user pressed the close button
             for (Event event : this.pollEvents( )) {
