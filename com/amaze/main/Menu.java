@@ -7,14 +7,17 @@ import org.jsfml.graphics.*;
 public class Menu {
 
     private final int NUMBER_OF_ITEMS = 5; // Number of items available to select in the menu
-    private Button button[];
-    private Window window;
+    private Button button;
+    //private Window window;
 
 
     public Menu(Window window) {
 
-        this.window = window;
-        button[0] = new PlayButton(window.getScreenWidth() / 2, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1, 100, 20, window, Color.RED);
+        //this.window = window;
+        button = new PlayButton(window.getScreenWidth() / 2, (window.getScreenHeight() / NUMBER_OF_ITEMS), 100, 20, window, Color.RED);
+//        this.button[1] = new PlayButton(window.getScreenWidth() / 2, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2, 100, 20, window, Color.RED);
+//        this.button[2] = new PlayButton(window.getScreenWidth() / 2, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 3, 100, 20, window, Color.RED);
+//        this.button[3] = new PlayButton(window.getScreenWidth() / 2, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 4, 100, 20, window, Color.RED);
 
     }
 
@@ -40,6 +43,6 @@ public class Menu {
     }
     public Button getButtons() {
 
-        return button[0];
+        return button;
     }
 }

@@ -54,7 +54,6 @@ public class Window extends RenderWindow{
             drawMenu(mainMenu);
 
             GUILogic l = new GUILogic(this);
-
             Thread t = new Thread(l);
             t.start();
 
@@ -69,8 +68,8 @@ public class Window extends RenderWindow{
         }
     }
 
-    public void addItem(Menu obj) {mainMenu = obj;}
+    public void addItem(Menu menu) {mainMenu = menu;}
     public int getScreenHeight() {return screenHeight;}
     public int getScreenWidth() {return  screenWidth;}
-    public void drawMenu(Menu obj) {this.draw(obj.getButtons());}
+    public void drawMenu(Menu menu) {this.draw(menu.getButtons());}
 }
