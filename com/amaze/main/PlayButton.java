@@ -10,8 +10,8 @@ public class PlayButton extends Button {
     /**
      * Testing constructor
      */
-    public PlayButton(float xCoord, float yCoord, float width, float height, Window window, Color color) {
+    public PlayButton(float xCord, float yCord, float width, float height, Color color) {
 
-        super(xCoord, yCoord, width, height, window, color);
+        super(xCord, yCord, width, height, color);
     }
 }

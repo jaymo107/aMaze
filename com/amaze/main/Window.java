@@ -20,12 +20,12 @@ import javax.swing.border.TitledBorder;
  */
 
 public class Window extends RenderWindow{
-
     private int screenWidth;
     private int screenHeight;
     Sound sound; //Sound to be played
 
-    private ArrayList<Tile> drawList; //Array list holding Tiles.
+
+    private ArrayList<Button> menuButtons;
 
     /**
      *
@@ -40,35 +40,12 @@ public class Window extends RenderWindow{
      *                grid to place objects into a maze
      */
 
-<<<<<<< HEAD
-    //private ArrayList<Menu> drawList; //Array list holding Tiles.
-    private Menu mainMenu;
-
-    public Window(int screenWidth, int screenHeight, int actualX, int actualY) throws IOException {
-
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-
-        // Creating a new window
-        this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
-        this.setFramerateLimit(30);
-
-        GUILogic l = new GUILogic(this);
-        Thread t = new Thread(l);
-        t.start();
-
-        while (this.isOpen( )) {
-            // Clear the screen
-            this.clear(Color.WHITE);
-
-            drawMenu(mainMenu);
-
-=======
     public Window(int resolutionX, int resolutionY, int blocksX, int blocksY) throws IOException {
         //Instantiate
         this.screenWidth = resolutionX;
         this.screenHeight = resolutionY;
-        drawList = new ArrayList<>();
+
+        menuButtons = new ArrayList<>();
 
         // Creating a new window
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
@@ -91,9 +68,8 @@ public class Window extends RenderWindow{
         while (this.isOpen( )) {
             // Clear the screen
             this.clear(Color.BLUE);
-            drawItems(this.drawList);
+            drawItems(this.menuButtons);
 
->>>>>>> master
             this.display();
 
             // the user pressed the close button
@@ -104,45 +80,35 @@ public class Window extends RenderWindow{
                         this.close();
                         break;
                     case KEY_PRESSED:
-                        if(event.asKeyEvent().key == Keyboard.Key.UP){
-                            drawList.get(0).deltaX(10F);
-                        }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
-                            drawList.get(0).deltaX(-10F);
-                        }else{
-                            sound.play();
-                        }
+//                        if(event.asKeyEvent().key == Keyboard.Key.UP){
+//                            drawList.get(0).deltaX(10F);
+//                        }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
+//                            drawList.get(0).deltaX(-10F);
+//                        }else{
+//                            sound.play();
+//                        }
                         break;
                 }
             }
         }
     }
 
-<<<<<<< HEAD
-    public void addItem(Menu menu) {mainMenu = menu;}
-    public int getScreenHeight() {return screenHeight;}
-    public int getScreenWidth() {return  screenWidth;}
-    public void drawMenu(Menu menu) {this.draw(menu.getButtons());}
-=======
-    /**
-     * Add an item to be display on screen.
-     * @param tile Tile that you want to add
-     */
-    public void addItem(Tile tile){
-        drawList.add(tile);
+    public void addButton(Button[] button) {
+
+        for (Button aButton : button) {
+
+            menuButtons.add(aButton);
+        }
     }
 
     public int getScreenHeight() {return screenHeight;}
 
     public int getScreenWidth() {return  screenWidth;}
 
-    /**
-     * Draw all items in list
-     * @param list List of tiles you want to draw
-     */
 
-    private void drawItems(ArrayList<Tile> list){
-        for(Tile tile : list){
-            this.draw(tile);
+    private void drawItems(ArrayList<Button> list){
+        for(Button button : list){
+            this.draw(button);
         }
     }
 
@@ -150,5 +116,4 @@ public class Window extends RenderWindow{
         return this;
     }
 
->>>>>>> master
 }
