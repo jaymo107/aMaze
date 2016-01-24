@@ -10,8 +10,8 @@ public abstract class Button extends RectangleShape {
 
     private float xCoord;
     private float yCoord;
-    private float width;
-    private float height;
+//    private float width;
+//    private float height;
 
     private Color color;
 
@@ -28,8 +28,8 @@ public abstract class Button extends RectangleShape {
 
         this.xCoord = xCoord;
         this.yCoord = yCoord;
-        this.width = width;
-        this.height = height;
+//        this.width = width;
+//        this.height = height;
         this.window = window;
         this.color = color;
 
@@ -43,15 +43,10 @@ public abstract class Button extends RectangleShape {
 
     }
 
-    public double getWidth() {
+    public double getXCoord() {
         return xCoord;
     }
-
-    public double getHeight() {
+    public double getYCoord() {
         return yCoord;
-    }
-
-    public Color getColor() {
-        return color;
     }
 }

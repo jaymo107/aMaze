@@ -7,19 +7,19 @@ import java.io.IOException;
  */
 public class GUILogic implements Runnable{
 
-    private Window mainWindow;
+    private Window window;
     private Menu mainMenu;
 
     public GUILogic(Window window) throws IOException {
 
-        this.mainWindow = window;
+        this.window = window;
         mainMenu = new Menu(window);
     }
 
     @Override
     public void run() {
 
-        mainWindow.addItem(mainMenu);
+        window.addItem(mainMenu);
     }
 }
 

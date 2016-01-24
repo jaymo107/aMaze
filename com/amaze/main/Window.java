@@ -51,13 +51,13 @@ public class Window extends RenderWindow{
             // Clear the screen
             this.clear(Color.BLUE);
 
-            drawMenu(mainMenu);
 
             GUILogic l = new GUILogic(this);
             Thread t = new Thread(l);
             t.start();
 
             this.display();
+            drawMenu(mainMenu);
 
             // the user pressed the close button
             for (Event event : this.pollEvents( )) {
