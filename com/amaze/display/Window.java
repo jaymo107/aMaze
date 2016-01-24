@@ -1,4 +1,4 @@
-package com.amaze.main;
+package com.amaze.display;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
