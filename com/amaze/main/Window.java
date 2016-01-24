@@ -49,7 +49,7 @@ public class Window extends RenderWindow{
 
         while (this.isOpen( )) {
             // Clear the screen
-            this.clear(Color.BLUE);
+            this.clear(Color.WHITE);
 
 
             GUILogic l = new GUILogic(this);
