@@ -1,4 +1,4 @@
-package com.amaze.main;
+package com.amaze.display;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
@@ -12,6 +12,8 @@ import org.jsfml.window.*;
 import org.jsfml.window.event.*;
 import org.jsfml.graphics.*;
 import org.w3c.dom.css.Rect;
+
+import com.amaze.entities.Tile;
 
 import javax.swing.border.TitledBorder;
 
@@ -81,9 +83,13 @@ public class Window extends RenderWindow{
                         break;
                     case KEY_PRESSED:
                         if(event.asKeyEvent().key == Keyboard.Key.UP){
-                            drawList.get(0).deltaX(10F);
+                            drawList.get(0).deltaY(-10F);
                         }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
+                            drawList.get(0).deltaY(10F);
+                        }else if(event.asKeyEvent().key == Keyboard.Key.LEFT){
                             drawList.get(0).deltaX(-10F);
+                        }else if(event.asKeyEvent().key == Keyboard.Key.RIGHT){
+                            drawList.get(0).deltaX(10F);
                         }else{
                             sound.play();
                         }

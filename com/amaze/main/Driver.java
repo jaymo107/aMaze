@@ -1,9 +1,13 @@
 package com.amaze.main;
+import com.amaze.Library.LevelReader;
 import org.jsfml.graphics.CircleShape;
 import org.jsfml.graphics.ConstView;
 import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.View;
 import org.jsfml.system.*;
+
+import com.amaze.display.Window;
+import com.amaze.entities.Tile;
 
 import java.io.IOException;
 
@@ -34,6 +38,12 @@ class Driver{
         Tile t4 = new Tile("",600,0,200,200, Tile.BlockType.WALL);
         maze.addItem(t4);
 
+
+        try {
+            LevelReader levelReader = new LevelReader();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //Start Displaying
         maze.displayThis();

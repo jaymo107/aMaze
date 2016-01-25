@@ -1,4 +1,4 @@
-package com.amaze.main;
+package com.amaze.entities;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Image;
