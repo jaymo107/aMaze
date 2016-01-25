@@ -9,6 +9,7 @@ public class Menu {
     private final int NUMBER_OF_ITEMS = 4;                  // Number of items available to select in the menu
     private Button button[] = new Button[NUMBER_OF_ITEMS];  // Array which holds buttons(items).
     private int currentButton = 0;                          // Track currently selected item in the menu.
+    private Window window;
 
     /**
      * Constructs buttons to be displayed on the main window.
@@ -18,10 +19,12 @@ public class Menu {
 
     public Menu(Window window) {
 
-        button[0] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 200, 40, Color.BLACK);
-        button[1] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 200, 40, Color.BLACK);
-        button[2] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 200, 40, Color.BLACK);
-        button[3] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.8F, 200, 40, Color.BLACK);
+        this.window = window;
+
+        button[0] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 200, 40, Color.BLACK, window);
+        button[1] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 200, 40, Color.BLACK, window);
+        button[2] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 200, 40, Color.BLACK, window);
+        button[3] = new ExitButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.8F, 200, 40, Color.BLACK, window);
     }
 
     /**
@@ -89,6 +92,7 @@ public class Menu {
         if (button[3].isSelected()) {
 
             System.out.println("Exit Button Pressed");
+            ((ExitButton)button[3]).closeWindow();
         }
     }
 
