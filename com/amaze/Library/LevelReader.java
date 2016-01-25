@@ -15,7 +15,7 @@ public class LevelReader
     public enum BlockType
     {
         START, FINISH, PATH, WALL,
-        DOOR
+        DOOR, VOID, CHARGE
     }
     private BlockType[][] level = new BlockType[5][5];//Change this for larger maps
 
@@ -54,6 +54,8 @@ public class LevelReader
         if (blockType.equals("FINISH")) return BlockType.FINISH;
         if (blockType.equals("DOOR")) return BlockType.DOOR;
         if (blockType.equals("WALL")) return BlockType.WALL;
+        if (blockType.equals("VOID")) return BlockType.VOID;
+        if (blockType.equals("CHARGE")) return BlockType.CHARGE;
         return BlockType.PATH;
     }
 
