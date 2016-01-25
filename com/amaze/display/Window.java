@@ -18,7 +18,8 @@ import java.util.ArrayList;
  */
 
 public class Window extends RenderWindow{
-    private int screenWidth;
+
+	private int screenWidth;
     private int screenHeight;
     Sound sound; //Sound to be played
 
@@ -60,35 +61,26 @@ public class Window extends RenderWindow{
      * Used to start displaying the window. Once this is called nothing can be changed.
      */
 
-    public void displayThis(){
-        while (this.isOpen( )) {
+    public void display(){
+        while (this.isOpen()) {
             // Clear the screen
             this.clear(Color.BLUE);
             drawItems(this.drawList);
 
-            this.display();
+            super.display();
 
             // the user pressed the close button
             for (Event event : this.pollEvents()) {
                 //Different behaviour depending on
-                switch(event.type){
-                    case CLOSED:
-                        this.close();
-                        break;
-                    case KEY_PRESSED:
-                        if(event.asKeyEvent().key == Keyboard.Key.UP){
-                            drawList.get(0).deltaY(-10F);
-                        }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
-                            drawList.get(0).deltaY(10F);
-                        }else if(event.asKeyEvent().key == Keyboard.Key.LEFT){
-                            drawList.get(0).deltaX(-10F);
-                        }else if(event.asKeyEvent().key == Keyboard.Key.RIGHT){
-                            drawList.get(0).deltaX(10F);
-                        }else{
-                            sound.play();
-                        }
-                        break;
-                }
+				if (event.type == Event.Type.CLOSED) close();
+				if (event.type == Event.Type.KEY_PRESSED) {
+					Keyboard.Key k = event.asKeyEvent().key;
+					if (k == Keyboard.Key.UP) drawList.get(0).deltaY(-10F);
+					else if (k == Keyboard.Key.DOWN) drawList.get(0).deltaY(10F);
+					else if (k == Keyboard.Key.LEFT) drawList.get(0).deltaX(-10F);
+					else if (k == Keyboard.Key.RIGHT) drawList.get(0).deltaX(10F);
+					else sound.play();
+				}
             }
         }
     }
@@ -109,7 +101,6 @@ public class Window extends RenderWindow{
      * Draw all items in list
      * @param list List of tiles you want to draw
      */
-
     private void drawItems(ArrayList<Tile> list){
 		list.forEach(this::draw);
     }

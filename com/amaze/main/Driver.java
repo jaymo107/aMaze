@@ -1,10 +1,4 @@
 package com.amaze.main;
-import org.jsfml.graphics.CircleShape;
-import org.jsfml.graphics.ConstView;
-import org.jsfml.graphics.FloatRect;
-import org.jsfml.graphics.View;
-import org.jsfml.system.*;
-
 import com.amaze.display.Window;
 import com.amaze.entities.Tile;
 
@@ -26,6 +20,6 @@ class Driver{
         maze.addItem(t1);
 
         //Start Displaying
-        maze.displayThis();
+        maze.display();
     }
 }
