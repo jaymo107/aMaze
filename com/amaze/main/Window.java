@@ -86,7 +86,7 @@ public class Window extends RenderWindow{
                         }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
 
                             menu.arrowKeyDown();
-                        }else{
+                        }else if(event.asKeyEvent().key == Keyboard.Key.RETURN){
 
                             menu.enterPressed();
                         }
