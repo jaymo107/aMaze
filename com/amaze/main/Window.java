@@ -1,4 +1,5 @@
 package com.amaze.main;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
@@ -20,12 +21,13 @@ import javax.swing.border.TitledBorder;
  */
 
 public class Window extends RenderWindow{
+
     private int screenWidth;
     private int screenHeight;
+
+    private Menu menu;
+
     Sound sound; //Sound to be played
-
-
-    private ArrayList<Button> menuButtons;
 
     /**
      *
@@ -44,8 +46,6 @@ public class Window extends RenderWindow{
         //Instantiate
         this.screenWidth = resolutionX;
         this.screenHeight = resolutionY;
-
-        menuButtons = new ArrayList<>();
 
         // Creating a new window
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
@@ -67,53 +67,52 @@ public class Window extends RenderWindow{
     public void displayThis(){
         while (this.isOpen( )) {
             // Clear the screen
-            this.clear(Color.BLUE);
-            drawItems(this.menuButtons);
+            this.clear(Color.WHITE);
+            drawItems(menu);
 
             this.display();
 
             // the user pressed the close button
             for (Event event : this.pollEvents( )) {
                 //Different behaviour depending on
-                switch(event.type){
+                switch(event.type) {
                     case CLOSED:
                         this.close();
                         break;
                     case KEY_PRESSED:
-//                        if(event.asKeyEvent().key == Keyboard.Key.UP){
-//                            drawList.get(0).deltaX(10F);
-//                        }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
-//                            drawList.get(0).deltaX(-10F);
-//                        }else{
-//                            sound.play();
-//                        }
+                        if(event.asKeyEvent().key == Keyboard.Key.UP){
+
+                            menu.arrowKeyUp();
+                        }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
+
+                            menu.arrowKeyDown();
+                        }else{
+
+                            menu.enterPressed();
+                        }
                         break;
                 }
             }
         }
     }
 
-    public void addButton(Button[] button) {
-
-        for (Button aButton : button) {
-
-            menuButtons.add(aButton);
-        }
-    }
+    /**
+     * Add instance of the menu.
+     * @param menu
+     */
+    public void addMenu(Menu menu) {this.menu = menu;}
 
     public int getScreenHeight() {return screenHeight;}
 
     public int getScreenWidth() {return  screenWidth;}
 
-
-    private void drawItems(ArrayList<Button> list){
-        for(Button button : list){
-            this.draw(button);
+    /**
+     * Draw contents of the menu.
+     * @param menu
+     */
+    private void drawItems(Menu menu){
+        for(Button aButton: menu.getButtons()) {
+            this.draw(aButton);
         }
     }
-
-    public RenderWindow getWindow(){
-        return this;
-    }
-
 }
