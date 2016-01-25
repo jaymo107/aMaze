@@ -33,7 +33,7 @@ public class Tile extends RectangleShape{
     private Vector2f position;
     private Vector2f size;
 
-    public static enum BlockType {
+    public enum BlockType {
         WALL, FLOOR, DOOR, START,
         FINISH
     }
