@@ -1,4 +1,5 @@
 package com.amaze.main;
+import com.amaze.Library.LevelReader;
 import org.jsfml.graphics.CircleShape;
 import org.jsfml.graphics.ConstView;
 import org.jsfml.graphics.FloatRect;
@@ -24,6 +25,12 @@ class Driver{
         //Create a kind of tile and add to maze.
         Tile t1 = new Tile("",10,80,40,40, Tile.BlockType.WALL);
         maze.addItem(t1);
+
+        try {
+            LevelReader levelReader = new LevelReader();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //Start Displaying
         maze.displayThis();
