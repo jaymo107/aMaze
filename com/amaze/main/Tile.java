@@ -31,7 +31,7 @@ public class Tile extends RectangleShape{
     private int currentX;
     private int currentY;
     private Vector2f position;
-    private Vector2f size;
+    private Vector2f tileSize;
 
     public enum BlockType {
         WALL, FLOOR, DOOR, START,
@@ -50,7 +50,7 @@ public class Tile extends RectangleShape{
         this.currentX = originX;
         this.currentY = originY;
         position = new Vector2f(originX,originY);
-        size = new Vector2f(sizeX,sizeY);
+        tileSize = new Vector2f(sizeX,sizeY);
         Texture tileTexture = new Texture();
         tileTexture.setSmooth(true);
 
@@ -75,7 +75,7 @@ public class Tile extends RectangleShape{
 
         Vector2i size = tileTexture.getSize();
         this.setTexture(tileTexture);
-        this.setSize(new Vector2f(size.x,size.y));
+        this.setSize(tileSize);
         this.setPosition(position);
 
         this.setFillColor(Color.YELLOW);

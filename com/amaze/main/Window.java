@@ -22,7 +22,9 @@ import javax.swing.border.TitledBorder;
 public class Window extends RenderWindow{
     private int screenWidth;
     private int screenHeight;
-    Sound sound; //Sound to be played
+    private Sound sound; //Sound to be played
+    private int gridX;
+    private int gridY;
 
     private ArrayList<Tile> drawList; //Array list holding Tiles.
 
@@ -95,7 +97,8 @@ public class Window extends RenderWindow{
      * Add an item to be display on screen.
      * @param tile Tile that you want to add
      */
-    public void addItem(Tile tile){
+    public void addItem(Tile tile,int gridPosX, int gridPosY ){
+
         drawList.add(tile);
     }
 
@@ -116,6 +119,23 @@ public class Window extends RenderWindow{
 
     public RenderWindow getWindow(){
         return this;
+    }
+
+    /**
+     * Translates a grid positon into raw resolution for X axis
+     * @return Integer on X value
+     */
+
+    private int translateX(){
+        return 1;
+    }
+
+    /**
+     * Translate a grid position into raw resolution for Y axis
+     * @return
+     */
+    private int translateY(){
+        return 1;
     }
 
 }

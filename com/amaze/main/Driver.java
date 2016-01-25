@@ -11,16 +11,29 @@ import java.io.IOException;
  * This class is responsible for creating an instace of a Maze.
  */
 
-
 class Driver{
 
-    public static void main(String[] args) throws IOException{
+    public static final int X_RES = 800;
+    public static final int Y_RES = 800;
+    public static final int BLOCK_SIZE = 200;
 
-        Window maze = new Window(800,600,25,25);
+    public static void main(String[] args) throws IOException{
+        //Workout how bit grid overlay should be
+        int gridWidth = X_RES / BLOCK_SIZE;
+        int gridHeight = Y_RES / BLOCK_SIZE;
+
+        Window maze = new Window(X_RES,Y_RES,BLOCK_SIZE,BLOCK_SIZE);
 
         //Create a kind of tile and add to maze.
-        Tile t1 = new Tile("",10,80,40,40, Tile.BlockType.WALL);
+        Tile t1 = new Tile("",0,0,200,200, Tile.BlockType.WALL);
         maze.addItem(t1);
+        Tile t2 = new Tile("",200,0,200,200, Tile.BlockType.WALL);
+        maze.addItem(t2);
+        Tile t3 = new Tile("",400,0,200,200, Tile.BlockType.WALL);
+        maze.addItem(t3);
+        Tile t4 = new Tile("",600,0,200,200, Tile.BlockType.WALL);
+        maze.addItem(t4);
+
 
         //Start Displaying
         maze.displayThis();
