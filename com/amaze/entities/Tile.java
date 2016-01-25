@@ -2,17 +2,13 @@ package com.amaze.entities;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Image;
-import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.RectangleShape;
+import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
-import org.jsfml.system.*;
+import org.jsfml.system.Vector2i;
 
 import java.io.IOException;
-import java.net.URI;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.jsfml.*;
 
 /**
  * Created by Kiran
@@ -84,12 +80,10 @@ public class Tile extends RectangleShape{
 
     public void deltaX(float x){
         this.move(x,0);
-
     }
 
     public void deltaY(float y){
         this.move(0,y);
-
     }
 
 }

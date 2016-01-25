@@ -1,21 +1,17 @@
 package com.amaze.display;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.function.*;
-
+import com.amaze.entities.Tile;
 import org.jsfml.audio.Sound;
 import org.jsfml.audio.SoundBuffer;
-import org.jsfml.system.*;
-import org.jsfml.window.*;
-import org.jsfml.window.event.*;
-import org.jsfml.graphics.*;
-import org.w3c.dom.css.Rect;
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderWindow;
+import org.jsfml.window.Keyboard;
+import org.jsfml.window.VideoMode;
+import org.jsfml.window.WindowStyle;
+import org.jsfml.window.event.Event;
 
-import com.amaze.entities.Tile;
-
-import javax.swing.border.TitledBorder;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 /**
  * This is a class responsible for holding a window for aMaze
@@ -73,7 +69,7 @@ public class Window extends RenderWindow{
             this.display();
 
             // the user pressed the close button
-            for (Event event : this.pollEvents( )) {
+            for (Event event : this.pollEvents()) {
                 //Different behaviour depending on
                 switch(event.type){
                     case CLOSED:
@@ -115,9 +111,7 @@ public class Window extends RenderWindow{
      */
 
     private void drawItems(ArrayList<Tile> list){
-        for(Tile tile : list){
-            this.draw(tile);
-        }
+		list.forEach(this::draw);
     }
 
     public RenderWindow getWindow(){
