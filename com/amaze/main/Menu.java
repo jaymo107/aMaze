@@ -74,6 +74,7 @@ public class Menu {
      * This function is triggered when user presses enter button.
      * This function will check which button is currently selected.
      * Based on the button, a specific function will be invoked.
+     * test
      */
     public void enterPressed() {
 
