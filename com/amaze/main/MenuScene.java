@@ -110,7 +110,6 @@ public class MenuScene extends Scene {
      * test.
      */
     public void executeEvent(Event event) {
-
         switch(event.type) {
             case CLOSED:
                 window.close();
@@ -130,33 +129,27 @@ public class MenuScene extends Scene {
         }
     }
     public void display(RenderWindow window) {
-
-        this.setRunning(true);
-
-        window.setTitle(this.getSceneTitle());
-        window.clear(Color.WHITE);
-
+        setRunning(true);
+        window.setTitle(getSceneTitle());
         while(this.isRunning()) try {
 
-            for (Event event : window.pollEvents()) {
+			window.clear(Color.WHITE);
+			drawMenuItems(window);
+
+			for (Event event : window.pollEvents()) {
 
                 //Different behaviour depending on
                 this.executeEvent(event);
             }
-
-            drawMenuItems(window);
             window.display();
 
         }catch (Exception e) {
-
             this.setRunning(false);
         }
     }
     private void drawMenuItems(RenderWindow window) {
-
-        for(Button aButton: this.getButtons()) {
-
-            window.draw(aButton);
+        for(Button b: getButtons()) {
+            window.draw(b);
         }
     }
 }

@@ -1,20 +1,13 @@
 package com.amaze.main;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.function.*;
-
 import org.jsfml.audio.Sound;
 import org.jsfml.audio.SoundBuffer;
-import org.jsfml.system.*;
-import org.jsfml.window.*;
-import org.jsfml.window.event.*;
-import org.jsfml.graphics.*;
-import org.w3c.dom.css.Rect;
+import org.jsfml.graphics.RenderWindow;
+import org.jsfml.window.VideoMode;
+import org.jsfml.window.WindowStyle;
 
-import javax.swing.border.TitledBorder;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 /**
  * This is a class responsible for holding a window for aMaze
@@ -67,11 +60,11 @@ public class Window extends RenderWindow{
      */
 
     public void displayThis(){
-
-        //while (this.isOpen( )) {
-
-            Scenes.get(0).display(this);
-        //}
+        while (this.isOpen()) {
+			for (Displayable s: Scenes) {
+				s.display(this);
+			}
+        }
     }
 
     public void addScene(Displayable scene) {Scenes.add(scene);}
