@@ -26,7 +26,7 @@ public class LevelReader
 
         while ((i = reader.read()) != -1)// Reads all of the text file
         {
-            if(Character.toString(((char) i)).equals(","))
+            if(Character.toString(((char) i)).equals("\t"))
             {
                 level[x][y] = stringToBlockType(stringBuilder.toString());
                 stringBuilder.setLength(0); // empty stringBulider
@@ -41,6 +41,7 @@ public class LevelReader
             else if(!(Character.toString(((char) i)).equals("\n")))
                 stringBuilder.append((char) i);
         }
+
         System.out.println(Arrays.deepToString(level));// <- Uncomment to see 2D array
     }
 
@@ -54,7 +55,7 @@ public class LevelReader
         if (blockType.equals("VOID")) return Tile.BlockType.VOID;
         if (blockType.equals("CHARGE")) return Tile.BlockType.CHARGE;
         if (blockType.equals("FLOOR")) return Tile.BlockType.FLOOR;
-        return Tile.BlockType.PATH;
+        return Tile.BlockType.WALL;
     }
 
     public Tile.BlockType[][] getLevel(){return level;}
