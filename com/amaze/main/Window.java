@@ -25,11 +25,11 @@ public class Window extends RenderWindow{
     private int screenWidth;
     private int screenHeight;
 
-    private Menu menu;
-
     boolean drawMenu = true; //Boolean that determines whether the menu is to be drawn in the window.
 
     Sound sound; //Sound to be played
+
+    ArrayList<Displayable> Scenes = new ArrayList<>();
 
     /**
      *
@@ -68,41 +68,15 @@ public class Window extends RenderWindow{
 
     public void displayThis(){
 
-        while (this.isOpen( )) {
-            // Clear the screen
-            this.clear(Color.WHITE);
+        //while (this.isOpen( )) {
 
-            if(drawMenu) {drawMenu(menu);}
-
-            this.display();
-
-            // the user pressed the close button
-            for (Event event : this.pollEvents( )) {
-                //Different behaviour depending on
-
-                menu.executeEvent(event);
-            }
-        }
+            Scenes.get(0).display(this);
+        //}
     }
 
-    /**
-     * Add instance of the menu.
-     * @param menu
-     */
-    public void addMenu(Menu menu) {this.menu = menu;}
+    public void addScene(Displayable scene) {Scenes.add(scene);}
 
     public int getScreenHeight() {return screenHeight;}
 
     public int getScreenWidth() {return  screenWidth;}
-
-    /**
-     * Draw contents of the menu.
-     * @param menu
-     */
-    private void drawMenu(Menu menu) {
-
-        for(Button aButton: menu.getButtons()) {
-            this.draw(aButton);
-        }
-    }
 }

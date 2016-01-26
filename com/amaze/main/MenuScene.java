@@ -6,7 +6,7 @@ import org.jsfml.window.event.Event;
 /**
  * This class will handle the menu and buttons associated with it.
  */
-public class Menu {
+public class MenuScene extends Scene {
 
     private final int NUMBER_OF_ITEMS = 4;                  // Number of items available to select in the menu
     private Button button[] = new Button[NUMBER_OF_ITEMS];  // Array which holds buttons(items).
@@ -19,7 +19,9 @@ public class Menu {
      * @param window - object reference to the main window.
      */
 
-    public Menu(Window window) {
+    public MenuScene(String sceneTitle, Window window) {
+
+        super(sceneTitle);
 
         this.window = window;
 
@@ -125,7 +127,36 @@ public class Menu {
                     this.enterPressed();
                 }
                 break;
+        }
+    }
+    public void display(RenderWindow window) {
 
+        this.setRunning(true);
+
+        window.setTitle(this.getSceneTitle());
+        window.clear(Color.WHITE);
+
+        while(this.isRunning()) try {
+
+            for (Event event : window.pollEvents()) {
+
+                //Different behaviour depending on
+                this.executeEvent(event);
+            }
+
+            drawMenuItems(window);
+            window.display();
+
+        }catch (Exception e) {
+
+            this.setRunning(false);
+        }
+    }
+    private void drawMenuItems(RenderWindow window) {
+
+        for(Button aButton: this.getButtons()) {
+
+            window.draw(aButton);
         }
     }
 }

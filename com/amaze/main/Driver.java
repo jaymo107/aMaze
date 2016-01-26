@@ -18,8 +18,8 @@ class Driver{
 
         Window maze = new Window(800,600,25,25);
 
-        Menu menu = new Menu(maze);
-        maze.addMenu(menu);
+        MenuScene menu = new MenuScene("Main Menu",maze);
+        maze.addScene(menu);
 
         //Start Displaying
         maze.displayThis();
