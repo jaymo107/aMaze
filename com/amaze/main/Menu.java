@@ -106,6 +106,7 @@ public class Menu {
      * This function handles event based on their type.
      *
      * @param event - event to be handled.
+     * test.
      */
     public void executeEvent(Event event) {
 
