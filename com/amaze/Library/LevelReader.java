@@ -1,4 +1,6 @@
 package com.amaze.Library;
+import com.amaze.entities.Tile;
+
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.io.FileInputStream;
@@ -12,12 +14,7 @@ import java.io.InputStreamReader;
 */
 public class LevelReader
 {
-    public enum BlockType
-    {
-        START, FINISH, PATH, WALL,
-        DOOR, VOID, CHARGE
-    }
-    private BlockType[][] level = new BlockType[5][5];//Change this for larger maps
+    private Tile.BlockType[][] level = new Tile.BlockType[5][5];//Change this for larger maps
 
     public LevelReader() throws Exception
     {
@@ -48,16 +45,16 @@ public class LevelReader
     }
 
     //	Converts string to BlockType form. If the string is invalid, type PATH will be returned
-    public BlockType stringToBlockType(String blockType)
+    public Tile.BlockType stringToBlockType(String blockType)
     {
-        if (blockType.equals("START")) return BlockType.START;
-        if (blockType.equals("FINISH")) return BlockType.FINISH;
-        if (blockType.equals("DOOR")) return BlockType.DOOR;
-        if (blockType.equals("WALL")) return BlockType.WALL;
-        if (blockType.equals("VOID")) return BlockType.VOID;
-        if (blockType.equals("CHARGE")) return BlockType.CHARGE;
-        return BlockType.PATH;
+        if (blockType.equals("START")) return Tile.BlockType.START;
+        if (blockType.equals("FINISH")) return Tile.BlockType.FINISH;
+        if (blockType.equals("DOOR")) return Tile.BlockType.DOOR;
+        if (blockType.equals("WALL")) return Tile.BlockType.WALL;
+        if (blockType.equals("VOID")) return Tile.BlockType.VOID;
+        if (blockType.equals("CHARGE")) return Tile.BlockType.CHARGE;
+        return Tile.BlockType.PATH;
     }
 
-    public BlockType[][] getLevel(){return level;}
+    public Tile.BlockType[][] getLevel(){return level;}
 }
