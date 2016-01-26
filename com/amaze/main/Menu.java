@@ -80,6 +80,7 @@ public class Menu {
         if (button[0].isSelected()) {
 
             System.out.println("Play Button Pressed");
+            ((PlayButton)button[0]).startNewGame();
         }
         if (button[1].isSelected()) {
 

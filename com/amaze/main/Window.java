@@ -27,6 +27,8 @@ public class Window extends RenderWindow{
 
     private Menu menu;
 
+    boolean drawMenu = true; //Boolean that determines whether the menu is to be drawn in the window.
+
     Sound sound; //Sound to be played
 
     /**
@@ -68,7 +70,8 @@ public class Window extends RenderWindow{
         while (this.isOpen( )) {
             // Clear the screen
             this.clear(Color.WHITE);
-            drawItems(menu);
+
+            if(drawMenu) {drawMenu(menu);}
 
             this.display();
 
@@ -110,7 +113,8 @@ public class Window extends RenderWindow{
      * Draw contents of the menu.
      * @param menu
      */
-    private void drawItems(Menu menu){
+    private void drawMenu(Menu menu) {
+
         for(Button aButton: menu.getButtons()) {
             this.draw(aButton);
         }
