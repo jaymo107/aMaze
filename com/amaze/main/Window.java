@@ -67,6 +67,7 @@ public class Window extends RenderWindow{
      */
 
     public void displayThis(){
+
         while (this.isOpen( )) {
             // Clear the screen
             this.clear(Color.WHITE);
@@ -78,23 +79,8 @@ public class Window extends RenderWindow{
             // the user pressed the close button
             for (Event event : this.pollEvents( )) {
                 //Different behaviour depending on
-                switch(event.type) {
-                    case CLOSED:
-                        this.close();
-                        break;
-                    case KEY_PRESSED:
-                        if(event.asKeyEvent().key == Keyboard.Key.UP){
 
-                            menu.arrowKeyUp();
-                        }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
-
-                            menu.arrowKeyDown();
-                        }else if(event.asKeyEvent().key == Keyboard.Key.RETURN){
-
-                            menu.enterPressed();
-                        }
-                        break;
-                }
+                menu.executeEvent(event);
             }
         }
     }

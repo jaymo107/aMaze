@@ -1,5 +1,7 @@
 package com.amaze.main;
 import org.jsfml.graphics.*;
+import org.jsfml.window.Keyboard;
+import org.jsfml.window.event.Event;
 
 /**
  * This class will handle the menu and buttons associated with it.
@@ -99,4 +101,31 @@ public class Menu {
     }
 
     public Button[] getButtons() { return button; }
+
+    /**
+     * This function handles event based on their type.
+     *
+     * @param event - event to be handled.
+     */
+    public void executeEvent(Event event) {
+
+        switch(event.type) {
+            case CLOSED:
+                window.close();
+                break;
+            case KEY_PRESSED:
+                if(event.asKeyEvent().key == Keyboard.Key.UP){
+
+                    this.arrowKeyUp();
+                }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
+
+                    this.arrowKeyDown();
+                }else if(event.asKeyEvent().key == Keyboard.Key.RETURN){
+
+                    this.enterPressed();
+                }
+                break;
+
+        }
+    }
 }
