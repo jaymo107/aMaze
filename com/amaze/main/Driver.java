@@ -19,16 +19,22 @@ class Driver{
 
     public static final int X_RES = 800;
     public static final int Y_RES = 800;
-    public static final int BLOCK_SIZE = 160;
+    public static int BLOCK_SIZE;
 
     public static void main(String[] args) throws Exception{
+        //Init Vars
+        BLOCK_SIZE = 0;
+
+        LevelReader levelReader = new LevelReader();
+        Tile.BlockType[][] loadedLevel = levelReader.getLevel();
+        int sizeOfMaze = levelReader.getSizeOfMaze();
+
+        BLOCK_SIZE = X_RES / sizeOfMaze;
+
         //Workout how bit grid overlay should be
         int gridWidth = X_RES / BLOCK_SIZE;
         int gridHeight = Y_RES / BLOCK_SIZE;
         int NumberOfBlocks = X_RES / BLOCK_SIZE;
-
-        LevelReader levelReader = new LevelReader();
-        Tile.BlockType[][] loadedLevel = levelReader.getLevel();
 
         Game maze = new Game(X_RES,Y_RES,NumberOfBlocks,NumberOfBlocks,BLOCK_SIZE,loadedLevel);
 

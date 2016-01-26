@@ -14,24 +14,47 @@ import java.io.InputStreamReader;
 */
 public class LevelReader
 {
-    private Tile.BlockType[][] level = new Tile.BlockType[5][5];//Change this for larger maps
+    private Tile.BlockType[][] level;//Change this for larger maps
+    private int sizeOfMaze;
 
     public LevelReader() throws Exception
     {
+        StringBuilder stringBuilder = new StringBuilder();
+        int i; int x = 0; int y = 0;
+        int currentlyReadChar = 0;
+        sizeOfMaze = 0;
+
+        //Open up file
         InputStream in = new FileInputStream(new File("res/Levels/Levels.txt"));
         Reader reader = new InputStreamReader(in);
 
-        StringBuilder stringBuilder = new StringBuilder();
-        int i; int x = 0; int y = 0;
+        //Read map size
+        while(currentlyReadChar != 10){
+            currentlyReadChar = reader.read();
 
-        while ((i = reader.read()) != -1)// Reads all of the text file
+            if(currentlyReadChar == 44){
+                sizeOfMaze++;
+            }
+
+        }
+
+        //Clear the reader
+        reader.close();
+        in = new FileInputStream(new File("res/Levels/Levels.txt"));
+        reader = new InputStreamReader(in);
+
+        //Initialise Level
+        level = new Tile.BlockType[sizeOfMaze][sizeOfMaze];
+
+        while ((i = reader.read()) != -1) // Reads all of the text file
         {
-            if(Character.toString(((char) i)).equals("\t"))
+            if(Character.toString(((char) i)).equals(","))
             {
-                level[x][y] = stringToBlockType(stringBuilder.toString());
+                level[y][x] = stringToBlockType(stringBuilder.toString());
                 stringBuilder.setLength(0); // empty stringBulider
 
-                if(++y == level[0].length)
+
+                if(++y == level[0].length)//If length of first line == max
                 {
                     y = 0;
                     x++;
@@ -59,4 +82,7 @@ public class LevelReader
     }
 
     public Tile.BlockType[][] getLevel(){return level;}
+    public int getSizeOfMaze(){
+        return sizeOfMaze;
+    }
 }
