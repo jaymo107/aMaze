@@ -26,7 +26,7 @@ public class Game extends Window{
      */
 
     public int translateX(int blockX){
-
+        ///ASDADSADASDASDSA
         return 1;
     }
 
