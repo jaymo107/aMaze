@@ -27,7 +27,7 @@ public class Game extends Window{
 
         for(int j = 0; j < blocksY; j++){
             for(int i = 0; i < blocksX; i++){
-                tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,Tile.BlockType.WALL);
+                tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j]);
                 this.addItem(tileMap[i][j],1,1);
             }
         }

@@ -53,6 +53,7 @@ public class LevelReader
         if (blockType.equals("WALL")) return Tile.BlockType.WALL;
         if (blockType.equals("VOID")) return Tile.BlockType.VOID;
         if (blockType.equals("CHARGE")) return Tile.BlockType.CHARGE;
+        if (blockType.equals("FLOOR")) return Tile.BlockType.FLOOR;
         return Tile.BlockType.PATH;
     }
 

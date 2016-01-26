@@ -57,16 +57,25 @@ public class Tile extends RectangleShape{
         //Set image according to type
         switch (type){
             case WALL:
-                tileTexture.loadFromFile(Paths.get("res/wall.png"));
+                tileTexture.loadFromFile(Paths.get("res/images/wall.png"));
                 break;
             case FLOOR:
-                tileTexture.loadFromFile(Paths.get("res/face.png"));
+                tileTexture.loadFromFile(Paths.get("res/images/floor.png"));
                 break;
             case DOOR:
+                tileTexture.loadFromFile(Paths.get("res/images/door.png"));
                 break;
             case START:
+                tileTexture.loadFromFile(Paths.get("res/wall.png"));
                 break;
             case FINISH:
+                tileTexture.loadFromFile(Paths.get("res/wall.png"));
+                break;
+            case VOID:
+                tileTexture.loadFromFile(Paths.get("res/images/void.png"));
+                break;
+            case CHARGE:
+                tileTexture.loadFromFile(Paths.get("res/images/charge.png"));
                 break;
             default:
                 System.out.print("Block must have type defined");
