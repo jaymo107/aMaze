@@ -42,7 +42,7 @@ public class Window extends RenderWindow{
         //Instantiate
         this.screenWidth = resolutionX;
         this.screenHeight = resolutionY;
-        drawList = new ArrayList<>();
+        drawList = new ArrayList<Tile>();
 
         // Creating a new window
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
