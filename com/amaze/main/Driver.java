@@ -29,14 +29,14 @@ class Driver{
         Window maze = new Window(X_RES,Y_RES,BLOCK_SIZE,BLOCK_SIZE);
 
         //Create a kind of tile and add to maze.
-        Tile t1 = new Tile("",0,0,200,200, Tile.BlockType.WALL);
-        maze.addItem(t1);
-        Tile t2 = new Tile("",200,0,200,200, Tile.BlockType.WALL);
-        maze.addItem(t2);
-        Tile t3 = new Tile("",400,0,200,200, Tile.BlockType.WALL);
-        maze.addItem(t3);
-        Tile t4 = new Tile("",600,0,200,200, Tile.BlockType.WALL);
-        maze.addItem(t4);
+//        Tile t1 = new Tile("",0,0,200,200, Tile.BlockType.WALL);
+//        maze.addItem(t1);
+//        Tile t2 = new Tile("",200,0,200,200, Tile.BlockType.WALL);
+//        maze.addItem(t2);
+//        Tile t3 = new Tile("",400,0,200,200, Tile.BlockType.WALL);
+//        maze.addItem(t3);
+//        Tile t4 = new Tile("",600,0,200,200, Tile.BlockType.WALL);
+//        maze.addItem(t4);
 
 
         try {
