@@ -5,9 +5,8 @@ import com.amaze.entities.Tile;
 import java.io.IOException;
 
 /**
- * This class is responsible for creating an instace of a Maze.
+ * This class is responsible for creating an instance of a Maze.
  */
-
 
 class Driver{
 
