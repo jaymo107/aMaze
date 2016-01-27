@@ -21,7 +21,7 @@ class Driver{
 
         MenuScene menu = new MenuScene("Main Menu",window);
         //GameScene game = new GameScene("aMaze",window);
-        Game game = new Game(800,800,5,5,160,new LevelReader().getLevel());
+        Game game = new Game(800,800,5,5,160,new LevelReader().getLevel(), window);
         window.addScene(menu);
         window.addScene(game);
 
