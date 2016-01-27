@@ -1,23 +1,22 @@
 package com.amaze.main;
 
-import com.amaze.Library.LevelReader;
-import com.amaze.display.Window;
-import com.amaze.entities.Tile;
-
 import java.io.IOException;
+import com.amaze.main.Tile;
+
 
 /**
  * Created by Kiran on 25/01/2016.
  * Represents a game
  */
-public class Game extends Window{
+public class Game extends Scene{
     int blockSize; //Size of each block. W and H
     int blockX;
     int blockY;
     Tile tileMap[][];
 
     public Game(int resolutionX, int resolutionY, int blocksX, int blocksY, int blockSize, Tile.BlockType[][] level) throws IOException{
-        super(resolutionX,resolutionY,blocksX,blocksY);
+        //super(resolutionX,resolutionY,blocksX,blocksY);
+        super("hi");
         this.blockSize = blockSize;
 
         blockX = level.length;
@@ -28,7 +27,7 @@ public class Game extends Window{
         for(int j = 0; j < blocksY; j++){
             for(int i = 0; i < blocksX; i++){
                 tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j]);
-                this.addItem(tileMap[i][j],1,1);
+                //this.addScene(tileMap[i][j]);
             }
         }
 

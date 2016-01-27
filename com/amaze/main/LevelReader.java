@@ -1,7 +1,6 @@
-package com.amaze.Library;
-import com.amaze.entities.Tile;
+package com.amaze.main;
+import com.amaze.main.Tile;
 
-import java.io.BufferedReader;
 import java.io.Reader;
 import java.io.FileInputStream;
 import java.io.InputStream;
