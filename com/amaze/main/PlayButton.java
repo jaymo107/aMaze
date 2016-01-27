@@ -11,6 +11,7 @@ import java.io.IOException;
 public class PlayButton extends Button {
 
     private Window window;
+    private MenuScene menu;
 
     /**
      * Construct a button with following parameters:
@@ -22,14 +23,16 @@ public class PlayButton extends Button {
      * @param color - color of the button
      * @param window - reference to the main window
      */
-    public PlayButton(float xCord, float yCord, float width, float height, Color color, Window window) {
+    public PlayButton(float xCord, float yCord, float width, float height, Color color, Window window, MenuScene menu) {
 
-        super(xCord, yCord, width, height, color, window);
+        super(xCord, yCord, width, height, color, window, menu);
 
         this.window = window;
+        this.menu = menu;
     }
     public void startNewGame() {
 
-        window.drawMenu = false;
+        window.setScene(1);
+        menu.setRunning(false);
     }
 }

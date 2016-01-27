@@ -24,6 +24,9 @@ public class Window extends RenderWindow{
 
     ArrayList<Displayable> Scenes = new ArrayList<>();
 
+    int scene = 0;
+    int currentScene = 0;
+
     /**
      *
      * @param resolutionX Width in pixels(physical size of window)
@@ -59,11 +62,16 @@ public class Window extends RenderWindow{
      * Used to start displaying the window. Once this is called nothing can be changed.
      */
 
-    public void displayThis(){
+    public void displayThis() {
         while (this.isOpen()) {
-			for (Displayable s: Scenes) {
-				s.display(this);
-			}
+            while (scene >= currentScene) {
+
+                //Shows the scene that was selected on the menu.
+                System.out.println(scene);
+                Scenes.get(scene).display(this);
+
+                if (scene < 0) System.exit(0);
+            }
         }
     }
 
@@ -72,4 +80,6 @@ public class Window extends RenderWindow{
     public int getScreenHeight() {return screenHeight;}
 
     public int getScreenWidth() {return  screenWidth;}
+
+    public void setScene(int i) {scene = i;}
 }

@@ -19,9 +19,9 @@ public class ExitButton extends Button {
      * @param color - color of the button
      * @param window - reference to the main window
      */
-    public ExitButton(float xCord, float yCord, float width, float height, Color color, Window window) {
+    public ExitButton(float xCord, float yCord, float width, float height, Color color, Window window, MenuScene menu) {
 
-        super(xCord, yCord, width, height, color, window);
+        super(xCord, yCord, width, height, color, window, menu);
 
         this.window = window;
     }
@@ -29,5 +29,8 @@ public class ExitButton extends Button {
     /**
      * This function closes main window when it is invoked.
      */
-    public void closeWindow() {window.close();}
+    public void closeWindow() {
+
+        window.close();
+    }
 }

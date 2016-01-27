@@ -19,7 +19,10 @@ class Driver{
         Window maze = new Window(800,600,25,25);
 
         MenuScene menu = new MenuScene("Main Menu",maze);
+        GameScene game = new GameScene("aMaze",maze,menu);
+
         maze.addScene(menu);
+        maze.addScene(game);
 
         //Start Displaying
         maze.displayThis();

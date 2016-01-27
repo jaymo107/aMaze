@@ -6,9 +6,9 @@ import org.jsfml.window.event.Event;
 /**
  * This class will handle the menu and buttons associated with it.
  */
-public class MenuScene extends Scene {
+public class GameScene extends Scene {
 
-    private final int NUMBER_OF_ITEMS = 4;                  // Number of items available to select in the menu
+    private final int NUMBER_OF_ITEMS = 2;                  // Number of items available to select in the menu
     private Button button[] = new Button[NUMBER_OF_ITEMS];  // Array which holds buttons(items).
     private int currentButton = 0;                          // Track currently selected item in the menu.
     private Window window;
@@ -19,16 +19,16 @@ public class MenuScene extends Scene {
      * @param window - object reference to the main window.
      */
 
-    public MenuScene(String sceneTitle, Window window) {
+    public GameScene(String sceneTitle, Window window, MenuScene menu) {
 
         super(sceneTitle);
 
         this.window = window;
 
-        button[0] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 200, 40, Color.BLACK, window, this);
-        button[1] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 200, 40, Color.BLACK, window, this);
-        button[2] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 200, 40, Color.BLACK, window, this);
-        button[3] = new ExitButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.8F, 200, 40, Color.BLACK, window, this);
+        button[0] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 200, 40, Color.YELLOW, window, menu );
+        button[1] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 200, 40, Color.YELLOW, window, menu);
+        //button[2] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 200, 40, Color.YELLOW, window, menu);
+        //button[3] = new ExitButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.8F, 200, 40, Color.YELLOW, window, menu);
     }
 
     /**
@@ -45,7 +45,7 @@ public class MenuScene extends Scene {
             currentButton = 0;
         } else {
             button[currentButton].setSelected(false);
-            button[currentButton].setColor(Color.BLACK);
+            button[currentButton].setColor(Color.YELLOW);
             button[currentButton - 1].setSelected(true);
             button[currentButton - 1].setColor(Color.RED);
             currentButton--;
@@ -67,7 +67,7 @@ public class MenuScene extends Scene {
         } else {
 
             button[currentButton].setSelected(false);
-            button[currentButton].setColor(Color.BLACK);
+            button[currentButton].setColor(Color.YELLOW);
             button[currentButton + 1].setSelected(true);
             button[currentButton + 1].setColor(Color.RED);
             currentButton++;
@@ -133,10 +133,10 @@ public class MenuScene extends Scene {
         window.setTitle(getSceneTitle());
         while(this.isRunning()) try {
 
-			window.clear(Color.WHITE);
-			drawMenuItems(window);
+            window.clear(Color.WHITE);
+            drawMenuItems(window);
 
-			for (Event event : window.pollEvents()) {
+            for (Event event : window.pollEvents()) {
 
                 //Different behaviour depending on
                 this.executeEvent(event);

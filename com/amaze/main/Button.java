@@ -14,6 +14,7 @@ public abstract class Button extends RectangleShape {
     private Color color;
 
     private Window window;
+    private MenuScene menu;
 
     private Vector2f position;
     private Vector2f size;
@@ -29,7 +30,7 @@ public abstract class Button extends RectangleShape {
      * @param height - height of the button
      * @param color - color of the button
      */
-    public Button(float xCord, float yCord, float width, float height, Color color, Window window) {
+    public Button(float xCord, float yCord, float width, float height, Color color, Window window, MenuScene menu) {
 
         this.xCord = xCord;
         this.yCord = yCord;
@@ -37,6 +38,7 @@ public abstract class Button extends RectangleShape {
         this.color = color;
 
         this.window = window;
+        this.menu = menu;
 
         position = new Vector2f(xCord,yCord);
         size = new Vector2f(width,height);
