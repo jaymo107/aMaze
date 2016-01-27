@@ -27,7 +27,7 @@ public class ExitButton extends Button {
     }
 
     /**
-     * This function closes main window when it is invoked.
+     * This function closes main window when it is invoked..
      */
     public void closeWindow() {
 
