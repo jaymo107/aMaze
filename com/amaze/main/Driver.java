@@ -17,8 +17,8 @@ import java.io.IOException;
 
 class Driver{
 
-    public static final int X_RES = 100;
-    public static final int Y_RES = 100;
+    public static final int X_RES = 500;
+    public static final int Y_RES = 500;
     public static int BLOCK_SIZE;
 
     public static void main(String[] args) throws Exception{
