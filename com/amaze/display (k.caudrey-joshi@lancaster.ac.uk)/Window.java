@@ -1,3 +1,4 @@
+<<<<<<< HEAD:com/amaze/display (k.caudrey-joshi@lancaster.ac.uk)/Window.java
 package com.amaze.display;
 import java.io.File;
 import java.io.IOException;
@@ -5,30 +6,67 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.function.*;
 
+=======
+package com.amaze.main;
+>>>>>>> Menu:com/amaze/main/Window.java
 import org.jsfml.audio.Sound;
 import org.jsfml.audio.SoundBuffer;
-import org.jsfml.system.*;
-import org.jsfml.window.*;
-import org.jsfml.window.event.*;
-import org.jsfml.graphics.*;
-import org.w3c.dom.css.Rect;
+import org.jsfml.graphics.RenderWindow;
+import org.jsfml.window.VideoMode;
+import org.jsfml.window.WindowStyle;
 
+<<<<<<< HEAD:com/amaze/display (k.caudrey-joshi@lancaster.ac.uk)/Window.java
 import com.amaze.entities.Tile;
 
 import javax.swing.border.TitledBorder;
+=======
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+>>>>>>> Menu:com/amaze/main/Window.java
 
 /**
  * This is a class responsible for holding a window for aMaze
  */
 
 public class Window extends RenderWindow{
+
     private int screenWidth;
     private int screenHeight;
+<<<<<<< HEAD:com/amaze/display (k.caudrey-joshi@lancaster.ac.uk)/Window.java
     private Sound sound; //Sound to be played
     private int gridX;
     private int gridY;
+=======
+>>>>>>> Menu:com/amaze/main/Window.java
 
-    private ArrayList<Tile> drawList; //Array list holding Tiles.
+    Sound sound;                                        //Sound to be played
+
+    ArrayList<Displayable> Scenes = new ArrayList<>();  //Holds all the scenes. This ArrayList is populated from the Main function.
+
+    /*******************************************************************************************************
+     *                                       !IMPORTANT!                                                   *
+     *                                                                                                     *
+     * Since scenes are stored in the arrayList, they are accessed                                         *
+     * throught indexing (e.g - Scenes.get(scene)). Therefore, it is                                       *
+     * important to remember that with the current logic Menu is Scenes.get(0)                             *
+     * because it was a first element that was saved to an ArrayList and Game                              *
+     * will be Scenes.get(1).                                                                              *
+     *                                                                                                     *
+     * Since Menu is not yet fully developed, new scenes will be added.                                    *
+     * Example:                                                                                            *
+     *                                                                                                     *
+     *        Scenes for different menu options (E.G settings, credits, about, leaderboards, etc...)       *
+     *        These scenes will be placed right after the Menu (1,2,3,4,5....)                             *
+     *        This will be constantly shifting the Game index.                                             *
+     *                                                                                                     *
+     * At the moment, it should be 1.                                                                      *
+     *                                                                                                     *
+     *******************************************************************************************************/
+
+
+    int scene = 0;
+    int currentScene = 0;
 
     /**
      *
@@ -47,7 +85,6 @@ public class Window extends RenderWindow{
         //Instantiate
         this.screenWidth = resolutionX;
         this.screenHeight = resolutionY;
-        drawList = new ArrayList<>();
 
         // Creating a new window
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
@@ -66,6 +103,7 @@ public class Window extends RenderWindow{
      * Used to start displaying the window. Once this is called nothing can be changed.
      */
 
+<<<<<<< HEAD:com/amaze/display (k.caudrey-joshi@lancaster.ac.uk)/Window.java
     public void displayThis(){
         while (this.isOpen( )) {
             // Clear the screen
@@ -95,28 +133,43 @@ public class Window extends RenderWindow{
                         }
                         break;
                 }
+=======
+    public void displayThis() {
+        while (this.isOpen()) {
+            while (scene >= currentScene) {
+
+                //Shows the scene that was selected on the menu.
+                Scenes.get(scene).display(this);
+
+                if (scene < 0) System.exit(0);
+>>>>>>> Menu:com/amaze/main/Window.java
             }
         }
     }
 
     /**
-     * Add an item to be display on screen.
-     * @param tile Tile that you want to add
+     * Adds a scene to ArrayList
+     * @param scene - visual representation of a certain aMaze game part.
      */
+<<<<<<< HEAD:com/amaze/display (k.caudrey-joshi@lancaster.ac.uk)/Window.java
     public void addItem(Tile tile,int gridPosX, int gridPosY ){
 
         drawList.add(tile);
     }
+=======
+    public void addScene(Displayable scene) {Scenes.add(scene);}
+>>>>>>> Menu:com/amaze/main/Window.java
 
     public int getScreenHeight() {return screenHeight;}
 
     public int getScreenWidth() {return  screenWidth;}
 
     /**
-     * Draw all items in list
-     * @param list List of tiles you want to draw
+     * Sets scene variable which is responsible for selecting appropriate scene to be displayed.
+     * @param i - used as an ArrayList index.
      */
 
+<<<<<<< HEAD:com/amaze/display (k.caudrey-joshi@lancaster.ac.uk)/Window.java
     private void drawItems(ArrayList<Tile> list){
         for(Tile tile : list){
             this.draw(tile);
@@ -145,3 +198,7 @@ public class Window extends RenderWindow{
     }
 
 }
+=======
+    public void setScene(int i) {scene = i;}
+}
+>>>>>>> Menu:com/amaze/main/Window.java
