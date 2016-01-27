@@ -30,6 +30,10 @@ public class PlayButton extends Button {
         this.window = window;
         this.menu = menu;
     }
+
+    /**
+     * This function changes Scenes when called.
+     */
     public void startNewGame() {
 
         window.setScene(1);

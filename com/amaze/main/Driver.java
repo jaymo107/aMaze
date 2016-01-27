@@ -16,16 +16,16 @@ class Driver{
 
     public static void main(String[] args) throws IOException{
 
-        Window maze = new Window(800,600,25,25);
+        Window window = new Window(800,600,25,25);
 
-        MenuScene menu = new MenuScene("Main Menu",maze);
-        GameScene game = new GameScene("aMaze",maze,menu);
+        MenuScene menu = new MenuScene("Main Menu",window);
+        GameScene game = new GameScene("aMaze",window);
 
-        maze.addScene(menu);
-        maze.addScene(game);
+        window.addScene(menu);
+        window.addScene(game);
 
         //Start Displaying
-        maze.displayThis();
+        window.displayThis();
 
     }
 }

@@ -128,6 +128,11 @@ public class MenuScene extends Scene {
                 break;
         }
     }
+
+    /**
+     * Displays all the items associated with the Menu on the primary window.
+     * @param window - primary window on which scenes are displayed
+     */
     public void display(RenderWindow window) {
         setRunning(true);
         window.setTitle(getSceneTitle());
@@ -147,6 +152,11 @@ public class MenuScene extends Scene {
             this.setRunning(false);
         }
     }
+
+    /**
+     * Draws items associated with MenuScene in the main Window.
+     * @param window - reference to the window.
+     */
     private void drawMenuItems(RenderWindow window) {
         for(Button b: getButtons()) {
             window.draw(b);
