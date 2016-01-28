@@ -15,19 +15,10 @@ import java.nio.file.Paths;
 import org.jsfml.*;
 
 /**
- * Created by Kiran
+ * Represents a Tile and displays depending on type
  */
 
 public class Tile extends RectangleShape{
-    /*
-    @todo:
-        - Collision detection
-        - Image handler
-        - Current location
-        - Physical Size e.g. 10x10px NOT HOW MANY BLOCKS IT TAKES
-     */
-
-    Image icon; //Icon shown on the block
     private int currentX;
     private int currentY;
     private Vector2f position;
@@ -49,8 +40,8 @@ public class Tile extends RectangleShape{
     public Tile(String filePath, int originX, int originY, int sizeX, int sizeY, BlockType type, Texture[] imageCache) throws IOException{
         this.currentX = originX;
         this.currentY = originY;
-        position = new Vector2f(originX,originY);
-        tileSize = new Vector2f(sizeX,sizeY);
+        this.position = new Vector2f(originX,originY);
+        this.tileSize = new Vector2f(sizeX,sizeY);
         Texture tileTexture = new Texture();
         tileTexture.setSmooth(true);
 
