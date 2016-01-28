@@ -40,6 +40,7 @@ public class GameScene extends Scene {
         tileMap = new Tile[blocksX][blocksY];
         player = new Avatar(0,0);
 
+        /* Cache textures before we start using them in order to increase performance */
         Texture tileTexture[] = new Texture[7];
         tileTexture[0] = new Texture();
         tileTexture[1] = new Texture();
@@ -57,7 +58,7 @@ public class GameScene extends Scene {
         tileTexture[5].loadFromFile(Paths.get("res/images/void.png"));
         tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
 
-
+        /* Create new instances of tiles */
         for(int j = 0; j < blocksY; j++){
             for(int i = 0; i < blocksX; i++){
                 tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j], tileTexture);
@@ -68,7 +69,7 @@ public class GameScene extends Scene {
     }
 
     /**(
-     * Translates X
+     * Translates X to raw pixels
      * @param blockX
      * @return
      */
@@ -78,7 +79,7 @@ public class GameScene extends Scene {
     }
 
     /**
-     * Translates Y to raw
+     * Translates Y to raw pixels
      * @param blockY
      * @return
      */
@@ -129,16 +130,12 @@ public class GameScene extends Scene {
             case KEY_PRESSED:
                 if(event.asKeyEvent().key == Keyboard.Key.UP){
                     player.move(0,-5);
-                    //this.arrowKeyUp();
                 }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
                     player.move(0,5);
-                    //this.arrowKeyDown();
                 }else if(event.asKeyEvent().key == Keyboard.Key.LEFT){
                     player.move(-5,0);
-                    //this.enterPressed();
                 }else if(event.asKeyEvent().key == Keyboard.Key.RIGHT){
                     player.move(5,0);
-                    //this.enterPressed();
                 }
                 break;
         }
@@ -151,15 +148,13 @@ public class GameScene extends Scene {
      */
 
     public void drawGraphics(RenderWindow window) {
-
         for(int j = 0; j < blockY; j++){
             for(int i = 0; i < blockX; i++){
-                //this.addScene(tileMap[i][j]);
                 window.draw(tileMap[i][j]);
-                //window.draw(player);
             }
         }
 
+        //Draw the player
         window.draw(player);
     }
 
