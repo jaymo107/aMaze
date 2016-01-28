@@ -31,14 +31,11 @@ public class Game extends Scene{
 
         for(int j = 0; j < blocksY; j++){
             for(int i = 0; i < blocksX; i++){
-                tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j]);
+                //tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j]);
                 //this.addScene(tileMap[i][j]);
                 //wnd.draw(tileMap[i][j]);
             }
         }
-
-        System.out.println("hello");
-
     }
 
     /**(

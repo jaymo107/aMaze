@@ -46,7 +46,7 @@ public class Tile extends RectangleShape{
      * @throws IOException
      */
 
-    public Tile(String filePath, int originX, int originY, int sizeX, int sizeY, BlockType type) throws IOException{
+    public Tile(String filePath, int originX, int originY, int sizeX, int sizeY, BlockType type, Texture[] imageCache) throws IOException{
         this.currentX = originX;
         this.currentY = originY;
         position = new Vector2f(originX,originY);
@@ -57,25 +57,32 @@ public class Tile extends RectangleShape{
         //Set image according to type
         switch (type){
             case WALL:
-                tileTexture.loadFromFile(Paths.get("res/images/wall.png"));
+                imageCache[0].setSmooth(true);
+                tileTexture = imageCache[0];
                 break;
             case FLOOR:
-                tileTexture.loadFromFile(Paths.get("res/images/floor.png"));
+                imageCache[1].setSmooth(true);
+                tileTexture = imageCache[1];
                 break;
             case DOOR:
-                tileTexture.loadFromFile(Paths.get("res/images/door.png"));
+                imageCache[2].setSmooth(true);
+                tileTexture = imageCache[2];
                 break;
             case START:
-                tileTexture.loadFromFile(Paths.get("res/images/blue.png"));
+                imageCache[3].setSmooth(true);
+                tileTexture = imageCache[3];
                 break;
             case FINISH:
-                tileTexture.loadFromFile(Paths.get("res/images/blue.png"));
+                imageCache[4].setSmooth(true);
+                tileTexture = imageCache[4];
                 break;
             case VOID:
-                tileTexture.loadFromFile(Paths.get("res/images/void.png"));
+                imageCache[5].setSmooth(true);
+                tileTexture = imageCache[5];
                 break;
             case CHARGE:
-                tileTexture.loadFromFile(Paths.get("res/images/charge.png"));
+                imageCache[6].setSmooth(true);
+                tileTexture = imageCache[6];
                 break;
             default:
                 System.out.print("Block must have type defined");

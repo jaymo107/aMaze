@@ -19,14 +19,15 @@ class Driver{
     private static int WINDOW_SIZE;
 
     public static void main(String[] args) throws Exception{
+        WINDOW_SIZE = 800;
 
-        com.amaze.main.Window window = new Window(600,600,25,25);
+        com.amaze.main.Window window = new Window(WINDOW_SIZE,WINDOW_SIZE,25,25);
 
         MenuScene menu = new MenuScene("Main Menu",window);
         LevelReader level = new LevelReader();
-        BLOCK_SIZE = 600 / level.getSizeOfMaze();
+        BLOCK_SIZE = WINDOW_SIZE / level.getSizeOfMaze();
 
-        GameScene game = new GameScene("Game",window,600,600,level.getSizeOfMaze(),level.getSizeOfMaze(), BLOCK_SIZE,
+        GameScene game = new GameScene("Game",window,WINDOW_SIZE,WINDOW_SIZE,level.getSizeOfMaze(),level.getSizeOfMaze(), BLOCK_SIZE,
                 level.getLevel());
         window.addScene(menu);
         window.addScene(game);
