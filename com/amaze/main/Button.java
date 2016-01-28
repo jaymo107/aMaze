@@ -37,7 +37,7 @@ public abstract class Button extends RectangleShape {
 
         this.color = color;
 
-        this.window = window;
+        //this.window = window;
         this.menu = menu;
 
         position = new Vector2f(xCord,yCord);
@@ -47,7 +47,7 @@ public abstract class Button extends RectangleShape {
         this.setPosition(position);
 
         this.setFillColor(color);
-        this.setOutlineColor(Color.YELLOW);
+        //this.setOutlineColor(Color.YELLOW);
 
         selected = false;
     }

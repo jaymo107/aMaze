@@ -1,5 +1,6 @@
 package com.amaze.main;
 import org.jsfml.graphics.*;
+import org.jsfml.system.Vector2i;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
@@ -9,6 +10,12 @@ import org.jsfml.window.event.Event;
 public class GameScene extends Scene {
 
     private Window window;              //Object reference to the window class.
+
+    int blockSize; //Size of each block. W and H
+    int blockX;
+    int blockY;
+    Tile tileMap[][];
+
     /**
      * This constructor creates an instance of a GameScene.
      * Within this class all the game logic should be handled.
@@ -19,10 +26,45 @@ public class GameScene extends Scene {
      *                   an instance of the GameScene.
      */
 
-    public GameScene(String sceneTitle, Window window) {
+    public GameScene(String sceneTitle, Window window,int resolutionX, int resolutionY, int blocksX, int blocksY, int blockSize, Tile.BlockType[][] level) throws Exception{
         super(sceneTitle);
 
+        this.blockSize = blockSize;
+
+        blockX = level.length;
+        blockY = blocksX;
+
+        tileMap = new Tile[blocksX][blocksY];
+
+        Texture tileTexture = new Texture();
+
+        for(int j = 0; j < blocksY; j++){
+            for(int i = 0; i < blocksX; i++){
+                tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j]);
+            }
+        }
+
         this.window = window;
+    }
+
+    /**(
+     * Translates X
+     * @param blockX
+     * @return
+     */
+
+    public int translateX(int blockX){
+        return blockSize * blockX;
+    }
+
+    /**
+     * Translates Y to raw
+     * @param blockY
+     * @return
+     */
+
+    public int translateY(int blockY){
+        return blockSize * blockY;
     }
 
     /**
@@ -67,7 +109,15 @@ public class GameScene extends Scene {
      * @param window - reference to the main window.
      */
 
-    public void drawGraphics(RenderWindow window) {}
+    public void drawGraphics(RenderWindow window) {
+
+        for(int j = 0; j < blockY; j++){
+            for(int i = 0; i < blockX; i++){
+                //this.addScene(tileMap[i][j]);
+                window.draw(tileMap[i][j]);
+            }
+        }
+    }
 
 }
 

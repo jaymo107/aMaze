@@ -38,5 +38,6 @@ public class PlayButton extends Button {
 
         window.setScene(1);
         menu.setRunning(false);
+
     }
 }

@@ -8,20 +8,26 @@ package com.amaze.main;
         import java.io.IOException;
 import com.amaze.main.Window;
 
+
 /**
  * This class is responsible for creating an instance of a Maze.
  */
 
 
 class Driver{
+    private static int BLOCK_SIZE;
+    private static int WINDOW_SIZE;
 
     public static void main(String[] args) throws Exception{
 
-        com.amaze.main.Window window = new Window(800,600,25,25);
+        com.amaze.main.Window window = new Window(600,600,25,25);
 
         MenuScene menu = new MenuScene("Main Menu",window);
-        //GameScene game = new GameScene("aMaze",window);
-        Game game = new Game(800,800,5,5,160,new LevelReader().getLevel(), window);
+        LevelReader level = new LevelReader();
+        BLOCK_SIZE = 600 / level.getSizeOfMaze();
+
+        GameScene game = new GameScene("Game",window,600,600,level.getSizeOfMaze(),level.getSizeOfMaze(), BLOCK_SIZE,
+                level.getLevel());
         window.addScene(menu);
         window.addScene(game);
 

@@ -2,6 +2,9 @@ package com.amaze.main;
 
 import java.io.IOException;
 import com.amaze.main.Tile;
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderWindow;
+import org.jsfml.window.event.Event;
 
 
 /**
@@ -13,11 +16,13 @@ public class Game extends Scene{
     int blockX;
     int blockY;
     Tile tileMap[][];
+    Window wnd;
 
     public Game(int resolutionX, int resolutionY, int blocksX, int blocksY, int blockSize, Tile.BlockType[][] level, Window wnd) throws IOException{
         //super(resolutionX,resolutionY,blocksX,blocksY);
         super("hi");
         this.blockSize = blockSize;
+        this.wnd = wnd;
 
         blockX = level.length;
         blockY = blocksX;
@@ -28,7 +33,7 @@ public class Game extends Scene{
             for(int i = 0; i < blocksX; i++){
                 tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j]);
                 //this.addScene(tileMap[i][j]);
-                wnd.draw(tileMap[i][j]);
+                //wnd.draw(tileMap[i][j]);
             }
         }
 
@@ -54,5 +59,38 @@ public class Game extends Scene{
 
     public int translateY(int blockY){
         return blockSize * blockY;
+    }
+
+    /**
+     * Draws items associated with MenuScene in the main Window.
+     */
+    public void drawMenuItems() {
+        for(int j = 0; j < blockX; j++){
+            for(int i = 0; i < blockY; i++){
+                wnd.draw(tileMap[i][j]);
+                //this.addScene(tileMap[i][j]);
+                //wnd.draw(tileMap[i][j]);
+            }
+        }
+    }
+
+    public void display(RenderWindow window){
+        setRunning(true);
+        wnd.setTitle(getSceneTitle());
+        while(this.isRunning()) try {
+
+            window.clear(Color.WHITE);
+            drawMenuItems();
+
+            for (Event event : window.pollEvents()) {
+
+                //Different behaviour depending on
+                this.executeEvent(event);
+            }
+            window.display();
+
+        }catch (Exception e) {
+            this.setRunning(false);
+        }
     }
 }

@@ -66,10 +66,10 @@ public class Tile extends RectangleShape{
                 tileTexture.loadFromFile(Paths.get("res/images/door.png"));
                 break;
             case START:
-                tileTexture.loadFromFile(Paths.get("res/wall.png"));
+                tileTexture.loadFromFile(Paths.get("res/images/blue.png"));
                 break;
             case FINISH:
-                tileTexture.loadFromFile(Paths.get("res/wall.png"));
+                tileTexture.loadFromFile(Paths.get("res/images/blue.png"));
                 break;
             case VOID:
                 tileTexture.loadFromFile(Paths.get("res/images/void.png"));
@@ -87,8 +87,8 @@ public class Tile extends RectangleShape{
         this.setSize(tileSize);
         this.setPosition(position);
 
-        this.setFillColor(Color.YELLOW);
-        this.setOutlineColor(Color.RED);
+        //this.setFillColor(Color.YELLOW);
+        //this.setOutlineColor(Color.RED);
     }
 
     public void deltaX(float x){
