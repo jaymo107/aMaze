@@ -1,4 +1,5 @@
 package com.amaze.main;
+import com.amaze.levelmaker.*;
 import org.jsfml.graphics.*;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
@@ -88,7 +89,8 @@ public class MenuScene extends Scene {
         }
         if (button[1].isSelected()) {
 
-            System.out.println("Load Button Pressed");
+            System.out.println("Level Maker Button Pressed");
+            com.amaze.levelmaker.GameScene LevelMaker = new com.amaze.levelmaker.GameScene(30, 30);
         }
         if (button[2].isSelected()) {
 
