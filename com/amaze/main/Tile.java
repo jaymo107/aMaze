@@ -46,6 +46,7 @@ public class Tile extends RectangleShape{
         tileTexture.setSmooth(true);
 
         //Set image according to type
+<<<<<<< HEAD
         try{
           switch (type){
               case WALL:
@@ -76,6 +77,40 @@ public class Tile extends RectangleShape{
         }catch(IOException exception){
           System.out.print("Couldn't load from file.");
 
+=======
+        switch (type){
+            case WALL:
+                imageCache[0].setSmooth(true);
+                tileTexture = imageCache[0];
+                break;
+            case FLOOR:
+                imageCache[1].setSmooth(true);
+                tileTexture = imageCache[1];
+                break;
+            case DOOR:
+                imageCache[2].setSmooth(true);
+                tileTexture = imageCache[2];
+                break;
+            case START:
+                imageCache[3].setSmooth(true);
+                tileTexture = imageCache[3];
+                break;
+            case FINISH:
+                imageCache[4].setSmooth(true);
+                tileTexture = imageCache[4];
+                break;
+            case VOID:
+                imageCache[5].setSmooth(true);
+                tileTexture = imageCache[5];
+                break;
+            case CHARGE:
+                imageCache[6].setSmooth(true);
+                tileTexture = imageCache[6];
+                break;
+            default:
+                System.out.print("Block must have type defined");
+                break;
+>>>>>>> origin/NewGUIGame
         }
 
         Vector2i size = tileTexture.getSize();
