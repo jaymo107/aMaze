@@ -4,12 +4,14 @@ import org.jsfml.graphics.*;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
+import java.io.IOException;
+
 /**
  * This class will handle the menu and buttons associated with it.
  */
 public class MenuScene extends Scene {
 
-    private final int NUMBER_OF_ITEMS = 4;                  // Number of items available to select in the menu
+    private final int NUMBER_OF_ITEMS = 3;                  // Number of items available to select in the menu
     private Button button[] = new Button[NUMBER_OF_ITEMS];  // Array which holds buttons(items).
     private int currentButton = 0;                          // Track currently selected item in the menu.
     private Window window;
@@ -20,16 +22,15 @@ public class MenuScene extends Scene {
      * @param window - object reference to the main window.
      */
 
-    public MenuScene(String sceneTitle, Window window) {
+    public MenuScene(String sceneTitle, Window window) throws IOException {
 
         super(sceneTitle);
 
         this.window = window;
 
-        button[0] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 200, 40, Color.BLACK, window, this);
-        button[1] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 200, 40, Color.BLACK, window, this);
-        button[2] = new PlayButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 200, 40, Color.BLACK, window, this);
-        button[3] = new ExitButton(window.getScreenWidth() / 2.5F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.8F, 200, 40, Color.BLACK, window, this);
+        button[0] = new PlayButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 400, 125,  window, this);
+        button[1] = new MapMakerButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 400, 125,  window, this);
+        button[2] = new ExitButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 400,125,  window, this);
     }
 
     /**
@@ -42,13 +43,13 @@ public class MenuScene extends Scene {
         if(currentButton == 0) {
 
             button[currentButton].setSelected(true);
-            button[currentButton].setColor(Color.RED);
+            button[currentButton].setIcon(button[currentButton].getSelectedIcon());
             currentButton = 0;
-        } else {
+        } else if (currentButton <= NUMBER_OF_ITEMS) {
             button[currentButton].setSelected(false);
-            button[currentButton].setColor(Color.BLACK);
+            button[currentButton].setIcon(button[currentButton].getDefaultIcon());
             button[currentButton - 1].setSelected(true);
-            button[currentButton - 1].setColor(Color.RED);
+            button[currentButton - 1].setIcon(button[currentButton - 1].getSelectedIcon());
             currentButton--;
         }
     }
@@ -63,14 +64,14 @@ public class MenuScene extends Scene {
         if(currentButton == NUMBER_OF_ITEMS - 1) {
 
             button[currentButton].setSelected(true);
-            button[currentButton].setColor(Color.RED);
+            button[currentButton].setIcon(button[currentButton + 1].getSelectedIcon());
             currentButton = NUMBER_OF_ITEMS - 1;
         } else {
 
             button[currentButton].setSelected(false);
-            button[currentButton].setColor(Color.BLACK);
+            button[currentButton].setIcon(button[currentButton].getDefaultIcon());
             button[currentButton + 1].setSelected(true);
-            button[currentButton + 1].setColor(Color.RED);
+            button[currentButton + 1].setIcon(button[currentButton + 1].getSelectedIcon());
             currentButton++;
         }
     }
@@ -90,15 +91,9 @@ public class MenuScene extends Scene {
         if (button[1].isSelected()) {
 
             System.out.println("Level Maker Button Pressed");
-            //com.amaze.levelmaker.LevelMakerThread thread = new com.amaze.levelmaker.LevelMakerThread();
-            //thread.run();
             new LevelMaker(30,30);
         }
         if (button[2].isSelected()) {
-
-            System.out.println("Options Button Pressed");
-        }
-        if (button[3].isSelected()) {
 
             System.out.println("Exit Button Pressed");
             ((ExitButton)button[3]).closeWindow();

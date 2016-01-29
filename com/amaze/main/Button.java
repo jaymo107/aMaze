@@ -3,6 +3,10 @@ package com.amaze.main;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Paths;
+
 /**
  * This is an abstract class which is responsible for managing all button in the menu.
  */
@@ -28,14 +32,11 @@ public abstract class Button extends RectangleShape {
      * @param yCord - y-coordinate of the button
      * @param width - width of the button
      * @param height - height of the button
-     * @param color - color of the button
      */
-    public Button(float xCord, float yCord, float width, float height, Color color, Window window, MenuScene menu) {
+    public Button(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
 
         this.xCord = xCord;
         this.yCord = yCord;
-
-        this.color = color;
 
         //this.window = window;
         this.menu = menu;
@@ -46,7 +47,7 @@ public abstract class Button extends RectangleShape {
         this.setSize(size);
         this.setPosition(position);
 
-        this.setFillColor(color);
+        //this.setFillColor(color);
         //this.setOutlineColor(Color.YELLOW);
 
         selected = false;
@@ -64,9 +65,7 @@ public abstract class Button extends RectangleShape {
      */
     public void setSelected(boolean selected) {this.selected = selected;}
 
-    /**
-     * Change color of the button
-     * @param color - new color.
-     */
-    public void setColor(Color color) {this.setFillColor(color);}
+    abstract void setIcon(Texture t);
+    abstract Texture getSelectedIcon();
+    abstract Texture getDefaultIcon();
 }
