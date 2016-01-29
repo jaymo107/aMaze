@@ -15,6 +15,7 @@ public class MenuScene extends Scene {
     private Button button[] = new Button[NUMBER_OF_ITEMS];  // Array which holds buttons(items).
     private int currentButton = 0;                          // Track currently selected item in the menu.
     private Window window;
+    private Title title;
 
     /**
      * Constructs buttons to be displayed on the main window.
@@ -27,6 +28,8 @@ public class MenuScene extends Scene {
         super(sceneTitle);
 
         this.window = window;
+
+        title = new Title(window.getScreenWidth(), (window.getScreenHeight()), 800, 300,  window, this);
 
         button[0] = new PlayButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 400, 125,  window, this);
         button[1] = new MapMakerButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 400, 125,  window, this);
@@ -161,5 +164,6 @@ public class MenuScene extends Scene {
         for(Button b: getButtons()) {
             window.draw(b);
         }
+        window.draw(title);
     }
 }
