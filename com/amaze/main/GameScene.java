@@ -1,11 +1,11 @@
 package com.amaze.main;
-import org.jsfml.audio.Sound;
-import org.jsfml.audio.SoundBuffer;
-import org.jsfml.graphics.*;
-import org.jsfml.system.Vector2i;
-import org.jsfml.window.Keyboard;
+import org.jsfml.audio.Music;
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.Texture;
 import org.jsfml.window.event.Event;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
@@ -21,6 +21,7 @@ public class GameScene extends Scene {
     private Tile tileMap[][];           //Represents the maze
     private Avatar player;              //Represents the player(avatar)
 
+    private Music music;                //Background music
     /**
      * This constructor creates an instance of a GameScene.
      * Within this class all the game logic should be handled.
@@ -68,6 +69,14 @@ public class GameScene extends Scene {
             }
         }
 
+        /* Load background music */
+        music = new Music();
+        try {
+            music.openFromFile(Paths.get("res/music/gs2.wav"));
+        } catch (IOException e) {
+            System.out.println("There was a problem loading the background music.");
+        }
+
         this.window = window;
     }
 
@@ -96,22 +105,13 @@ public class GameScene extends Scene {
      * @param window - reference to the main window.
      */
     public void display(RenderWindow window) {
-
-        try{
-         /*Once loaded we play music*/
-            Sound s = loadSound();
-            s.play();
-        }catch(Exception e){
-            System.out.println("There was a problem loading sound");
-        }
-
         setRunning(true);
         window.setTitle(getSceneTitle());
-        while(this.isRunning()) try {
+        music.play();
+        while(isRunning()) try {
 
             window.clear(Color.WHITE);
             drawGraphics(window);
-
             for (Event event : window.pollEvents()) {
                 this.executeEvent(event);
             }
@@ -133,20 +133,17 @@ public class GameScene extends Scene {
      * @param event - user event.
      */
     public void executeEvent(Event event) {
-
         switch(event.type) {
             case CLOSED:
                 window.close();
+                System.exit(0);
                 break;
             case KEY_PRESSED:
-                if(event.asKeyEvent().key == Keyboard.Key.UP){
-                    player.move(0,-5);
-                }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
-                    player.move(0,5);
-                }else if(event.asKeyEvent().key == Keyboard.Key.LEFT){
-                    player.move(-5,0);
-                }else if(event.asKeyEvent().key == Keyboard.Key.RIGHT){
-                    player.move(5,0);
+                switch (event.asKeyEvent().key) {
+                    case UP: player.move(0,-5); break;
+                    case DOWN: player.move(0,5); break;
+                    case LEFT: player.move(-5,0); break;
+                    case RIGHT: player.move(5,0); break;
                 }
                 break;
         }
@@ -170,24 +167,6 @@ public class GameScene extends Scene {
         window.draw(player);
     }
 
-
-    /**
-     * Load sound gs2
-     * @return Sound object
-     * @throws Exception
-     */
-
-    public Sound loadSound() throws Exception{
-
-        //Create the sound buffer and load a sound from a file
-        SoundBuffer soundBuffer = new SoundBuffer();
-        soundBuffer.loadFromFile(Paths.get("res/music/gs2.wav"));
-        Sound sound = new Sound();
-        sound.setBuffer(soundBuffer);
-        sound.setLoop(true);
-        System.out.println("Sound duration: " + soundBuffer.getDuration().asSeconds() + " seconds");
-        return sound;
-    }
 }
 
 
