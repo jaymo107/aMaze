@@ -92,7 +92,7 @@ public class MenuScene extends Scene {
             System.out.println("Level Maker Button Pressed");
             //com.amaze.levelmaker.LevelMakerThread thread = new com.amaze.levelmaker.LevelMakerThread();
             //thread.run();
-            LevelMaker lm = new LevelMaker(30,30);
+            new LevelMaker(30,30);
         }
         if (button[2].isSelected()) {
 

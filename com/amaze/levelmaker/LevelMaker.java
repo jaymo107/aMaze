@@ -3,11 +3,12 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.event.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import java.io.*;
+import java.awt.geom.AffineTransform;import java.lang.reflect.Field;
 
-public class LevelMaker extends JFrame implements MouseListener, KeyListener
-{
+public class LevelMaker extends JFrame implements MouseListener, KeyListener {
 
     Tile.BlockType[] allValues = Tile.BlockType.values();
 
@@ -17,9 +18,13 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener
     private int boardHeight;
     private int boardWidth;
 
+    private boolean retina = false;
+    private boolean exiting = false;
 
-    public LevelMaker(int width, int height)
-    {
+    ImageIcon[] blockImageIcons;
+
+
+    public LevelMaker(int width, int height) {
         boardHeight = height;
         boardWidth = width;
 
@@ -28,15 +33,17 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener
         setContentPane(panel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        panel.setLayout(new GridLayout(height,width));
+        this.retina = isRetina();
+
+        panel.setLayout(new GridLayout(height, width));
 
         // Has to be done to get correct window and image size
         tiles[0][0] = new Tile();
         tiles[0][0].addMouseListener(this);
 
-        setSize(((int)tiles[0][0].getPreferredSize().getHeight())*width, ((int)tiles[0][0].getPreferredSize().getHeight())*height+20);
+        setSize(((int) tiles[0][0].getPreferredSize().getHeight()) * width, ((int) tiles[0][0].getPreferredSize().getHeight()) * height + 20);
 
-        ImageIcon[] blockImageIcons = new ImageIcon[7];
+        blockImageIcons = new ImageIcon[7];
         blockImageIcons[0] = makeImageIcon("images/wall.png");
         blockImageIcons[1] = makeImageIcon("images/floor.png");
         blockImageIcons[2] = makeImageIcon("images/door.png");
@@ -45,10 +52,8 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener
         blockImageIcons[5] = makeImageIcon("images/start.png");
         blockImageIcons[6] = makeImageIcon("images/finish.png");
 
-        for (int y = 0; y<height; y++)
-        {
-            for (int x = 0; x<width; x++)
-            {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 tiles[x][y] = new Tile(blockImageIcons, x, y);
                 tiles[x][y].addMouseListener(this);
                 tiles[x][y].addKeyListener(this);
@@ -56,6 +61,66 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener
             }
         }
         setVisible(true);
+    }
+
+    private boolean isRetina() {
+        boolean isRetina = false;
+        GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+        try {
+            Field field = graphicsDevice.getClass().getDeclaredField("scale");
+
+            if (field != null) {
+                field.setAccessible(true);
+                Object scale = field.get(graphicsDevice);
+                if (scale instanceof Integer && ((Integer) scale).intValue() == 2) {
+                    isRetina = true;
+                }
+            }
+        } catch (Exception e) {
+            //bad practice - but we just want to surpress the exception
+        }
+
+        return isRetina;
+    }
+
+    /**
+     * A method called by the operating system to draw onto the screen - <p><B>YOU DO NOT (AND SHOULD NOT) NEED TO CALL THIS METHOD.</b></p>
+     */
+    public void paint (Graphics gr)
+    {
+        Graphics2D window = (Graphics2D) gr;
+
+        //if the user has a retina display, everything requires doubling
+        //and then scaled down back down to a ratio of 1:1
+        //http://lists.apple.com/archives/java-dev/2012/Jun/msg00069.html
+        int scale = (this.retina)?2:1;
+
+        AffineTransform transformer = new AffineTransform();
+        transformer.scale((float)1/scale, (float)1/scale);
+
+        window.setTransform(transformer);
+
+        BufferedImage i = new BufferedImage(this.getWidth() * scale, this.getHeight() * scale, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = i.createGraphics();
+
+        window.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        synchronized (this)
+        {
+            if (!this.exiting)
+            {
+//                g.clearRect(0, 0, width * scale, height * scale);
+//                for(SolarObject t : things)
+//                {
+//                    g.setColor(t.col);
+//                    g.fillOval(t.x * scale, t.y * scale, t.diameter * scale, t.diameter * scale);
+//
+//                    try{ Thread.sleep(0); } catch (Exception e) {} }
+           }
+//
+//            window.drawImage(i, 0, 0, this);
+        }
     }
 
     public void mouseClicked(MouseEvent e)
