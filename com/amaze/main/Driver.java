@@ -1,24 +1,47 @@
 package com.amaze.main;
-import com.amaze.display.Window;
-import com.amaze.entities.Tile;
+
+  import org.jsfml.graphics.Drawable;
+        import org.jsfml.graphics.CircleShape;
+        import org.jsfml.graphics.ConstView;
+        import org.jsfml.graphics.FloatRect;
+        import org.jsfml.graphics.View;
+        import org.jsfml.system.*;
+        import java.io.IOException;
+  import com.amaze.display.Window;
+  import com.amaze.entities.Tile;
 
 import java.io.IOException;
+
 
 /**
  * This class is responsible for creating an instance of a Maze.
  */
 
 class Driver{
+    private static int BLOCK_SIZE; //Number of blocks to display on X/Y axis
+    private static int WINDOW_SIZE; //Resolution(number of pixels) on X/Y axis
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws Exception{
+        WINDOW_SIZE = 800;
 
-        Window maze = new Window(800,600,25,25);
+        // Load Level and work out block size dynamically
+        LevelReader level = new LevelReader();
+        BLOCK_SIZE = WINDOW_SIZE / level.getSizeOfMaze();
 
-        //Create a kind of tile and add to maze.
-        Tile t1 = new Tile("",10,80,40,40, Tile.BlockType.WALL);
-        maze.addItem(t1);
+        // Create new window and set FPS limit to 60
+        Window window = new Window(WINDOW_SIZE,WINDOW_SIZE);
+        window.setFramerateLimit(60);
 
-        //Start Displaying
-        maze.display();
+        //Create Main Menu
+        MenuScene menu = new MenuScene("Main Menu",window);
+
+        GameScene game = new GameScene("Game",window,WINDOW_SIZE,level.getSizeOfMaze(), BLOCK_SIZE,
+                level.getLevel());
+        window.addScene(menu);
+        window.addScene(game);
+
+
+   
+
     }
 }
