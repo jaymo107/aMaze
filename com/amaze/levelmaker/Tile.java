@@ -9,9 +9,9 @@ import java.awt.Dimension;
 
 public class Tile extends JButton
 {
-	public static enum BlockType {
-        WALL, FLOOR, DOOR, START, FINISH,
-        VOID, CHARGE
+
+	public enum BlockType {
+        WALL, FLOOR, DOOR, VOID, CHARGE, START, FINISH
     }
 
     private ImageIcon[] blockImageIcons = new ImageIcon[7];
@@ -24,10 +24,11 @@ public class Tile extends JButton
 		super();
 		this.blockImageIcons = blockImageIcons;
 		this.setIcon(blockImageIcons[0]);
-		type = BlockType.WALL;
 		this.xLocation = xLocation;
 		this.yLocation = yLocation;
+		type = BlockType.WALL;
 	}
+
 	public Tile()
 	{
 		super();
@@ -47,18 +48,10 @@ public class Tile extends JButton
 		this.type = block;
 	}
 
-	// uses a lot of processing - make caches of images at the beginning to make consistant scaling
-	public ImageIcon makeImageIcon(String imagePath)
-	{
-		ImageIcon icon = new ImageIcon(imagePath);
-		Image img = icon.getImage() ;  
-	    Image newimg = img.getScaledInstance( (int)this.getPreferredSize().getHeight(), (int)this.getPreferredSize().getHeight(), java.awt.Image.SCALE_SMOOTH ) ; 
-	    icon = new ImageIcon( newimg );
-	    return icon;
-	}
+	public BlockType getBlockType(){ return type; }
 
-	public BlockType getBlockType(){return type;}
-	public int getXLocation(){return xLocation;}
-	public int getYLocation(){return yLocation;}
+	public int getXLocation(){ return xLocation; }
+
+	public int getYLocation(){ return yLocation; }
 
 }

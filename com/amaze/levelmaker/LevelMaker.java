@@ -1,12 +1,13 @@
 package com.amaze.levelmaker;
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.event.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.util.*;
-import java.io.*;
-import java.awt.geom.AffineTransform;import java.lang.reflect.Field;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class LevelMaker extends JFrame implements MouseListener, KeyListener {
 
@@ -14,15 +15,13 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
 
     Tile[][] tiles;
 
-    private JPanel panel = new JPanel();
     private int boardHeight;
     private int boardWidth;
 
-    private boolean retina = false;
-    private boolean exiting = false;
+    //private boolean retina = false;
+    //private boolean exiting = false;
 
     ImageIcon[] blockImageIcons;
-
 
     public LevelMaker(int width, int height) {
         boardHeight = height;
@@ -30,10 +29,11 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
 
         tiles = new Tile[width][height];
         setTitle("Map Maker");
+        JPanel panel = new JPanel();
         setContentPane(panel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        this.retina = isRetina();
+        //this.retina = isRetina();
 
         panel.setLayout(new GridLayout(height, width));
 
@@ -44,13 +44,10 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
         setSize(((int) tiles[0][0].getPreferredSize().getHeight()) * width, ((int) tiles[0][0].getPreferredSize().getHeight()) * height + 20);
 
         blockImageIcons = new ImageIcon[7];
-        blockImageIcons[0] = makeImageIcon("images/wall.png");
-        blockImageIcons[1] = makeImageIcon("images/floor.png");
-        blockImageIcons[2] = makeImageIcon("images/door.png");
-        blockImageIcons[3] = makeImageIcon("images/void.png");
-        blockImageIcons[4] = makeImageIcon("images/charge.png");
-        blockImageIcons[5] = makeImageIcon("images/start.png");
-        blockImageIcons[6] = makeImageIcon("images/finish.png");
+
+        for (int i = 0; i < blockImageIcons.length; i++) {
+            blockImageIcons[i] = makeImageIcon("res/images/" + allValues[i].toString().toLowerCase() + ".png");
+        }
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -63,6 +60,7 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
         setVisible(true);
     }
 
+    /*
     private boolean isRetina() {
         boolean isRetina = false;
         GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -78,53 +76,14 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
                 }
             }
         } catch (Exception e) {
-            //bad practice - but we just want to surpress the exception
+            //bad practice - but we just want to suppress the exception
         }
 
         return isRetina;
     }
+    */
 
-    /**
-     * A method called by the operating system to draw onto the screen - <p><B>YOU DO NOT (AND SHOULD NOT) NEED TO CALL THIS METHOD.</b></p>
-     */
-    public void paint (Graphics gr)
-    {
-        Graphics2D window = (Graphics2D) gr;
-
-        //if the user has a retina display, everything requires doubling
-        //and then scaled down back down to a ratio of 1:1
-        //http://lists.apple.com/archives/java-dev/2012/Jun/msg00069.html
-        int scale = (this.retina)?2:1;
-
-        AffineTransform transformer = new AffineTransform();
-        transformer.scale((float)1/scale, (float)1/scale);
-
-        window.setTransform(transformer);
-
-        BufferedImage i = new BufferedImage(this.getWidth() * scale, this.getHeight() * scale, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = i.createGraphics();
-
-        window.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        synchronized (this)
-        {
-            if (!this.exiting)
-            {
-//                g.clearRect(0, 0, width * scale, height * scale);
-//                for(SolarObject t : things)
-//                {
-//                    g.setColor(t.col);
-//                    g.fillOval(t.x * scale, t.y * scale, t.diameter * scale, t.diameter * scale);
-//
-//                    try{ Thread.sleep(0); } catch (Exception e) {} }
-           }
-//
-//            window.drawImage(i, 0, 0, this);
-        }
-    }
-
-    public void mouseClicked(MouseEvent e)
-    {
+    public void mouseClicked(MouseEvent e) {
         Tile tempTile = (Tile)e.getSource();
         int nextImageIndex = java.util.Arrays.asList(allValues).indexOf(tempTile.getBlockType())+1;
         if(nextImageIndex > allValues.length-1) nextImageIndex = 0;
@@ -132,27 +91,20 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
         tempTile.changeBlockType(allValues[nextImageIndex]);
     }
 
-    public ImageIcon makeImageIcon(String imagePath)
-    {
-        ImageIcon icon = new ImageIcon(imagePath);
-        Image img = icon.getImage() ;
-        Image newimg = img.getScaledInstance( (int)tiles[0][0].getPreferredSize().getHeight(), (int)tiles[0][0].getPreferredSize().getHeight(), java.awt.Image.SCALE_SMOOTH ) ;
-        icon = new ImageIcon( newimg );
-        return icon;
+    public ImageIcon makeImageIcon(String imagePath) {
+        Image img = new ImageIcon(imagePath).getImage();
+        Image newImg = img.getScaledInstance( (int)tiles[0][0].getPreferredSize().getHeight(), (int)tiles[0][0].getPreferredSize().getHeight(), java.awt.Image.SCALE_SMOOTH );
+
+        return new ImageIcon(newImg);
     }
 
-    public void keyPressed(KeyEvent e)
-    {
-        if(e.getKeyCode() == KeyEvent.VK_ENTER)
-        {
-            try
-            {
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+            try {
                 PrintWriter writer = new PrintWriter(new FileWriter("Levels.txt", true));
 
-                for (int y = 0; y<boardHeight; y++)
-                {
-                    for (int x = 0; x<boardWidth; x++)
-                    {
+                for (int y = 0; y < boardHeight; y++) {
+                    for (int x = 0; x < boardWidth; x++) {
                         writer.print(tiles[x][y].getBlockType().toString() + ",");
                     }
                     writer.println("");
@@ -160,18 +112,22 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
                 writer.close();
                 JOptionPane.showMessageDialog(this,"Export Successful");
             }
-            catch (IOException f)
-            {
+            catch (IOException f) {
                 JOptionPane.showMessageDialog(this,"Export Failed");
             }
         }
     }
+
     public void keyTyped(KeyEvent e) {}
+
     public void keyReleased(KeyEvent e) {}
 
+    public void mouseExited(MouseEvent e) {}
 
-    public void mouseExited(MouseEvent e){}
-    public void mouseReleased(MouseEvent e){}
-    public void mousePressed(MouseEvent e){}
-    public void mouseEntered(MouseEvent e){}
+    public void mouseReleased(MouseEvent e) {}
+
+    public void mousePressed(MouseEvent e) {}
+
+    public void mouseEntered(MouseEvent e) {}
+
 }
