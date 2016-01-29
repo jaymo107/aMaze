@@ -1,10 +1,12 @@
 package com.amaze.main;
 import com.amaze.levelmaker.*;
+import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 
 /**
  * This class will handle the menu and buttons associated with it.
@@ -16,6 +18,7 @@ public class MenuScene extends Scene {
     private int currentButton = 0;                          // Track currently selected item in the menu.
     private Window window;
     private Title title;
+    private Music music;
 
     /**
      * Constructs buttons to be displayed on the main window.
@@ -34,6 +37,13 @@ public class MenuScene extends Scene {
         button[0] = new PlayButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 400, 125,  window, this);
         button[1] = new MapMakerButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 400, 125,  window, this);
         button[2] = new ExitButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 400,125,  window, this);
+
+        music = new Music();
+        try {
+            music.openFromFile(Paths.get("res/music/gs3.wav"));
+        } catch (IOException e) {
+            System.out.println("There was a problem loading the background music.");
+        }
     }
 
     /**
@@ -99,7 +109,7 @@ public class MenuScene extends Scene {
         if (button[2].isSelected()) {
 
             System.out.println("Exit Button Pressed");
-            ((ExitButton)button[3]).closeWindow();
+            ((ExitButton)button[2]).closeWindow();
         }
     }
 
@@ -139,10 +149,14 @@ public class MenuScene extends Scene {
     public void display(RenderWindow window) {
         setRunning(true);
         window.setTitle(getSceneTitle());
+        //music.play();
+        //music.setLoop(true);
+
         while(this.isRunning()) try {
 
 			window.clear(Color.WHITE);
 			drawMenuItems(window);
+
 
 			for (Event event : window.pollEvents()) {
 
