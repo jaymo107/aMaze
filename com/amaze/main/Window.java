@@ -1,5 +1,4 @@
 package com.amaze.main;
-import com.amaze.main.Display.Displayable;
 import org.jsfml.audio.Sound;
 import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.RenderWindow;

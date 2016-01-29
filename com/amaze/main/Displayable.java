@@ -1,4 +1,4 @@
-package com.amaze.main.Display;
+package com.amaze.main;
 
 import org.jsfml.graphics.RenderWindow;
 

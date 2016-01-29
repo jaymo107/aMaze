@@ -1,6 +1,5 @@
 package com.amaze.main;
 
-import com.amaze.main.Display.Displayable;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.event.Event;
 
