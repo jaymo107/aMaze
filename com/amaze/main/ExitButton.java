@@ -32,5 +32,6 @@ public class ExitButton extends Button {
     public void closeWindow() {
 
         window.close();
+        System.exit(0);
     }
 }

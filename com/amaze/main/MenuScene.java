@@ -117,6 +117,7 @@ public class MenuScene extends Scene {
         switch(event.type) {
             case CLOSED:
                 window.close();
+                System.exit(0);
                 break;
             case KEY_PRESSED:
                 if(event.asKeyEvent().key == Keyboard.Key.UP){
