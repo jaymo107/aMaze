@@ -32,8 +32,9 @@ public class GameScene extends Scene {
      *                   an instance of the GameScene.
      */
 
-    public GameScene(String sceneTitle, Window window,int resolution, int blocks,
-                     int blockSize, Tile.BlockType[][] level) throws Exception{
+    public GameScene(String sceneTitle, Window window, int resolution, int blocks,
+                     int blockSize, Tile.BlockType[][] level) throws Exception {
+
         super(sceneTitle);
 
         this.blockSize = blockSize;
@@ -46,13 +47,9 @@ public class GameScene extends Scene {
 
         /* Cache textures before we start using them in order to increase performance */
         Texture tileTexture[] = new Texture[7];
-        tileTexture[0] = new Texture();
-        tileTexture[1] = new Texture();
-        tileTexture[2] = new Texture();
-        tileTexture[3] = new Texture();
-        tileTexture[4] = new Texture();
-        tileTexture[5] = new Texture();
-        tileTexture[6] = new Texture();
+        for (int i = 0; i < tileTexture.length; i++) {
+            tileTexture[i] = new Texture();
+        }
 
         tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
         tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
@@ -63,8 +60,8 @@ public class GameScene extends Scene {
         tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
 
         /* Create new instances of tiles */
-        for(int j = 0; j < blocks; j++){
-            for(int i = 0; i < blocks; i++){
+        for (int j = 0; j < blocks; j++) {
+            for (int i = 0; i < blocks; i++) {
                 tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j], tileTexture);
             }
         }
@@ -108,6 +105,8 @@ public class GameScene extends Scene {
         setRunning(true);
         window.setTitle(getSceneTitle());
         music.play();
+        music.setLoop(true);
+
         while(isRunning()) try {
 
             window.clear(Color.WHITE);
@@ -157,8 +156,8 @@ public class GameScene extends Scene {
 
     public void drawGraphics(RenderWindow window) {
 
-        for(int j = 0; j < blockY; j++){
-            for(int i = 0; i < blockX; i++){
+        for (int j = 0; j < blockY; j++) {
+            for (int i = 0; i < blockX; i++) {
                 window.draw(tileMap[i][j]);
             }
         }
