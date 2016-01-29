@@ -1,4 +1,5 @@
 package com.amaze.main;
+import com.amaze.main.Display.Displayable;
 import org.jsfml.audio.Sound;
 import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.RenderWindow;
@@ -50,8 +51,6 @@ public class Window extends RenderWindow{
      *
      * @param resolutionX Width in pixels(physical size of window)
      * @param resolutionY Height in pixels(physical size of window)
-     * @param blocksX Size of X grid overlayed onto window
-     * @param blocksY Size of y grid overlayed onto window
      *
      * Example:
      *                maze(1920,1080,25,25)
@@ -59,7 +58,7 @@ public class Window extends RenderWindow{
      *                grid to place objects into a maze
      */
 
-    public Window(int resolutionX, int resolutionY, int blocksX, int blocksY) throws IOException {
+    public Window(int resolutionX, int resolutionY) throws IOException {
         //Instantiate
         this.screenWidth = resolutionX;
         this.screenHeight = resolutionY;

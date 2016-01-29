@@ -15,19 +15,10 @@ import java.nio.file.Paths;
 import org.jsfml.*;
 
 /**
- * Created by Kiran
+ * Represents a Tile and displays depending on type
  */
 
 public class Tile extends RectangleShape{
-    /*
-    @todo:
-        - Collision detection
-        - Image handler
-        - Current location
-        - Physical Size e.g. 10x10px NOT HOW MANY BLOCKS IT TAKES
-     */
-
-    Image icon; //Icon shown on the block
     private int currentX;
     private int currentY;
     private Vector2f position;
@@ -46,40 +37,45 @@ public class Tile extends RectangleShape{
      * @throws IOException
      */
 
-    public Tile(String filePath, int originX, int originY, int sizeX, int sizeY, BlockType type) throws IOException{
+    public Tile(String filePath, int originX, int originY, int sizeX, int sizeY, BlockType type, Texture[] imageCache) throws IOException{
         this.currentX = originX;
         this.currentY = originY;
-        position = new Vector2f(originX,originY);
-        tileSize = new Vector2f(sizeX,sizeY);
+        this.position = new Vector2f(originX,originY);
+        this.tileSize = new Vector2f(sizeX,sizeY);
         Texture tileTexture = new Texture();
         tileTexture.setSmooth(true);
 
         //Set image according to type
-        switch (type){
-            case WALL:
-                tileTexture.loadFromFile(Paths.get("res/images/wall.png"));
-                break;
-            case FLOOR:
-                tileTexture.loadFromFile(Paths.get("res/images/floor.png"));
-                break;
-            case DOOR:
-                tileTexture.loadFromFile(Paths.get("res/images/door.png"));
-                break;
-            case START:
-                tileTexture.loadFromFile(Paths.get("res/images/blue.png"));
-                break;
-            case FINISH:
-                tileTexture.loadFromFile(Paths.get("res/images/blue.png"));
-                break;
-            case VOID:
-                tileTexture.loadFromFile(Paths.get("res/images/void.png"));
-                break;
-            case CHARGE:
-                tileTexture.loadFromFile(Paths.get("res/images/charge.png"));
-                break;
-            default:
-                System.out.print("Block must have type defined");
-                break;
+        try{
+          switch (type){
+              case WALL:
+                  tileTexture.loadFromFile(Paths.get("res/images/wall.png"));
+                  break;
+              case FLOOR:
+                  tileTexture.loadFromFile(Paths.get("res/images/floor.png"));
+                  break;
+              case DOOR:
+                  tileTexture.loadFromFile(Paths.get("res/images/door.png"));
+                  break;
+              case START:
+                  tileTexture.loadFromFile(Paths.get("res/images/blue.png"));
+                  break;
+              case FINISH:
+                  tileTexture.loadFromFile(Paths.get("res/images/blue.png"));
+                  break;
+              case VOID:
+                  tileTexture.loadFromFile(Paths.get("res/images/void.png"));
+                  break;
+              case CHARGE:
+                  tileTexture.loadFromFile(Paths.get("res/images/charge.png"));
+                  break;
+              default:
+                  System.out.print("Block must have type defined");
+                  break;
+          }
+        }catch(IOException exception){
+          System.out.print("Couldn't load from file.");
+
         }
 
         Vector2i size = tileTexture.getSize();
