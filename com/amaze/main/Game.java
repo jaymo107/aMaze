@@ -11,7 +11,8 @@ import org.jsfml.window.event.Event;
  * Created by Kiran on 25/01/2016.
  * Represents a game
  */
-public class Game extends Scene{
+public class Game extends Scene {
+
     int blockSize; //Size of each block. W and H
     int blockX;
     int blockY;
@@ -90,4 +91,9 @@ public class Game extends Scene{
             this.setRunning(false);
         }
     }
+
+    public void executeEvent(Event event) {
+
+    }
+
 }

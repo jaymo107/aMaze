@@ -37,8 +37,6 @@ public class Title extends RectangleShape {
      * @param window - reference to the main window
      */
     public Title(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
-
-
         this.window = window;
 
         this.xCord = xCord;
@@ -56,4 +54,5 @@ public class Title extends RectangleShape {
         icon.loadFromFile(Paths.get("res/menuGraphics/logo.png"));
         this.setTexture(icon);
     }
+
 }

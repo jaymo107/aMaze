@@ -24,7 +24,6 @@ public class ExitButton extends Button {
      * @param window - reference to the main window
      */
     public ExitButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
-
         super(xCord, yCord, width, height, window, menu);
 
         this.window = window;
@@ -37,18 +36,19 @@ public class ExitButton extends Button {
         selectedIcon.loadFromFile(Paths.get("res/menuGraphics/exitsel.png"));
     }
 
+    public Texture getDefaultIcon() {return defaultIcon;}
+
+    public Texture getSelectedIcon() {return selectedIcon;}
+
+    public void setIcon(Texture t) {setTexture(t);}
+
     /**
      * This function closes main window when it is invoked.
      */
-    public void closeWindow() {
-
+    public void performAction() {
+        System.out.println("Exit Button Pressed");
         window.close();
         System.exit(0);
     }
-    public Texture getDefaultIcon() {return defaultIcon;}
-    public Texture getSelectedIcon() {return selectedIcon;}
-    public void setIcon(Texture t) {
 
-        setTexture(t);
-    }
 }

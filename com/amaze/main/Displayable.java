@@ -8,4 +8,5 @@ import org.jsfml.graphics.RenderWindow;
 public interface Displayable {
 
     void display(RenderWindow window);
+
 }

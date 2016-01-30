@@ -31,7 +31,7 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
         setTitle("Map Maker");
         JPanel panel = new JPanel();
         setContentPane(panel);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         //this.retina = isRetina();
 

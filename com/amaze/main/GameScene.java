@@ -107,17 +107,17 @@ public class GameScene extends Scene {
         music.play();
         music.setLoop(true);
 
-        while(isRunning()) try {
-
+        while(this.isRunning()) try {
             window.clear(Color.WHITE);
             drawGraphics(window);
+
             for (Event event : window.pollEvents()) {
-                this.executeEvent(event);
+                executeEvent(event);
             }
             window.display();
 
         }catch (Exception e) {
-            this.setRunning(false);
+            setRunning(false);
         }
     }
 
@@ -143,6 +143,10 @@ public class GameScene extends Scene {
                     case DOWN: player.move(0,5); break;
                     case LEFT: player.move(-5,0); break;
                     case RIGHT: player.move(5,0); break;
+                    case ESCAPE:
+                        window.setScene(0);
+                        window.getScene(0).display(window);
+                        break;
                 }
                 break;
         }
@@ -155,7 +159,6 @@ public class GameScene extends Scene {
      */
 
     public void drawGraphics(RenderWindow window) {
-
         for (int j = 0; j < blockY; j++) {
             for (int i = 0; i < blockX; i++) {
                 window.draw(tileMap[i][j]);

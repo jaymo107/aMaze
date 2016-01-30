@@ -14,11 +14,13 @@ import java.nio.file.Paths;
 public class MenuScene extends Scene {
 
     private final int NUMBER_OF_ITEMS = 3;                  // Number of items available to select in the menu
-    private Button button[] = new Button[NUMBER_OF_ITEMS];  // Array which holds buttons(items).
+    private Button buttons[] = new Button[NUMBER_OF_ITEMS];  // Array which holds buttons(items).
     private int currentButton = 0;                          // Track currently selected item in the menu.
     private Window window;
     private Title title;
     private Music music;
+
+    private boolean playing = false;
 
     /**
      * Constructs buttons to be displayed on the main window.
@@ -27,16 +29,15 @@ public class MenuScene extends Scene {
      */
 
     public MenuScene(String sceneTitle, Window window) throws IOException {
-
         super(sceneTitle);
 
         this.window = window;
 
         title = new Title(window.getScreenWidth(), (window.getScreenHeight()), 800, 300,  window, this);
 
-        button[0] = new PlayButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 400, 125,  window, this);
-        button[1] = new MapMakerButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 400, 125,  window, this);
-        button[2] = new ExitButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 400,125,  window, this);
+        buttons[0] = new PlayButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 400, 125,  window, this);
+        buttons[1] = new MapMakerButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 400, 125,  window, this);
+        buttons[2] = new ExitButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 400,125,  window, this);
 
         music = new Music();
         try {
@@ -44,6 +45,8 @@ public class MenuScene extends Scene {
         } catch (IOException e) {
             System.out.println("There was a problem loading the background music.");
         }
+
+        buttons[0].setSelected(true);
     }
 
     /**
@@ -52,18 +55,11 @@ public class MenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyUp() {
-
         if(currentButton == 0) {
-
-            button[currentButton].setSelected(true);
-            button[currentButton].setIcon(button[currentButton].getSelectedIcon());
-            currentButton = 0;
+            buttons[currentButton].setSelected(true);
         } else if (currentButton <= NUMBER_OF_ITEMS) {
-            button[currentButton].setSelected(false);
-            button[currentButton].setIcon(button[currentButton].getDefaultIcon());
-            button[currentButton - 1].setSelected(true);
-            button[currentButton - 1].setIcon(button[currentButton - 1].getSelectedIcon());
-            currentButton--;
+            buttons[currentButton].setSelected(false);
+            buttons[--currentButton].setSelected(true);
         }
     }
 
@@ -73,19 +69,11 @@ public class MenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyDown() {
-
         if(currentButton == NUMBER_OF_ITEMS - 1) {
-
-            button[currentButton].setSelected(true);
-            button[currentButton].setIcon(button[currentButton + 1].getSelectedIcon());
-            currentButton = NUMBER_OF_ITEMS - 1;
+            buttons[currentButton].setSelected(true);
         } else {
-
-            button[currentButton].setSelected(false);
-            button[currentButton].setIcon(button[currentButton].getDefaultIcon());
-            button[currentButton + 1].setSelected(true);
-            button[currentButton + 1].setIcon(button[currentButton + 1].getSelectedIcon());
-            currentButton++;
+            buttons[currentButton].setSelected(false);
+            buttons[++currentButton].setSelected(true);
         }
     }
 
@@ -95,25 +83,19 @@ public class MenuScene extends Scene {
      * Based on the button, a specific function will be invoked.
      */
     public void enterPressed() {
+        for (Button b: buttons) {
+            if (b.isSelected()) {
+                b.performAction();
 
-        if (button[0].isSelected()) {
-
-            System.out.println("Play Button Pressed");
-            ((PlayButton)button[0]).startNewGame();
-        }
-        if (button[1].isSelected()) {
-
-            System.out.println("Level Maker Button Pressed");
-            new LevelMaker(30,30);
-        }
-        if (button[2].isSelected()) {
-
-            System.out.println("Exit Button Pressed");
-            ((ExitButton)button[2]).closeWindow();
+                if (b instanceof PlayButton) {
+                    playing = true;
+                    music.stop();
+                }
+            }
         }
     }
 
-    public Button[] getButtons() { return button; }
+    public Button[] getButtons() { return buttons; }
 
     /**
      * This function handles event based on their type.
@@ -128,15 +110,10 @@ public class MenuScene extends Scene {
                 System.exit(0);
                 break;
             case KEY_PRESSED:
-                if(event.asKeyEvent().key == Keyboard.Key.UP){
-
-                    this.arrowKeyUp();
-                }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
-
-                    this.arrowKeyDown();
-                }else if(event.asKeyEvent().key == Keyboard.Key.RETURN){
-
-                    this.enterPressed();
+                switch (event.asKeyEvent().key) {
+                    case UP: arrowKeyUp(); break;
+                    case DOWN: arrowKeyDown(); break;
+                    case RETURN: enterPressed(); break;
                 }
                 break;
         }
@@ -149,24 +126,23 @@ public class MenuScene extends Scene {
     public void display(RenderWindow window) {
         setRunning(true);
         window.setTitle(getSceneTitle());
-        //music.play();
-        //music.setLoop(true);
+        if (!playing) {
+            music.play();
+            music.setLoop(true);
+        }
 
         while(this.isRunning()) try {
-
 			window.clear(Color.WHITE);
 			drawMenuItems(window);
 
-
 			for (Event event : window.pollEvents()) {
-
                 //Different behaviour depending on
-                this.executeEvent(event);
+                executeEvent(event);
             }
             window.display();
 
         }catch (Exception e) {
-            this.setRunning(false);
+            setRunning(false);
         }
     }
 

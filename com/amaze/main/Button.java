@@ -34,7 +34,6 @@ public abstract class Button extends RectangleShape {
      * @param height - height of the button
      */
     public Button(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
-
         this.xCord = xCord;
         this.yCord = yCord;
 
@@ -63,9 +62,17 @@ public abstract class Button extends RectangleShape {
      * Change state of the button
      * @param selected - Whether it is selected/not selected.
      */
-    public void setSelected(boolean selected) {this.selected = selected;}
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+        setIcon(selected ? getSelectedIcon() : getDefaultIcon());
+    }
 
     abstract void setIcon(Texture t);
+
     abstract Texture getSelectedIcon();
+
     abstract Texture getDefaultIcon();
+
+    abstract void performAction();
+
 }

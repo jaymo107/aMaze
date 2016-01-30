@@ -1,5 +1,6 @@
 package com.amaze.main;
 
+import com.amaze.levelmaker.LevelMaker;
 import org.jsfml.graphics.Texture;
 
 import java.io.IOException;
@@ -24,7 +25,6 @@ public class MapMakerButton extends Button {
      * @param window - reference to the main window
      */
     public MapMakerButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
-
         super(xCord, yCord, width, height, window, menu);
 
         this.window = window;
@@ -36,10 +36,19 @@ public class MapMakerButton extends Button {
         selectedIcon = new Texture();
         selectedIcon.loadFromFile(Paths.get("res/menuGraphics/mapmakesel.png"));
     }
-    public Texture getDefaultIcon() {return defaultIcon;}
-    public Texture getSelectedIcon() {return selectedIcon;}
-    public void setIcon(Texture t) {
 
-        setTexture(t);
+    public Texture getDefaultIcon() {return defaultIcon;}
+
+    public Texture getSelectedIcon() {return selectedIcon;}
+
+    public void setIcon(Texture t) {setTexture(t);}
+
+	/**
+     * This function displays the Map Maker when called
+     */
+    public void performAction() {
+        System.out.println("Level Maker Button Pressed");
+        new LevelMaker(30,30);
     }
+
 }

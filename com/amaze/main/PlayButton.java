@@ -26,7 +26,6 @@ public class PlayButton extends Button {
      * @param window - reference to the main window
      */
     public PlayButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
-
         super(xCord, yCord, width, height, window, menu);
 
         this.window = window;
@@ -40,19 +39,19 @@ public class PlayButton extends Button {
         selectedIcon.loadFromFile(Paths.get("res/menuGraphics/playsel.png"));
     }
 
-    /**
-     * This function changes Scenes when called.
-     */
-    public void startNewGame() {
+    public Texture getDefaultIcon() {return defaultIcon;}
 
+    public Texture getSelectedIcon() {return selectedIcon;}
+
+    public void setIcon(Texture t) {setTexture(t);}
+
+    /**
+     * This function changes the scene to GameScene when called.
+     */
+    public void performAction() {
+        System.out.println("Play Button Pressed");
         window.setScene(1);
         menu.setRunning(false);
-
     }
-    public Texture getDefaultIcon() {return defaultIcon;}
-    public Texture getSelectedIcon() {return selectedIcon;}
-    public void setIcon(Texture t) {
 
-        setTexture(t);
-    }
 }

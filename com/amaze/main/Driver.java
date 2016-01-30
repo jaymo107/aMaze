@@ -14,6 +14,7 @@ import java.io.IOException;
 
 
 class Driver{
+
     private static int BLOCK_SIZE; //Number of blocks to display on X/Y axis
     private static int WINDOW_SIZE; //Resolution(number of pixels) on X/Y axis
 
@@ -25,7 +26,7 @@ class Driver{
         BLOCK_SIZE = WINDOW_SIZE / level.getSizeOfMaze();
 
         // Create new window and set FPS limit to 60
-        Window window = new Window(WINDOW_SIZE,WINDOW_SIZE);
+        Window window = new Window(WINDOW_SIZE, WINDOW_SIZE);
         window.setFramerateLimit(60);
 
         //Create Main Menu
@@ -33,11 +34,11 @@ class Driver{
 
         GameScene game = new GameScene("Game",window,WINDOW_SIZE,level.getSizeOfMaze(), BLOCK_SIZE,
                 level.getLevel());
-        window.addScene(menu);
-        window.addScene(game);
+
+        window.addScenes(menu, game);
 
         //Start Displaying
         window.displayThis();
-
     }
+
 }
