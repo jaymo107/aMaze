@@ -125,10 +125,10 @@ public class MenuScene extends Scene {
     public void display(RenderWindow window) {
         setRunning(true);
         window.setTitle(getSceneTitle());
-        if (!playing) {
-            music.play();
-            music.setLoop(true);
-        }
+//        if (!playing) {
+//            music.play();
+//            music.setLoop(true);
+//        }
 
         while(this.isRunning()) try {
 			window.clear(Color.WHITE);
