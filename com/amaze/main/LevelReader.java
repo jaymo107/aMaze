@@ -1,18 +1,13 @@
 package com.amaze.main;
-import com.amaze.main.Tile;
-
-import java.io.Reader;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Arrays;
-import java.io.File;
-import java.io.InputStreamReader;
 
 /*
 	Reads a text file with a csv type format into a BlockType 2D array (currently 5 x 5)
 */
 public class LevelReader
 {
+
     private Tile.BlockType[][] level;//Change this for larger maps
     private int sizeOfMaze;
 
@@ -31,10 +26,7 @@ public class LevelReader
         while(currentlyReadChar != 10){
             currentlyReadChar = reader.read();
 
-            if(currentlyReadChar == 44){
-                sizeOfMaze++;
-            }
-
+            if(currentlyReadChar == 44) sizeOfMaze++;
         }
 
         //Clear the reader
@@ -50,7 +42,7 @@ public class LevelReader
             if(Character.toString(((char) i)).equals(","))
             {
                 level[y][x] = stringToBlockType(stringBuilder.toString());
-                stringBuilder.setLength(0); // empty stringBulider
+                stringBuilder.setLength(0); // empty StringBuilder
 
 
                 if(++y == level[0].length)//If length of first line == max
@@ -60,8 +52,9 @@ public class LevelReader
                     // goes to next row in the 2D Array
                 }
             }
-            else if(!(Character.toString(((char) i)).equals("\n")))
+            else if(!(Character.toString(((char) i)).equals("\n"))) {
                 stringBuilder.append((char) i);
+            }
         }
 
         System.out.println(Arrays.deepToString(level));// <- Uncomment to see 2D array
@@ -77,11 +70,12 @@ public class LevelReader
         if (blockType.equals("VOID")) return Tile.BlockType.VOID;
         if (blockType.equals("CHARGE")) return Tile.BlockType.CHARGE;
         if (blockType.equals("FLOOR")) return Tile.BlockType.FLOOR;
+
         return Tile.BlockType.WALL;
     }
 
-    public Tile.BlockType[][] getLevel(){return level;}
-    public int getSizeOfMaze(){
-        return sizeOfMaze;
-    }
+    public Tile.BlockType[][] getLevel(){ return level; }
+
+    public int getSizeOfMaze(){ return sizeOfMaze; }
+
 }

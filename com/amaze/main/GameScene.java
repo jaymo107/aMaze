@@ -13,8 +13,6 @@ import java.nio.file.Paths;
  */
 public class GameScene extends Scene {
 
-    private Window window;              //Object reference to the window class.
-
     private int blockSize;              //Size of each block. W and H
     private int blockX;                 //Number of blocks in X direction
     private int blockY;                 //Number of blocks in Y direction
@@ -22,6 +20,7 @@ public class GameScene extends Scene {
     private Avatar player;              //Represents the player(avatar)
 
     private Music music;                //Background music
+
     /**
      * This constructor creates an instance of a GameScene.
      * Within this class all the game logic should be handled.
@@ -32,10 +31,8 @@ public class GameScene extends Scene {
      *                   an instance of the GameScene.
      */
 
-    public GameScene(String sceneTitle, Window window, int resolution, int blocks,
-                     int blockSize, Tile.BlockType[][] level) throws Exception {
-
-        super(sceneTitle);
+    public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
+        super(sceneTitle, window);
 
         this.blockSize = blockSize;
 
@@ -73,8 +70,6 @@ public class GameScene extends Scene {
         } catch (IOException e) {
             System.out.println("There was a problem loading the background music.");
         }
-
-        this.window = window;
     }
 
     /**(
@@ -134,7 +129,7 @@ public class GameScene extends Scene {
     public void executeEvent(Event event) {
         switch(event.type) {
             case CLOSED:
-                window.close();
+                getWindow().close();
                 System.exit(0);
                 break;
             case KEY_PRESSED:
@@ -144,8 +139,8 @@ public class GameScene extends Scene {
                     case LEFT: player.move(-5,0); break;
                     case RIGHT: player.move(5,0); break;
                     case ESCAPE:
-                        window.setScene(0);
-                        window.getScene(0).display(window);
+                        getWindow().setScene(0);
+                        getWindow().getScene(0).display(getWindow());
                         break;
                 }
                 break;

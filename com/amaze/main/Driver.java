@@ -23,8 +23,7 @@ class Driver{
         //Create Main Menu
         MenuScene menu = new MenuScene("Main Menu",window);
 
-        GameScene game = new GameScene("Game",window,WINDOW_SIZE,level.getSizeOfMaze(), BLOCK_SIZE,
-                level.getLevel());
+        GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), BLOCK_SIZE, level.getLevel());
 
         window.addScenes(menu, game);
 

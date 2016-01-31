@@ -15,7 +15,6 @@ public class MenuScene extends Scene {
     private final int NUMBER_OF_ITEMS = 3;                  // Number of items available to select in the menu
     private Button buttons[] = new Button[NUMBER_OF_ITEMS];  // Array which holds buttons(items).
     private int currentButton = 0;                          // Track currently selected item in the menu.
-    private Window window;
     private Title title;
     private Music music;
 
@@ -28,9 +27,7 @@ public class MenuScene extends Scene {
      */
 
     public MenuScene(String sceneTitle, Window window) throws IOException {
-        super(sceneTitle);
-
-        this.window = window;
+        super(sceneTitle, window);
 
         title = new Title(window.getScreenWidth(), (window.getScreenHeight()), 800, 300,  window, this);
 
@@ -105,7 +102,7 @@ public class MenuScene extends Scene {
     public void executeEvent(Event event) {
         switch(event.type) {
             case CLOSED:
-                window.close();
+                getWindow().close();
                 System.exit(0);
                 break;
             case KEY_PRESSED:
@@ -155,4 +152,5 @@ public class MenuScene extends Scene {
         }
         window.draw(title);
     }
+
 }

@@ -89,26 +89,23 @@ public class Window extends RenderWindow{
      * Adds one or more scenes to ArrayList
      * @param scenes - visual representation of a certain aMaze game part.
      */
-
     public void addScenes(Displayable... scenes) {
         Collections.addAll(this.scenes, scenes);
     }
 
-    public int getScreenHeight() {return screenHeight;}
+    public int getScreenHeight() { return screenHeight; }
 
-    public int getScreenWidth() {return  screenWidth;}
+    public int getScreenWidth() { return screenWidth; }
 
     /**
      * Obtains a scene's Displayable interface from ArrayList
      * @param i - the index of the scene in the ArrayList
      */
-
-    public Displayable getScene(int i) {return scenes.get(i);}
+    public Displayable getScene(int i) { return scenes.get(i); }
 
     /**
      * Sets scene variable which is responsible for selecting appropriate scene to be displayed.
      * @param i - used as an ArrayList index.
      */
-
-    public void setScene(int i) {currentScene = i;}
+    public void setScene(int i) { currentScene = i; }
 }

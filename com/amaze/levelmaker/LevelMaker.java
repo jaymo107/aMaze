@@ -27,8 +27,8 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
         boardWidth = width;
 
         tiles = new Tile[width][height];
-        setTitle("Map Maker");
         JPanel panel = new JPanel();
+        setTitle("Map Maker");
         setContentPane(panel);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 

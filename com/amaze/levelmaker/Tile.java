@@ -14,8 +14,9 @@ public class Tile extends JButton
         WALL, FLOOR, DOOR, VOID, CHARGE, START, FINISH
     }
 
-    private ImageIcon[] blockImageIcons = new ImageIcon[7];
+    private ImageIcon[] blockImageIcons = new ImageIcon[BlockType.values().length];
     private BlockType type = BlockType.WALL;
+
     private int xLocation;
     private int yLocation;
 
@@ -26,25 +27,26 @@ public class Tile extends JButton
 		this.setIcon(blockImageIcons[0]);
 		this.xLocation = xLocation;
 		this.yLocation = yLocation;
-		type = BlockType.WALL;
 	}
 
 	public Tile()
 	{
 		super();
-		this.type = BlockType.CHARGE;
 	}
 
 	public void changeBlockType(BlockType block)
 	{
-		if(block == BlockType.WALL) this.setIcon(blockImageIcons[0]);
-		if(block == BlockType.FLOOR) this.setIcon(blockImageIcons[1]);
-		if(block == BlockType.DOOR) this.setIcon(blockImageIcons[2]);
-		if(block == BlockType.VOID) this.setIcon(blockImageIcons[3]);
-		if(block == BlockType.CHARGE) this.setIcon(blockImageIcons[4]);
-		if(block == BlockType.START) this.setIcon(blockImageIcons[5]);
-		if(block == BlockType.FINISH) this.setIcon(blockImageIcons[6]);
+		int index = 0;
 
+		if (block == BlockType.WALL)   index = 0;
+		if (block == BlockType.FLOOR)  index = 1;
+		if (block == BlockType.DOOR)   index = 2;
+		if (block == BlockType.VOID)   index = 3;
+		if (block == BlockType.CHARGE) index = 4;
+		if (block == BlockType.START)  index = 5;
+		if (block == BlockType.FINISH) index = 6;
+
+		setIcon(blockImageIcons[index]);
 		this.type = block;
 	}
 

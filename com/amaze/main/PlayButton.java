@@ -1,8 +1,5 @@
 package com.amaze.main;
 
-import org.jsfml.graphics.*;
-import org.jsfml.window.ContextActivationException;
-
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -10,11 +7,6 @@ import java.nio.file.Paths;
  * This class holds appropriate information about play button.
  */
 public class PlayButton extends Button {
-
-    private Window window;
-    private MenuScene menu;
-    private Texture defaultIcon;
-    private Texture selectedIcon;
 
     /**
      * Construct a button with following parameters:
@@ -28,30 +20,19 @@ public class PlayButton extends Button {
     public PlayButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
         super(xCord, yCord, width, height, window, menu);
 
-        this.window = window;
-        this.menu = menu;
+        getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/play.png"));
+        getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/playsel.png"));
 
-        defaultIcon = new Texture();
-        defaultIcon.loadFromFile(Paths.get("res/menuGraphics/play.png"));
-        this.setTexture(defaultIcon);
-
-        selectedIcon = new Texture();
-        selectedIcon.loadFromFile(Paths.get("res/menuGraphics/playsel.png"));
+        this.setTexture(getDefaultIcon());
     }
-
-    public Texture getDefaultIcon() {return defaultIcon;}
-
-    public Texture getSelectedIcon() {return selectedIcon;}
-
-    public void setIcon(Texture t) {setTexture(t);}
 
     /**
      * This function changes the scene to GameScene when called.
      */
     public void performAction() {
         System.out.println("Play Button Pressed");
-        window.setScene(1);
-        menu.setRunning(false);
+        getWindow().setScene(1);
+        getMenu().setRunning(false);
     }
 
 }

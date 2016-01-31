@@ -17,13 +17,11 @@ public class Game extends Scene {
     int blockX;
     int blockY;
     Tile tileMap[][];
-    Window wnd;
 
     public Game(int resolutionX, int resolutionY, int blocksX, int blocksY, int blockSize, Tile.BlockType[][] level, Window wnd) throws IOException{
         //super(resolutionX,resolutionY,blocksX,blocksY);
-        super("hi");
+        super("hi",wnd);
         this.blockSize = blockSize;
-        this.wnd = wnd;
 
         blockX = level.length;
         blockY = blocksX;
@@ -65,7 +63,7 @@ public class Game extends Scene {
     public void drawMenuItems() {
         for(int j = 0; j < blockX; j++){
             for(int i = 0; i < blockY; i++){
-                wnd.draw(tileMap[i][j]);
+                getWindow().draw(tileMap[i][j]);
                 //this.addScene(tileMap[i][j]);
                 //wnd.draw(tileMap[i][j]);
             }
@@ -74,7 +72,7 @@ public class Game extends Scene {
 
     public void display(RenderWindow window){
         setRunning(true);
-        wnd.setTitle(getSceneTitle());
+        getWindow().setTitle(getSceneTitle());
         while(this.isRunning()) try {
 
             window.clear(Color.WHITE);
