@@ -11,9 +11,6 @@ import java.io.IOException;
  */
 public abstract class Button extends RectangleShape {
 
-    private float xCord;
-    private float yCord;
-
     private Window window;
     private MenuScene menu;
 
@@ -31,8 +28,6 @@ public abstract class Button extends RectangleShape {
      * @param height - height of the button
      */
     public Button(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
-        this.xCord = xCord;
-        this.yCord = yCord;
 
         this.window = window;
         this.menu = menu;

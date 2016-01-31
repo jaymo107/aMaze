@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
- * This class holds information about Title.
+ * This class is responsible for manging background image for Menu Scene
  */
-public class Title extends RectangleShape {
+public class Background extends RectangleShape {
 
     private Vector2f size;
     private Texture icon;
@@ -19,18 +19,18 @@ public class Title extends RectangleShape {
     /**
      * Construct a button with following parameters:
      *
-     * @param width - width of the title
-     * @param height - height of the title
+     * @param width - width of the background
+     * @param height - height of the background
      */
-    public Title(float width, float height) throws IOException {
+    public Background(float width, float height) throws IOException {
 
         size = new Vector2f(width,height);
 
         this.setSize(size);
 
         icon = new Texture();
-        icon.loadFromFile(Paths.get("res/menuGraphics/logo.png"));
+        icon.loadFromFile(Paths.get("res/menuGraphics/maze.png"));
         this.setTexture(icon);
     }
-
 }
+

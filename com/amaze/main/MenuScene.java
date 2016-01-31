@@ -16,6 +16,7 @@ public class MenuScene extends Scene {
     private Button buttons[] = new Button[NUMBER_OF_ITEMS];  // Array which holds buttons(items).
     private int currentButton = 0;                          // Track currently selected item in the menu.
     private Title title;
+    private Background background;
     private Music music;
 
     private boolean playing = false;
@@ -23,13 +24,15 @@ public class MenuScene extends Scene {
     /**
      * Constructs buttons to be displayed on the main window.
      *
+     * @param sceneTitle - title of the Scene
      * @param window - object reference to the main window.
      */
 
     public MenuScene(String sceneTitle, Window window) throws IOException {
         super(sceneTitle, window);
 
-        title = new Title(window.getScreenWidth(), (window.getScreenHeight()), 800, 300,  window, this);
+        background = new Background(window.getScreenWidth(), window.getScreenHeight());
+        title = new Title(800, 300);
 
         buttons[0] = new PlayButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 400, 125,  window, this);
         buttons[1] = new MapMakerButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 400, 125,  window, this);
@@ -147,6 +150,9 @@ public class MenuScene extends Scene {
      * @param window - reference to the window.
      */
     private void drawMenuItems(RenderWindow window) {
+
+        window.draw(background);
+
         for(Button b: getButtons()) {
             window.draw(b);
         }
