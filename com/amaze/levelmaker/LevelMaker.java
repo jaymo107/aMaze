@@ -19,7 +19,6 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
     private int boardWidth;
 
     //private boolean retina = false;
-    //private boolean exiting = false;
 
     ImageIcon[] blockImageIcons;
 
@@ -35,11 +34,11 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
 
         //this.retina = isRetina();
 
-        panel.setLayout(new GridLayout(height, width));
+        panel.setLayout(new GridLayout(width, height));
 
         // Has to be done to get correct window and image size
         tiles[0][0] = new Tile();
-        tiles[0][0].addMouseListener(this);
+        tiles[0][0].setPreferredSize(new Dimension(30,30));
 
         setSize(((int) tiles[0][0].getPreferredSize().getHeight()) * width, ((int) tiles[0][0].getPreferredSize().getHeight()) * height + 20);
 
@@ -59,29 +58,6 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
         }
         setVisible(true);
     }
-
-    /*
-    private boolean isRetina() {
-        boolean isRetina = false;
-        GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-
-        try {
-            Field field = graphicsDevice.getClass().getDeclaredField("scale");
-
-            if (field != null) {
-                field.setAccessible(true);
-                Object scale = field.get(graphicsDevice);
-                if (scale instanceof Integer && ((Integer) scale).intValue() == 2) {
-                    isRetina = true;
-                }
-            }
-        } catch (Exception e) {
-            //bad practice - but we just want to suppress the exception
-        }
-
-        return isRetina;
-    }
-    */
 
     public void mouseClicked(MouseEvent e) {
         Tile tempTile = (Tile)e.getSource();
@@ -129,5 +105,28 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
     public void mousePressed(MouseEvent e) {}
 
     public void mouseEntered(MouseEvent e) {}
+
+    /*
+    private boolean isRetina() {
+        boolean isRetina = false;
+        GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+        try {
+            Field field = graphicsDevice.getClass().getDeclaredField("scale");
+
+            if (field != null) {
+                field.setAccessible(true);
+                Object scale = field.get(graphicsDevice);
+                if (scale instanceof Integer && ((Integer) scale).intValue() == 2) {
+                    isRetina = true;
+                }
+            }
+        } catch (Exception e) {
+            //bad practice - but we just want to suppress the exception
+        }
+
+        return isRetina;
+    }
+    */
 
 }

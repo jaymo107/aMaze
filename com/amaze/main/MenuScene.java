@@ -1,8 +1,7 @@
 package com.amaze.main;
-import com.amaze.levelmaker.*;
 import org.jsfml.audio.Music;
-import org.jsfml.graphics.*;
-import org.jsfml.window.Keyboard;
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -57,7 +56,7 @@ public class MenuScene extends Scene {
     public void arrowKeyUp() {
         if(currentButton == 0) {
             buttons[currentButton].setSelected(true);
-        } else if (currentButton <= NUMBER_OF_ITEMS) {
+        } else {
             buttons[currentButton].setSelected(false);
             buttons[--currentButton].setSelected(true);
         }
