@@ -1,13 +1,12 @@
 package com.amaze.main;
 
-import org.jsfml.graphics.*;
+import java.io.IOException;
+import java.nio.file.Paths;
 
 /**
  * This class holds appropriate information about play button.
  */
 public class ExitButton extends Button {
-
-    private Window window;
 
     /**
      * Construct a button with following parameters:
@@ -16,21 +15,24 @@ public class ExitButton extends Button {
      * @param yCord - y-coordinate of the button
      * @param width - width of the button
      * @param height - height of the button
-     * @param color - color of the button
      * @param window - reference to the main window
      */
-    public ExitButton(float xCord, float yCord, float width, float height, Color color, Window window, MenuScene menu) {
+    public ExitButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
+        super(xCord, yCord, width, height, window, menu);
 
-        super(xCord, yCord, width, height, color, window, menu);
+        getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/exit.png"));
+        getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/exitsel.png"));
 
-        this.window = window;
+        this.setTexture(getDefaultIcon());
     }
 
     /**
      * This function closes main window when it is invoked.
      */
-    public void closeWindow() {
-
-        window.close();
+    public void performAction() {
+        System.out.println("Exit Button Pressed");
+        getWindow().close();
+        System.exit(0);
     }
+
 }

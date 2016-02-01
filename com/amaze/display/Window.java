@@ -42,7 +42,7 @@ public class Window extends RenderWindow{
         //Instantiate
         this.screenWidth = resolutionX;
         this.screenHeight = resolutionY;
-        drawList = new ArrayList<Tile>();
+        drawList = new ArrayList<>();
 
         // Creating a new window
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
@@ -72,14 +72,18 @@ public class Window extends RenderWindow{
             // the user pressed the close button
             for (Event event : this.pollEvents()) {
                 //Different behaviour depending on
-				if (event.type == Event.Type.CLOSED) close();
-				if (event.type == Event.Type.KEY_PRESSED) {
-					Keyboard.Key k = event.asKeyEvent().key;
-					if (k == Keyboard.Key.UP) drawList.get(0).deltaY(-10F);
-					else if (k == Keyboard.Key.DOWN) drawList.get(0).deltaY(10F);
-					else if (k == Keyboard.Key.LEFT) drawList.get(0).deltaX(-10F);
-					else if (k == Keyboard.Key.RIGHT) drawList.get(0).deltaX(10F);
-					else sound.play();
+				switch (event.type) {
+					case CLOSED: close(); break;
+					case KEY_PRESSED:
+						Keyboard.Key k = event.asKeyEvent().key;
+						switch (k) {
+							case UP: drawList.get(0).deltaY(-10F); break;
+							case DOWN: drawList.get(0).deltaY(10F); break;
+							case LEFT: drawList.get(0).deltaX(-10F); break;
+							case RIGHT: drawList.get(0).deltaX(10F); break;
+							default: sound.play(); break;
+						}
+						break;
 				}
             }
         }

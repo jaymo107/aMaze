@@ -91,12 +91,10 @@ public class Tile extends RectangleShape{
 
     public void deltaX(float x){
         this.move(x,0);
-
     }
 
     public void deltaY(float y){
         this.move(0,y);
-
     }
 
 }

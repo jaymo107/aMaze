@@ -1,11 +1,11 @@
 package com.amaze.main;
-import org.jsfml.audio.Sound;
-import org.jsfml.audio.SoundBuffer;
-import org.jsfml.graphics.*;
-import org.jsfml.system.Vector2i;
-import org.jsfml.window.Keyboard;
+import org.jsfml.audio.Music;
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.Texture;
 import org.jsfml.window.event.Event;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
@@ -13,13 +13,13 @@ import java.nio.file.Paths;
  */
 public class GameScene extends Scene {
 
-    private Window window;              //Object reference to the window class.
-
     private int blockSize;              //Size of each block. W and H
     private int blockX;                 //Number of blocks in X direction
     private int blockY;                 //Number of blocks in Y direction
     private Tile tileMap[][];           //Represents the maze
     private Avatar player;              //Represents the player(avatar)
+
+    private Music music;                //Background music
 
     /**
      * This constructor creates an instance of a GameScene.
@@ -31,9 +31,8 @@ public class GameScene extends Scene {
      *                   an instance of the GameScene.
      */
 
-    public GameScene(String sceneTitle, Window window,int resolution, int blocks,
-                     int blockSize, Tile.BlockType[][] level) throws Exception{
-        super(sceneTitle);
+    public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
+        super(sceneTitle, window);
 
         this.blockSize = blockSize;
 
@@ -45,13 +44,9 @@ public class GameScene extends Scene {
 
         /* Cache textures before we start using them in order to increase performance */
         Texture tileTexture[] = new Texture[7];
-        tileTexture[0] = new Texture();
-        tileTexture[1] = new Texture();
-        tileTexture[2] = new Texture();
-        tileTexture[3] = new Texture();
-        tileTexture[4] = new Texture();
-        tileTexture[5] = new Texture();
-        tileTexture[6] = new Texture();
+        for (int i = 0; i < tileTexture.length; i++) {
+            tileTexture[i] = new Texture();
+        }
 
         tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
         tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
@@ -62,13 +57,19 @@ public class GameScene extends Scene {
         tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
 
         /* Create new instances of tiles */
-        for(int j = 0; j < blocks; j++){
-            for(int i = 0; i < blocks; i++){
+        for (int j = 0; j < blocks; j++) {
+            for (int i = 0; i < blocks; i++) {
                 tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j], tileTexture);
             }
         }
 
-        this.window = window;
+        /* Load background music */
+        music = new Music();
+        try {
+            music.openFromFile(Paths.get("res/music/gs2.wav"));
+        } catch (IOException e) {
+            System.out.println("There was a problem loading the background music.");
+        }
     }
 
     /**(
@@ -96,29 +97,22 @@ public class GameScene extends Scene {
      * @param window - reference to the main window.
      */
     public void display(RenderWindow window) {
-
-        try{
-         /*Once loaded we play music*/
-            Sound s = loadSound();
-            s.play();
-        }catch(Exception e){
-            System.out.println("There was a problem loading sound");
-        }
-
         setRunning(true);
         window.setTitle(getSceneTitle());
-        while(this.isRunning()) try {
+        music.play();
+        music.setLoop(true);
 
+        while(this.isRunning()) try {
             window.clear(Color.WHITE);
             drawGraphics(window);
 
             for (Event event : window.pollEvents()) {
-                this.executeEvent(event);
+                executeEvent(event);
             }
             window.display();
 
         }catch (Exception e) {
-            this.setRunning(false);
+            setRunning(false);
         }
     }
 
@@ -133,20 +127,21 @@ public class GameScene extends Scene {
      * @param event - user event.
      */
     public void executeEvent(Event event) {
-
         switch(event.type) {
             case CLOSED:
-                window.close();
+                getWindow().close();
+                System.exit(0);
                 break;
             case KEY_PRESSED:
-                if(event.asKeyEvent().key == Keyboard.Key.UP){
-                    player.move(0,-5);
-                }else if(event.asKeyEvent().key == Keyboard.Key.DOWN){
-                    player.move(0,5);
-                }else if(event.asKeyEvent().key == Keyboard.Key.LEFT){
-                    player.move(-5,0);
-                }else if(event.asKeyEvent().key == Keyboard.Key.RIGHT){
-                    player.move(5,0);
+                switch (event.asKeyEvent().key) {
+                    case UP: player.move(0,-5); break;
+                    case DOWN: player.move(0,5); break;
+                    case LEFT: player.move(-5,0); break;
+                    case RIGHT: player.move(5,0); break;
+                    case ESCAPE:
+                        getWindow().setScene(0);
+                        getWindow().getScene(0).display(getWindow());
+                        break;
                 }
                 break;
         }
@@ -159,9 +154,8 @@ public class GameScene extends Scene {
      */
 
     public void drawGraphics(RenderWindow window) {
-
-        for(int j = 0; j < blockY; j++){
-            for(int i = 0; i < blockX; i++){
+        for (int j = 0; j < blockY; j++) {
+            for (int i = 0; i < blockX; i++) {
                 window.draw(tileMap[i][j]);
             }
         }
@@ -170,24 +164,6 @@ public class GameScene extends Scene {
         window.draw(player);
     }
 
-
-    /**
-     * Load sound gs2
-     * @return Sound object
-     * @throws Exception
-     */
-
-    public Sound loadSound() throws Exception{
-
-        //Create the sound buffer and load a sound from a file
-        SoundBuffer soundBuffer = new SoundBuffer();
-        soundBuffer.loadFromFile(Paths.get("res/music/gs2.wav"));
-        Sound sound = new Sound();
-        sound.setBuffer(soundBuffer);
-        sound.setLoop(true);
-        System.out.println("Sound duration: " + soundBuffer.getDuration().asSeconds() + " seconds");
-        return sound;
-    }
 }
 
 
