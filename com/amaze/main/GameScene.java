@@ -171,6 +171,44 @@ public class GameScene extends Scene {
 
     }
 
+
+    /**
+     * Generates a new map
+     * @param window
+     * @param blocks
+     * @param blockSize
+     * @param level
+     * @throws Exception
+     */
+    public void loadNewTileMap(Window window, int blocks, int blockSize,Tile.BlockType[][] level) throws Exception{
+        this.blockSize = blockSize;
+
+        blockX = level.length;
+        blockY = level.length;
+        tileMap = new Tile[blocks][blocks];
+
+        /* Cache textures before we start using them in order to increase performance */
+        Texture tileTexture[] = new Texture[7];
+        for (int i = 0; i < tileTexture.length; i++) {
+            tileTexture[i] = new Texture();
+        }
+
+        tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
+        tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
+        tileTexture[2].loadFromFile(Paths.get("res/images/door.png"));
+        tileTexture[3].loadFromFile(Paths.get("res/images/blue.png"));
+        tileTexture[4].loadFromFile(Paths.get("res/images/blue.png"));
+        tileTexture[5].loadFromFile(Paths.get("res/images/void.png"));
+        tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
+
+        /* Create new instances of tiles */
+        for (int j = 0; j < blocks; j++) {
+            for (int i = 0; i < blocks; i++) {
+                tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j], tileTexture);
+            }
+        }
+    }
+
 }
 
 
