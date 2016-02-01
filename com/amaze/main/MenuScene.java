@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
- * This class will handle the menu and buttons associated with it.
+ * This class will handle the menu and buttons associated with it
  */
 public class MenuScene extends Scene {
 
