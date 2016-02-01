@@ -3,6 +3,7 @@ import org.jsfml.audio.Music;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Texture;
+import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -68,7 +69,7 @@ public class GameScene extends Scene {
         try {
             music.openFromFile(Paths.get("res/music/gs2.wav"));
         } catch (IOException e) {
-            System.out.println("There was a problem loading the background music.");
+            System.out.println("There was a problem loading the background music \n Error: " + e);
         }
     }
 
@@ -145,6 +146,40 @@ public class GameScene extends Scene {
                 }
                 break;
         }
+    }
+
+    //Need to get the pixel position of the player and check the side of the avatar with the corresponding button pressed
+    //and if the side is on another block then rebound in opposite dir.
+    public void detectCollision() {
+        //Find the block location from the float X&Y
+        int playerX = blockX / (int)getPlayerX();
+        int playerY = blockY / (int)getPlayerY();
+
+        //Get the block the player is behind
+        Tile.BlockType type = tileMap[playerX][playerY].getTileType();
+
+        //Test the BlockType the player is on and see if its allowed on that block.
+        switch (type) {
+            case WALL:
+
+        }
+
+    }
+
+    /**
+     * Function to return the block X of the player.
+     */
+    public float getPlayerX() {
+        Vector2f res = player.getPosition();
+        return res.x;
+    }
+
+    /**
+     * Function to return the block y of the player.
+     */
+    public float getPlayerY() {
+        Vector2f res = player.getPosition();
+        return res.y;
     }
 
     /**
