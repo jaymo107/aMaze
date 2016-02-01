@@ -112,7 +112,10 @@ public class MenuScene extends Scene {
                 switch (event.asKeyEvent().key) {
                     case UP: arrowKeyUp(); break;
                     case DOWN: arrowKeyDown(); break;
-                    case RETURN: enterPressed(); break;
+                    case RETURN:
+                        getWindow().setScene(1);
+                        getWindow().getScene(1).display(getWindow());
+                        //enterPressed(); break;
                 }
                 break;
         }

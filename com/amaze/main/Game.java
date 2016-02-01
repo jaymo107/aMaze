@@ -18,9 +18,9 @@ public class Game extends Scene {
     int blockY;
     Tile tileMap[][];
 
-    public Game(int resolutionX, int resolutionY, int blocksX, int blocksY, int blockSize, Tile.BlockType[][] level, Window wnd) throws IOException{
+    public Game(int resolutionX, int resolutionY, int blocksX, int blocksY, int blockSize, Tile.BlockType[][] level, Window wnd) throws IOException {
         //super(resolutionX,resolutionY,blocksX,blocksY);
-        super("hi",wnd);
+        super("hi", wnd);
         this.blockSize = blockSize;
 
         blockX = level.length;
@@ -28,13 +28,6 @@ public class Game extends Scene {
 
         tileMap = new Tile[blocksX][blocksY];
 
-        for(int j = 0; j < blocksY; j++){
-            for(int i = 0; i < blocksX; i++){
-                //tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j]);
-                //this.addScene(tileMap[i][j]);
-                //wnd.draw(tileMap[i][j]);
-            }
-        }
     }
 
     /**(

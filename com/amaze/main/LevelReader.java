@@ -57,7 +57,7 @@ public class LevelReader
             }
         }
 
-        System.out.println(Arrays.deepToString(level));// <- Uncomment to see 2D array
+        //System.out.println(Arrays.deepToString(level));// <- Uncomment to see 2D array
     }
 
     //	Converts string to BlockType form. If the string is invalid, type PATH will be returned
@@ -77,5 +77,7 @@ public class LevelReader
     public Tile.BlockType[][] getLevel(){ return level; }
 
     public int getSizeOfMaze(){ return sizeOfMaze; }
+
+
 
 }

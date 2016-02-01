@@ -20,12 +20,12 @@ class Driver{
         Window window = new Window(WINDOW_SIZE, WINDOW_SIZE);
         window.setFramerateLimit(60);
 
-        //Create Main Menu
+        //Create Scenes
         MenuScene menu = new MenuScene("Main Menu",window);
-
+        LevelMenuScene levelMenu = new LevelMenuScene("Level Menu", window);
         GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), BLOCK_SIZE, level.getLevel());
 
-        window.addScenes(menu, game);
+        window.addScenes(menu, levelMenu, game);
 
         //Start Displaying
         window.displayThis();
