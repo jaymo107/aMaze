@@ -25,6 +25,7 @@ class Driver{
         LevelMenuScene levelMenu = new LevelMenuScene("Level Menu", window);
         GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), BLOCK_SIZE, level.getLevel());
 
+        //
         window.addScenes(menu, levelMenu, game);
 
         //Start Displaying

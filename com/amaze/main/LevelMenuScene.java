@@ -1,9 +1,6 @@
 package com.amaze.main;
 
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.Font;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Text;
+import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
 
@@ -13,23 +10,28 @@ import java.nio.file.Paths;
 public class LevelMenuScene extends Scene {
 
     Text userLevel;
+    Background background;
+
     int userLevelNumber = 0;
 
-    public LevelMenuScene(String sceneTitle, Window window) {
+    public LevelMenuScene(String sceneTitle, Window window) throws IOException {
 
         super(sceneTitle,window);
 
+        //Create background
+        background = new Background(window.getScreenWidth(), window.getScreenHeight());
+
         //Create Font
-        Font arial = new Font();
+        Font maze = new Font();
         try {
-            arial.loadFromFile(Paths.get("res/fonts/Arial.ttf"));
+            maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
         } catch (IOException e){
 
             System.out.println("Could not load the font!");
         }
 
         //Create text
-        userLevel = new Text("Level: 1", arial, 48);
+        userLevel = new Text("Level: 1", maze, 100);
         userLevel.setColor(Color.BLACK);
         userLevel.setStyle(Text.BOLD);
         userLevel.setOrigin((window.getScreenWidth()/2)*-1, (window.getScreenHeight()/2)*-1);
@@ -113,6 +115,7 @@ public class LevelMenuScene extends Scene {
 
     public void draw(RenderWindow window) {
 
+        window.draw(background);
         window.draw(userLevel);
     }
 }
