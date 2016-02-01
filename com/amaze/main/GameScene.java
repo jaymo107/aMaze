@@ -18,7 +18,7 @@ public class GameScene extends Scene {
     private int blockY;                 //Number of blocks in Y direction
     private Tile tileMap[][];           //Represents the maze
     private Avatar player;              //Represents the player(avatar)
-
+    private Battery battery;            //
     private Music music;                //Background music
 
     /**
@@ -62,6 +62,9 @@ public class GameScene extends Scene {
                 tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j], tileTexture);
             }
         }
+
+        /* Create instance of battery */
+        battery = new Battery(window.getScreenHeight(),window.getScreenHeight());
 
         /* Load background music */
         music = new Music();
@@ -162,6 +165,10 @@ public class GameScene extends Scene {
 
         //Draw the player
         window.draw(player);
+
+        //Draw the battery
+        window.draw(battery);
+
     }
 
 }
