@@ -135,7 +135,11 @@ public class GameScene extends Scene {
                 break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
-                    case UP: player.move(0,-5); break;
+                    case UP:
+                        player.move(0,-5);
+                        if(detectCollision())
+                            reboundPlayer("DOWN");
+                        break;
                     case DOWN: player.move(0,5); break;
                     case LEFT: player.move(-5,0); break;
                     case RIGHT: player.move(5,0); break;
@@ -150,7 +154,7 @@ public class GameScene extends Scene {
 
     //Need to get the pixel position of the player and check the side of the avatar with the corresponding button pressed
     //and if the side is on another block then rebound in opposite dir.
-    public void detectCollision() {
+    public boolean detectCollision() {
         //Find the block location from the float X&Y
         int playerX = blockX / (int)getPlayerX();
         int playerY = blockY / (int)getPlayerY();
@@ -159,11 +163,32 @@ public class GameScene extends Scene {
         Tile.BlockType type = tileMap[playerX][playerY].getTileType();
 
         //Test the BlockType the player is on and see if its allowed on that block.
-        switch (type) {
-            case WALL:
-
+        if(type == Tile.BlockType.WALL) {
+            return true;
+        } else {
+            return false;
         }
+    }
 
+    public void reboundPlayer(String dir) {
+
+        switch(dir) {
+            case "UP":
+                player.move(0,-5);
+                break;
+            case "DOWN":
+                player.move(0,5);
+                break;
+            case "LEFT":
+                player.move(-5,0);
+                break;
+            case "RIGHT":
+                player.move(5,0);
+                break;
+            default:
+                System.out.println("Please select a direction defined.");
+                break;
+        }
     }
 
     /**
