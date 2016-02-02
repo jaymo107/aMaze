@@ -18,7 +18,7 @@ public class GameScene extends Scene {
     private int blockY;                 //Number of blocks in Y direction
     private Tile tileMap[][];           //Represents the maze
     private Avatar player;              //Represents the player(avatar)
-
+    //private Battery battery;            //
     private Music music;                //Background music
 
     /**
@@ -62,6 +62,9 @@ public class GameScene extends Scene {
                 tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j], tileTexture);
             }
         }
+
+        /* Create instance of battery */
+        //battery = new Battery(window.getScreenHeight(),window.getScreenHeight());
 
         /* Load background music */
         music = new Music();
@@ -162,6 +165,48 @@ public class GameScene extends Scene {
 
         //Draw the player
         window.draw(player);
+
+        //Draw the battery
+        //window.draw(battery);
+
+    }
+
+
+    /**
+     * Generates a new map
+     * @param window
+     * @param blocks
+     * @param blockSize
+     * @param level
+     * @throws Exception
+     */
+    public void loadNewTileMap(Window window, int blocks, int blockSize,Tile.BlockType[][] level) throws Exception{
+        this.blockSize = blockSize;
+
+        blockX = level.length;
+        blockY = level.length;
+        tileMap = new Tile[blocks][blocks];
+
+        /* Cache textures before we start using them in order to increase performance */
+        Texture tileTexture[] = new Texture[7];
+        for (int i = 0; i < tileTexture.length; i++) {
+            tileTexture[i] = new Texture();
+        }
+
+        tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
+        tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
+        tileTexture[2].loadFromFile(Paths.get("res/images/door.png"));
+        tileTexture[3].loadFromFile(Paths.get("res/images/blue.png"));
+        tileTexture[4].loadFromFile(Paths.get("res/images/blue.png"));
+        tileTexture[5].loadFromFile(Paths.get("res/images/void.png"));
+        tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
+
+        /* Create new instances of tiles */
+        for (int j = 0; j < blocks; j++) {
+            for (int i = 0; i < blocks; i++) {
+                tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j], tileTexture);
+            }
+        }
     }
 
 }

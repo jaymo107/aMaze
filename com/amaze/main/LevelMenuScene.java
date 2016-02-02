@@ -11,6 +11,9 @@ public class LevelMenuScene extends Scene {
 
     Text userLevel;
     Background background;
+    RectangleShape textBackround;
+    Texture backgroundImage = new Texture();
+
 
     int userLevelNumber = 0;
 
@@ -30,11 +33,20 @@ public class LevelMenuScene extends Scene {
             System.out.println("Could not load the font!");
         }
 
+        //Vector2f position = new Vector2f(xCord, yCord);
+        Vector2f size = new Vector2f(window.getScreenWidth()/1.2F, window.getScreenHeight()/5);
+        textBackround = new RectangleShape(size);
+        textBackround.setPosition(window.getScreenWidth()/12F, window.getScreenHeight()/2.5F);
+
+
+        backgroundImage.loadFromFile(Paths.get("res/menuGraphics/Wall.png"));
+        textBackround.setTexture(backgroundImage);
+
         //Create text
-        userLevel = new Text("Level: 1", maze, 100);
+        userLevel = new Text("Level 1", maze, 170);
         userLevel.setColor(Color.BLACK);
         userLevel.setStyle(Text.BOLD);
-        userLevel.setOrigin((window.getScreenWidth()/2)*-1, (window.getScreenHeight()/2)*-1);
+        userLevel.setOrigin((window.getScreenWidth()/9.5F) * -1, (window.getScreenHeight()/3F) * -1);
 
         System.out.println(window.getScreenHeight());
         System.out.println(window.getScreenWidth());
@@ -66,7 +78,7 @@ public class LevelMenuScene extends Scene {
      */
     public void arrowKeyUp() {
         this.userLevelNumber++;
-        userLevel.setString("Level: " + userLevelNumber);
+        userLevel.setString("Level " + userLevelNumber);
     }
 
     /**
@@ -76,7 +88,7 @@ public class LevelMenuScene extends Scene {
      */
     public void arrowKeyDown() {
         this.userLevelNumber--;
-        userLevel.setString("Level: " + userLevelNumber);
+        userLevel.setString("Level " + userLevelNumber);
     }
 
     /**
@@ -116,6 +128,7 @@ public class LevelMenuScene extends Scene {
     public void draw(RenderWindow window) {
 
         window.draw(background);
+        window.draw(textBackround);
         window.draw(userLevel);
     }
 }

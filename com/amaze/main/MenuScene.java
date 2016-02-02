@@ -113,9 +113,9 @@ public class MenuScene extends Scene {
                     case UP: arrowKeyUp(); break;
                     case DOWN: arrowKeyDown(); break;
                     case RETURN:
-                        getWindow().setScene(1);
-                        getWindow().getScene(1).display(getWindow());
-                        //enterPressed(); break;
+//                        getWindow().setScene(1);
+//                        getWindow().getScene(1).display(getWindow());
+                        enterPressed(); break;
                 }
                 break;
         }

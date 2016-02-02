@@ -14,6 +14,7 @@ class Driver{
 
         // Load Level and work out block size dynamically
         LevelReader level = new LevelReader();
+        level.loadMap("1");
         BLOCK_SIZE = WINDOW_SIZE / level.getSizeOfMaze();
 
         // Create new window and set FPS limit to 60
@@ -25,11 +26,13 @@ class Driver{
         LevelMenuScene levelMenu = new LevelMenuScene("Level Menu", window);
         GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), BLOCK_SIZE, level.getLevel());
 
-        //
+        level.loadMap("3");
+        BLOCK_SIZE = WINDOW_SIZE / level.getSizeOfMaze();
+        game.loadNewTileMap(window,level.getSizeOfMaze(),BLOCK_SIZE,level.getLevel());
+
         window.addScenes(menu, levelMenu, game);
 
         //Start Displaying
         window.displayThis();
     }
-
 }
