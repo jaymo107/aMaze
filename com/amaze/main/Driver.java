@@ -10,10 +10,11 @@ class Driver{
     private static int WINDOW_SIZE; //Resolution(number of pixels) on X/Y axis
 
     public static void main(String[] args) throws Exception{
-        WINDOW_SIZE = 780;
+        WINDOW_SIZE = 800;
 
         // Load Level and work out block size dynamically
         LevelReader level = new LevelReader();
+        level.loadMap("1");
         BLOCK_SIZE = WINDOW_SIZE / level.getSizeOfMaze();
 
         // Create new window and set FPS limit to 60
@@ -24,6 +25,10 @@ class Driver{
         MenuScene menu = new MenuScene("Main Menu",window);
 
         GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), BLOCK_SIZE, level.getLevel());
+
+        level.loadMap("3");
+        BLOCK_SIZE = WINDOW_SIZE / level.getSizeOfMaze();
+        game.loadNewTileMap(window,level.getSizeOfMaze(),BLOCK_SIZE,level.getLevel());
 
         window.addScenes(menu, game);
 

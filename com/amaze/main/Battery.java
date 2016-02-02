@@ -11,7 +11,7 @@ import java.nio.file.Paths;
  * Represents a battery
  */
 public class Battery extends RectangleShape {
-    private int level = 7; //Ranges from 0 to 7
+    private int level = 9; //Ranges from 0 to 7
     private Texture texture;
 
     /**
@@ -23,7 +23,7 @@ public class Battery extends RectangleShape {
         this.setPosition(resX - 50,0 + 22);
         this.setSize(new Vector2f(50,30));
         this.texture = new Texture();
-        texture.loadFromFile(Paths.get("res/images/battery/battery2.png"));
+        texture.loadFromFile(Paths.get("res/images/battery/hdBattery.png"));
         this.setTexture(texture);
 
     }
@@ -57,7 +57,7 @@ public class Battery extends RectangleShape {
                 texture.loadFromFile(Paths.get("res/images/battery/battery7.png"));
                 break;
             default:
-                texture.loadFromFile(Paths.get("res/images/battery/battery7.png"));
+                texture.loadFromFile(Paths.get("res/images/battery/hdBattery.png"));
                 break;
         }
         this.setTexture(texture);
