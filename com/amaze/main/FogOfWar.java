@@ -10,7 +10,7 @@ public class FogOfWar {
   private Image fog;
   private int size;
   private Window window;
-  private Clock clock;
+  private long elapsedTime;
   /**
    * The amount of time before it drains
    */
@@ -23,6 +23,7 @@ public class FogOfWar {
     this.size = size;
     this.window = window;
     fog = new Image();
+    elapsedTime = 0;
   }
   
   public void increase(){
@@ -37,7 +38,18 @@ public class FogOfWar {
    * The function which will automatically drain the battery
    */
   public void drain(Clock clock){
-    System.out.println("hi"+clock.getElapsedTime());
+    /**
+     * update the elapsed time
+     */
+    this.elapsedTime = clock.getElapsedTime().asMilliseconds();
+    
+    //check if elapsed time is greater than the trigger
+    if(this.elapsedTime >= this.drainTime){
+      //set the elapsed time to 0 and reset the clock
+      this.elapsedTime = 0;
+      clock.restart();
+    }
+    System.out.println(elapsedTime);
   }
   
   
