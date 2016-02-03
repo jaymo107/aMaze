@@ -3,6 +3,7 @@ import org.jsfml.audio.Music;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Texture;
+import org.jsfml.system.Clock;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -18,8 +19,9 @@ public class GameScene extends Scene {
     private int blockY;                 //Number of blocks in Y direction
     private Tile tileMap[][];           //Represents the maze
     private Avatar player;              //Represents the player(avatar)
-
+    private Clock clock;
     private Music music;                //Background music
+    private FogOfWar fog;
 
     /**
      * This constructor creates an instance of a GameScene.
@@ -70,6 +72,9 @@ public class GameScene extends Scene {
         } catch (IOException e) {
             System.out.println("There was a problem loading the background music.");
         }
+         
+        fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow());
+        
     }
 
     /**(
@@ -101,10 +106,15 @@ public class GameScene extends Scene {
         window.setTitle(getSceneTitle());
         music.play();
         music.setLoop(true);
+        
+        clock = new Clock();
 
         while(this.isRunning()) try {
             window.clear(Color.WHITE);
             drawGraphics(window);
+            
+            fog.drain(clock);
+            System.out.println(clock.getElapsedTime());
 
             for (Event event : window.pollEvents()) {
                 executeEvent(event);
