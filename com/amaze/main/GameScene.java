@@ -65,6 +65,7 @@ public class GameScene extends Scene {
 
         /* Create instance of battery */
         battery = new Battery(window.getScreenHeight(),window.getScreenHeight());
+        battery.changeChargeLevel(6);
 
         /* Load background music */
         music = new Music();
@@ -156,7 +157,7 @@ public class GameScene extends Scene {
      * @param window - reference to the main window.
      */
 
-    public void drawGraphics(RenderWindow window) {
+    public void drawGraphics(RenderWindow window) throws Exception{
         for (int j = 0; j < blockY; j++) {
             for (int i = 0; i < blockX; i++) {
                 window.draw(tileMap[i][j]);
