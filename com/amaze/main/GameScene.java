@@ -137,12 +137,32 @@ public class GameScene extends Scene {
                 switch (event.asKeyEvent().key) {
                     case UP:
                         player.move(0,-5);
-                        if(detectCollision())
+                        if(detectCollision()) {
+                            System.out.println("Detected Collision");
                             reboundPlayer("DOWN");
+                        }
                         break;
-                    case DOWN: player.move(0,5); break;
-                    case LEFT: player.move(-5,0); break;
-                    case RIGHT: player.move(5,0); break;
+                    case DOWN:
+                        player.move(0,5);
+                        if(detectCollision()) {
+                            System.out.println("Detected Collision");
+                            reboundPlayer("UP");
+                        }
+                        break;
+                    case LEFT:
+                        player.move(-5,0);
+                        if(detectCollision()) {
+                            System.out.println("Detected Collision");
+                            reboundPlayer("RIGHT");
+                        }
+                        break;
+                    case RIGHT:
+                        player.move(5,0);
+                        if(detectCollision()) {
+                            System.out.println("Detected Collision");
+                            reboundPlayer("LEFT");
+                        }
+                        break;
                     case ESCAPE:
                         getWindow().setScene(0);
                         getWindow().getScene(0).display(getWindow());
@@ -155,36 +175,38 @@ public class GameScene extends Scene {
     //Need to get the pixel position of the player and check the side of the avatar with the corresponding button pressed
     //and if the side is on another block then rebound in opposite dir.
     public boolean detectCollision() {
+
+        int playerBuffer = 1;
+
         //Find the block location from the float X&Y
-        int playerX = blockX / (int)getPlayerX();
-        int playerY = blockY / (int)getPlayerY();
+        int playerX = (blockX / (int)getPlayerX()) - playerBuffer;
+        int playerY = (blockY / (int)getPlayerY()) - playerBuffer;
+        System.out.println("Player x: " + playerX + " - Player y: " + playerY);
 
         //Get the block the player is behind
         Tile.BlockType type = tileMap[playerX][playerY].getTileType();
+        System.out.println("Player is on block: " + type);
 
         //Test the BlockType the player is on and see if its allowed on that block.
-        if(type == Tile.BlockType.WALL) {
-            return true;
-        } else {
-            return false;
+        switch(type) {
+            case WALL: case DOOR: case START: case FINISH: case VOID: case CHARGE:
+                return true;
+            case FLOOR:
+                return false;
+            default:
+                System.out.print("Block must have type defined");
+                break;
         }
+        return false;
     }
 
     public void reboundPlayer(String dir) {
 
         switch(dir) {
-            case "UP":
-                player.move(0,-5);
-                break;
-            case "DOWN":
-                player.move(0,5);
-                break;
-            case "LEFT":
-                player.move(-5,0);
-                break;
-            case "RIGHT":
-                player.move(5,0);
-                break;
+            case "UP":player.move(0,-5); System.out.println("Rebounding up"); break;
+            case "DOWN":player.move(0,5); System.out.println("Rebounding down"); break;
+            case "LEFT":player.move(-5,0); System.out.println("Rebounding left"); break;
+            case "RIGHT":player.move(5,0); System.out.println("Rebounding right"); break;
             default:
                 System.out.println("Please select a direction defined.");
                 break;
