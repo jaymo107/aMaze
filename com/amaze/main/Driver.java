@@ -25,7 +25,7 @@ class Driver{
          * By doing this we don't need to allocate additional memory to store information about the game and level menu
          * right when the application is launched. It makes code much cleaner and is a good practice in general.
          *
-         * All functionality remain intact
+         * All functionality remains intact
          */
 
         //Start Displaying

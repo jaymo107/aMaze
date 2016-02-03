@@ -15,8 +15,11 @@ public class LevelMenuScene extends Scene {
     Texture backgroundImage = new Texture();
     Window window;
 
+    static final int MAX_LEVEL = 20;
+    static final int MIN_LEVEL = 1;
 
-    int userLevelNumber = 0;
+
+    int userLevelNumber = 1;
 
     public LevelMenuScene(String sceneTitle, Window window) throws IOException {
 
@@ -80,7 +83,15 @@ public class LevelMenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyUp() {
-        this.userLevelNumber++;
+
+        if(userLevelNumber < MAX_LEVEL) {
+
+            this.userLevelNumber++;
+        }
+        else {
+
+            this.userLevelNumber = MAX_LEVEL;
+        }
         userLevel.setString("Level " + userLevelNumber);
     }
 
@@ -90,7 +101,15 @@ public class LevelMenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyDown() {
-        this.userLevelNumber--;
+
+        if(userLevelNumber == MIN_LEVEL) {
+
+            this.userLevelNumber = MIN_LEVEL;
+        }
+        else {
+
+            this.userLevelNumber--;
+        }
         userLevel.setString("Level " + userLevelNumber);
     }
 
