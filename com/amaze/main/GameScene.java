@@ -113,9 +113,8 @@ public class GameScene extends Scene {
             window.clear(Color.WHITE);
             drawGraphics(window);
             
-            fog.drain(clock);
-            System.out.println(clock.getElapsedTime());
-
+            fog.update(clock);
+            
             for (Event event : window.pollEvents()) {
                 executeEvent(event);
             }

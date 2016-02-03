@@ -37,7 +37,7 @@ public class FogOfWar {
   /**
    * The function which will automatically drain the battery
    */
-  public void drain(Clock clock){
+  public void update(Clock clock){
     /**
      * update the elapsed time
      */
