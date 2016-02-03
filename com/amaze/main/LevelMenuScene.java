@@ -13,6 +13,7 @@ public class LevelMenuScene extends Scene {
     Background background;
     RectangleShape textBackround;
     Texture backgroundImage = new Texture();
+    Window window;
 
 
     int userLevelNumber = 0;
@@ -20,6 +21,8 @@ public class LevelMenuScene extends Scene {
     public LevelMenuScene(String sceneTitle, Window window) throws IOException {
 
         super(sceneTitle,window);
+
+        this.window = window;
 
         //Create background
         background = new Background(window.getScreenWidth(), window.getScreenHeight());
@@ -96,11 +99,20 @@ public class LevelMenuScene extends Scene {
      * This function will check which button is currently selected.
      * Based on the button, a specific function will be invoked.
      */
-    public void enterPressed() {
+    public void enterPressed() throws Exception {
+
+        LevelReader level = new LevelReader();
+
+        level.loadMap(getUserLevelNumber());
+
+        Driver.BLOCK_SIZE = Driver.WINDOW_SIZE / level.getSizeOfMaze();
+
+        GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel());
+
+        window.addScenes(game);
+
         getWindow().setScene(2);
         getWindow().getScene(2).display(getWindow());
-
-
     }
 
     @Override
@@ -114,14 +126,20 @@ public class LevelMenuScene extends Scene {
                 switch (event.asKeyEvent().key) {
                     case UP: arrowKeyUp(); break;
                     case DOWN: arrowKeyDown(); break;
-                    case RETURN: enterPressed(); break;
+                    case RETURN:
+                        try {
+                            enterPressed();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
                 }
                 break;
         }
     }
-    public int getUserLevelNumber()
+    public String getUserLevelNumber()
     {
-        return userLevelNumber;
+        return String.valueOf(userLevelNumber);
     }
 
 

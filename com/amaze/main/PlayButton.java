@@ -8,6 +8,8 @@ import java.nio.file.Paths;
  */
 public class PlayButton extends Button {
 
+    Window window;
+
     /**
      * Construct a button with following parameters:
      *
@@ -20,6 +22,8 @@ public class PlayButton extends Button {
     public PlayButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
         super(xCord, yCord, width, height, window, menu);
 
+        this.window = window;
+
         getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/play.png"));
         getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/playsel.png"));
 
@@ -27,10 +31,20 @@ public class PlayButton extends Button {
     }
 
     /**
-     * This function changes the scene to GameScene when called.
+     * This function changes the scene to LevelMenuScene when called.
      */
     public void performAction() {
+
         System.out.println("Play Button Pressed");
+
+        try {
+
+            LevelMenuScene levelMenu = new LevelMenuScene("Level Menu", window);
+            window.addScenes(levelMenu);
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
         getWindow().setScene(1);
         getMenu().setRunning(false);
     }
