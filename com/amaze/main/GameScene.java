@@ -206,10 +206,10 @@ public class GameScene extends Scene {
     public void reboundPlayer(String dir) {
 
         switch(dir) {
-            case "UP":player.move(0,-5); System.out.println("Rebounding up"); break;
-            case "DOWN":player.move(0,5); System.out.println("Rebounding down"); break;
-            case "LEFT":player.move(-5,0); System.out.println("Rebounding left"); break;
-            case "RIGHT":player.move(5,0); System.out.println("Rebounding right"); break;
+            case "UP":player.move(0,-7); break;
+            case "DOWN":player.move(0,7); break;
+            case "LEFT":player.move(-7,0); break;
+            case "RIGHT":player.move(7,0); break;
             default:
                 System.out.println("Please select a direction defined.");
                 break;
