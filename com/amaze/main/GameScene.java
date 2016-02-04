@@ -43,7 +43,7 @@ public class GameScene extends Scene {
         blockY = level.length;
 
         tileMap = new Tile[blocks][blocks];
-        player = new Avatar(0,0);
+        player = new Avatar(0,0,blockSize);
 
         /* Cache textures before we start using them in order to increase performance */
         Texture tileTexture[] = new Texture[7];
