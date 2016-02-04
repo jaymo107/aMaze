@@ -23,7 +23,7 @@ class Driver{
         if(WINDOW_SIZE % BLOCK_SIZE > 0){
             //Then we cant display properly and therefore won't load the window!
             correctSize = false;
-            System.out.println("");
+            System.out.println("WRONG SIZE");
         }
 
         // Create new window and set FPS limit to 60

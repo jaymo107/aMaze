@@ -173,11 +173,11 @@ public class GameScene extends Scene {
         //Draw the battery
         window.draw(battery);
 
-        RectangleShape r = new RectangleShape(new Vector2f(500,0));
+        /*batteryRectangleShape r = new RectangleShape(new Vector2f(500,0));
         r.setFillColor(Color.YELLOW);
         r.setSize(new Vector2f(10,10));
-        r.setPosition(50,690);
-        window.draw(r);
+        r.setPosition(50,690);*/
+        //window.draw(r);
     }
 
 

@@ -22,8 +22,10 @@ public class Avatar extends RectangleShape {
      * @param startY Start Pixel Y location
      * @throws Exception If fails to load texture
      */
+
     public Avatar(int startX, int startY, int blockSize) throws Exception {
         level = 0;
+        score = 0;
         Texture t = new Texture();
         t.loadFromFile(Paths.get("res/face.png"));
         this.setSize(new Vector2f((float)(blockSize / 1.2),(float)(blockSize / 1.2)));
@@ -39,4 +41,15 @@ public class Avatar extends RectangleShape {
 
     }
 
+    public int getLevel(){
+        return level;
+    }
+
+    public int getScore(){
+        return score;
+    }
+
+    public void setScore(int score){
+        this.score = score;
+    }
 }
