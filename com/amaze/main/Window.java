@@ -103,6 +103,8 @@ public class Window extends RenderWindow{
      */
     public Displayable getScene(int i) { return scenes.get(i); }
 
+    public int getCurrentScene() {return currentScene; }
+
     /**
      * Sets scene variable which is responsible for selecting appropriate scene to be displayed.
      * @param i - used as an ArrayList index.

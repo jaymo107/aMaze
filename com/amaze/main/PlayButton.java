@@ -45,7 +45,7 @@ public class PlayButton extends Button {
 
             e.printStackTrace();
         }
-        getWindow().setScene(1);
+        window.setScene(window.getCurrentScene()+1);
         getMenu().setRunning(false);
     }
 

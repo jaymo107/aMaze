@@ -1,4 +1,7 @@
 package com.amaze.main;
+
+import com.amaze.MapMaker.MapMakerScene;
+
 /**
  * This class is responsible for creating an instance of aMaze.
  */
@@ -18,7 +21,13 @@ class Driver{
 
         //Create Menu Scene
         MenuScene menu = new MenuScene("Main Menu",window);
+
+        //LevelMenuScene levelMenu = new LevelMenuScene("Level Menu", window);
+        //GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel());
+        //MapMakerScene mapMaker = new MapMakerScene("Level Menu", window, 30, 30);
+
         window.addScenes(menu);
+
 
         /**
          * GameScene and LevelMenuScene calls are now happening in the appropriate places.

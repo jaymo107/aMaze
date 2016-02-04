@@ -87,8 +87,8 @@ public class MenuScene extends Scene {
                 b.performAction();
 
                 if (b instanceof PlayButton) {
-                    playing = true;
-                    music.stop();
+                    //playing = true;
+                    //music.stop();
                 }
             }
         }
