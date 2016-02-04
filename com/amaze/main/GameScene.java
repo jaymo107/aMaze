@@ -124,6 +124,9 @@ public class GameScene extends Scene {
      * @param event - user event.
      */
     public void executeEvent(Event event) {
+
+        int stepDepth = 5; //The distance the player is moved on keypress.
+
         switch(event.type) {
             case CLOSED:
                 getWindow().close();
@@ -132,19 +135,19 @@ public class GameScene extends Scene {
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
                     case UP:
-                        player.move(0,-5);
+                        player.move(0,-stepDepth);
                         detectionHandler(detectCollision(), "DOWN");
                         break;
                     case DOWN:
-                        player.move(0,5);
+                        player.move(0,stepDepth);
                         detectionHandler(detectCollision(), "UP");
                         break;
                     case LEFT:
-                        player.move(-5,0);
+                        player.move(-stepDepth,0);
                         detectionHandler(detectCollision(), "RIGHT");
                         break;
                     case RIGHT:
-                        player.move(5,0);
+                        player.move(stepDepth,0);
                         detectionHandler(detectCollision(), "LEFT");
                         break;
                     case ESCAPE:
@@ -198,17 +201,19 @@ public class GameScene extends Scene {
     }
 
     /**
-     * Function to rebound the player the amount of steps the player can move, given a direction.
+     * Function to rebound the player the amount of steps defined, given a direction.
      *
      * @param dir The direction the avatar should be rebounded.
      */
     public void reboundPlayer(String dir) {
 
+        int reboundStep = 7; //Number of steps to rebound the player.
+
         switch(dir) {
-            case "UP":player.move(0,-7); break;
-            case "DOWN":player.move(0,7); break;
-            case "LEFT":player.move(-7,0); break;
-            case "RIGHT":player.move(7,0); break;
+            case "UP":player.move(0,-reboundStep); break;
+            case "DOWN":player.move(0,reboundStep); break;
+            case "LEFT":player.move(-reboundStep,0); break;
+            case "RIGHT":player.move(reboundStep,0); break;
             default:
                 System.out.println("Please select a direction defined.");
                 break;
