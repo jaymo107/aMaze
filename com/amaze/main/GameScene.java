@@ -137,31 +137,19 @@ public class GameScene extends Scene {
                 switch (event.asKeyEvent().key) {
                     case UP:
                         player.move(0,-5);
-                        if(detectCollision()) {
-                            System.out.println("Detected Collision");
-                            reboundPlayer("DOWN");
-                        }
+                        detectionHandler(detectCollision(), "DOWN");
                         break;
                     case DOWN:
                         player.move(0,5);
-                        if(detectCollision()) {
-                            System.out.println("Detected Collision");
-                            reboundPlayer("UP");
-                        }
+                        detectionHandler(detectCollision(), "UP");
                         break;
                     case LEFT:
                         player.move(-5,0);
-                        if(detectCollision()) {
-                            System.out.println("Detected Collision");
-                            reboundPlayer("RIGHT");
-                        }
+                        detectionHandler(detectCollision(), "RIGHT");
                         break;
                     case RIGHT:
                         player.move(5,0);
-                        if(detectCollision()) {
-                            System.out.println("Detected Collision");
-                            reboundPlayer("LEFT");
-                        }
+                        detectionHandler(detectCollision(), "LEFT");
                         break;
                     case ESCAPE:
                         getWindow().setScene(0);
@@ -174,32 +162,40 @@ public class GameScene extends Scene {
 
     /**
      * Function to detect if the player has moved onto a tile.
-     * Todo: Instead of returning true/false, once fixed it should return the block that it is on and be handled individually.
      */
-    public boolean detectCollision() {
+    public Tile.BlockType detectCollision() {
 
         //Find the block location from the pixel X&Y
-        //int playerX = (blockSize / (int)getPlayerX());
-        //int playerY = (blockSize / (int)getPlayerY());
         int playerX = Math.round(getPlayerX() / blockSize);
         int playerY = Math.round(getPlayerY() / blockSize);
-        System.out.println("Player x: " + playerX + " : Player y: " + playerY + " Blocksize: " + blockSize);
 
-        //Get the block the player is behind
-        Tile.BlockType type = tileMap[playerX][playerY].getTileType();
-        System.out.println("Player is on block: " + type);
+        //Return the block the player is behind
+        return tileMap[playerX][playerY].getTileType();
+    }
 
-        //Test the BlockType the player is on and see if its allowed on that block.
+    /**
+     * Function to see what type of block you have collided with and act accordingly.
+     */
+    public void detectionHandler(Tile.BlockType type, String reboundDir) {
+
         switch(type) {
             case WALL:
-                return true;
-            case FLOOR: case START: case FINISH:case DOOR: case VOID: case CHARGE:
+                reboundPlayer(reboundDir);
+            case DOOR:
+                //TODO Insert the door handling code here.
+            case START:
+                //TODO Insert the door handling code here.
+            case FINISH:
+                //TODO Insert the door handling code here.
+            case VOID:
+                //TODO Insert the door handling code here.
+            case CHARGE:
+                //TODO Insert the door handling code here.
+            case FLOOR:
                 break;
             default:
-                System.out.print("Block must have type defined");
-                break;
+                System.out.println("Please select a defined BlockType.");
         }
-        return false;
     }
 
     /**
