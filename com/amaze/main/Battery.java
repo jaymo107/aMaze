@@ -20,7 +20,7 @@ public class Battery extends RectangleShape {
      * @param resY Size of window Y
      */
     public Battery(int resX, int resY) throws IOException{
-        this.setPosition(resX - (resX / 2) - 50,0 + resY - (resY / 2));
+        this.setPosition(resX - (resX / 2) - 50,resY - 70);
         this.setSize(new Vector2f(100,80));
         this.texture = new Texture();
         texture.loadFromFile(Paths.get("res/images/battery/1.png"));

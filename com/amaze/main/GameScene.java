@@ -1,8 +1,11 @@
 package com.amaze.main;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Texture;
+import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -170,6 +173,11 @@ public class GameScene extends Scene {
         //Draw the battery
         window.draw(battery);
 
+        RectangleShape r = new RectangleShape(new Vector2f(500,0));
+        r.setFillColor(Color.YELLOW);
+        r.setSize(new Vector2f(10,10));
+        r.setPosition(50,690);
+        window.draw(r);
     }
 
 
