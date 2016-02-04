@@ -43,12 +43,14 @@ public class MapMakerButton extends Button {
 
             MapMakerScene mapMaker = new MapMakerScene("Level Menu", window, 30, 30);
             window.addScenes(mapMaker);
+            window.setScene(window.getArrayList().indexOf(mapMaker));
+            getMenu().setRunning(false);
         } catch (IOException e) {
 
             e.printStackTrace();
         }
-        getWindow().setScene(window.getCurrentScene()+1);
-        getMenu().setRunning(false);
+//        getWindow().setScene(window.getCurrentScene()+1);
+//        getMenu().setRunning(false);
     }
 
 }

@@ -110,4 +110,6 @@ public class Window extends RenderWindow{
      * @param i - used as an ArrayList index.
      */
     public void setScene(int i) { currentScene = i; }
+
+    public ArrayList getArrayList() { return scenes;}
 }

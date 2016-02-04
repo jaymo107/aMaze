@@ -41,12 +41,14 @@ public class PlayButton extends Button {
 
             LevelMenuScene levelMenu = new LevelMenuScene("Level Menu", window);
             window.addScenes(levelMenu);
+            window.setScene(window.getArrayList().indexOf(levelMenu));
+            getMenu().setRunning(false);
         } catch (IOException e) {
 
             e.printStackTrace();
         }
-        window.setScene(window.getCurrentScene()+1);
-        getMenu().setRunning(false);
+//        window.setScene(window.getArrayList().indexOf(levelMenu));
+//        getMenu().setRunning(false);
     }
 
 }
