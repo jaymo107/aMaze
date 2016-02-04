@@ -121,10 +121,6 @@ public class GameScene extends Scene {
      * When event is performed (e.g - user clicks on the button) Appropriate function
      * should be called within this function to handle the event.
      *
-     * P.S I'm unsure whether or not it would be appropriate for this function to deal with
-     * collision and general game logic. This is primarily for input events (e.g arrow up key)
-     * Check MenuScene class for structure.
-     *
      * @param event - user event.
      */
     public void executeEvent(Event event) {
@@ -175,6 +171,9 @@ public class GameScene extends Scene {
 
     /**
      * Function to see what type of block you have collided with and act accordingly.
+     *
+     * @param reboundDir The direction the avatar should be rebounded.
+     * @param type The type of block that has been detected.
      */
     public void detectionHandler(Tile.BlockType type, String reboundDir) {
 
@@ -184,13 +183,13 @@ public class GameScene extends Scene {
             case DOOR:
                 //TODO Insert the door handling code here.
             case START:
-                //TODO Insert the door handling code here.
+                break;
             case FINISH:
-                //TODO Insert the door handling code here.
+                //TODO Insert the finish handling code here.
             case VOID:
-                //TODO Insert the door handling code here.
+                //TODO Insert the void handling code here.
             case CHARGE:
-                //TODO Insert the door handling code here.
+                //TODO Insert the charge handling code here.
             case FLOOR:
                 break;
             default:
