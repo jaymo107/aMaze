@@ -15,8 +15,8 @@ import java.nio.file.Paths;
 public class GameScene extends Scene {
 
     private int blockSize;              //Size of each block. W and H
-    private int blockX;                 //Number of blocks in X direction
-    private int blockY;                 //Number of blocks in Y direction
+    public static int blockX;                 //Number of blocks in X direction
+    public static int blockY;                 //Number of blocks in Y direction
     private Tile tileMap[][];           //Represents the maze
     private Avatar player;              //Represents the player(avatar)
     private Clock clock;
@@ -110,7 +110,7 @@ public class GameScene extends Scene {
         clock = new Clock();
 
         while(this.isRunning()) try {
-            window.clear(Color.WHITE);
+            window.clear(Color.BLACK);
             drawGraphics(window);
             
             fog.update(clock);
@@ -161,11 +161,18 @@ public class GameScene extends Scene {
      *
      * @param window - reference to the main window.
      */
-
+     /**
+      * Draw only the ones in radius
+      * @param window
+      */
     public void drawGraphics(RenderWindow window) {
         for (int j = 0; j < blockY; j++) {
             for (int i = 0; i < blockX; i++) {
+              
+              if(fog.getView(i, j, player))
                 window.draw(tileMap[i][j]);
+              
+                
             }
         }
 
