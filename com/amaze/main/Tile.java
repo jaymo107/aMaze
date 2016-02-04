@@ -27,7 +27,7 @@ public class Tile extends RectangleShape{
 
     public enum BlockType {
         WALL, FLOOR, DOOR, START,
-        FINISH,VOID,CHARGE,PATH
+        FINISH,VOID,CHARGE
     }
 
     /**
