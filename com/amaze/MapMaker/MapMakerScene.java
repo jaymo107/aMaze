@@ -86,11 +86,11 @@ public class MapMakerScene extends Scene {
                 break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
-                    case ESCAPE:
-                        getWindow().setScene(0);
-                        getWindow().getScene(0).display(getWindow());
-                        this.setRunning(false);
-                        break;
+//                    case ESCAPE:
+//                        getWindow().setScene(0);
+//                        getWindow().getScene(0).display(getWindow());
+//                        this.setRunning(false);
+//                        break;
                     case RETURN:
                         outputLevel();
                         break;
@@ -160,6 +160,9 @@ public class MapMakerScene extends Scene {
         catch (IOException f) {
             System.err.println("Export Failed");
         }
+        setRunning(false);
+        getWindow().setScene(0);
+        getWindow().getScene(0).display(getWindow());
     }
 
 }
