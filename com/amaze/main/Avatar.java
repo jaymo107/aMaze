@@ -38,5 +38,13 @@ public class Avatar extends RectangleShape {
     public void changeLevel(int levelNumber) {
 
     }
+    
+    public int getXTile(){
+      return (int) ((int)GameScene.blockX / this.getPosition().x);
+    }
+    
+    public int getYTile(){
+      return 0;
+    }
 
 }
