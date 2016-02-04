@@ -172,16 +172,18 @@ public class GameScene extends Scene {
         }
     }
 
-    //Need to get the pixel position of the player and check the side of the avatar with the corresponding button pressed
-    //and if the side is on another block then rebound in opposite dir.
+    /**
+     * Function to detect if the player has moved onto a tile.
+     * Todo: Instead of returning true/false, once fixed it should return the block that it is on and be handled individually.
+     */
     public boolean detectCollision() {
 
-        int playerBuffer = 1;
-
-        //Find the block location from the float X&Y
-        int playerX = (blockX / (int)getPlayerX()) - playerBuffer;
-        int playerY = (blockY / (int)getPlayerY()) - playerBuffer;
-        System.out.println("Player x: " + playerX + " - Player y: " + playerY);
+        //Find the block location from the pixel X&Y
+        //int playerX = (blockSize / (int)getPlayerX());
+        //int playerY = (blockSize / (int)getPlayerY());
+        int playerX = Math.round(getPlayerX() / blockSize);
+        int playerY = Math.round(getPlayerY() / blockSize);
+        System.out.println("Player x: " + playerX + " : Player y: " + playerY + " Blocksize: " + blockSize);
 
         //Get the block the player is behind
         Tile.BlockType type = tileMap[playerX][playerY].getTileType();
@@ -189,10 +191,10 @@ public class GameScene extends Scene {
 
         //Test the BlockType the player is on and see if its allowed on that block.
         switch(type) {
-            case WALL: case DOOR: case START: case FINISH: case VOID: case CHARGE:
+            case WALL:
                 return true;
-            case FLOOR:
-                return false;
+            case FLOOR: case START: case FINISH:case DOOR: case VOID: case CHARGE:
+                break;
             default:
                 System.out.print("Block must have type defined");
                 break;
@@ -200,6 +202,11 @@ public class GameScene extends Scene {
         return false;
     }
 
+    /**
+     * Function to rebound the player the amount of steps the player can move, given a direction.
+     *
+     * @param dir The direction the avatar should be rebounded.
+     */
     public void reboundPlayer(String dir) {
 
         switch(dir) {
@@ -214,7 +221,7 @@ public class GameScene extends Scene {
     }
 
     /**
-     * Function to return the block X of the player.
+     * Function to return the X pixels of the player.
      */
     public float getPlayerX() {
         Vector2f res = player.getPosition();
@@ -222,7 +229,7 @@ public class GameScene extends Scene {
     }
 
     /**
-     * Function to return the block y of the player.
+     * Function to return the Y pixels of the player.
      */
     public float getPlayerY() {
         Vector2f res = player.getPosition();
