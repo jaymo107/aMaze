@@ -2,13 +2,13 @@ package com.amaze.MapMaker;
 
 import com.amaze.main.Scene;
 import com.amaze.main.Window;
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Texture;
+import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.Mouse;
 import org.jsfml.window.event.Event;
+
+import javax.swing.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,9 +27,15 @@ public class MapMakerScene extends Scene {
     private int blockSize;
 
     private Tile.BlockType[] allValues = Tile.BlockType.values();
+    private Window window;
+    private Boolean enterPressed = false;
+
+    private RectangleShape textBackground;
+    Text userLevel;
 
     public MapMakerScene(String sceneTitle, Window window, int blocks, int blockSize) throws IOException {
         super(sceneTitle, window);
+        this.window = window;
         tiles = new Tile[blocks][blocks];
 
         this.blocks = blocks;
@@ -49,6 +55,7 @@ public class MapMakerScene extends Scene {
                 tiles[x][y].setSize(new Vector2f(blockSize, blockSize));
             }
         }
+        exportSuccessful();
     }
 
     public void display(RenderWindow window) {
@@ -92,10 +99,17 @@ public class MapMakerScene extends Scene {
 //                        this.setRunning(false);
 //                        break;
                     case RETURN:
+                        enterPressed = true;
                         outputLevel();
+                            //window.clear();
+                            drawExportWindow(window);
+                            window.display();
+                            pause(2000);
+                            getWindow().setScene(0);
+                            getWindow().getScene(0).display(getWindow());
+                            this.setRunning(false);
                         break;
                 }
-                break;
         }
     }
 
@@ -160,9 +174,45 @@ public class MapMakerScene extends Scene {
         catch (IOException f) {
             System.err.println("Export Failed");
         }
-        setRunning(false);
-        getWindow().setScene(0);
-        getWindow().getScene(0).display(getWindow());
     }
 
+    public void exportSuccessful()
+    {
+        try {
+            Vector2f size = new Vector2f(window.getScreenWidth() / 1.2F, (window.getScreenHeight() / 5));
+            textBackground = new RectangleShape(size);
+            textBackground.setPosition(window.getScreenWidth() / 12F, (window.getScreenHeight() / 2.5F)-65);
+
+            Font maze = new Font();
+            maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
+
+            Texture backgroundImage = new Texture();
+            backgroundImage.loadFromFile(Paths.get("res/menuGraphics/Wall.png"));
+            textBackground.setTexture(backgroundImage);
+
+            //Create text
+            userLevel = new Text("Export Successful", maze, 75);
+            userLevel.setColor(Color.BLACK);
+            userLevel.setStyle(Text.BOLD);
+            userLevel.setOrigin((window.getScreenWidth() / 9.5F) * -1, (window.getScreenHeight() / 3F) * -1);
+        }
+        catch (Exception e){
+
+        }
+    }
+
+    public void drawExportWindow(RenderWindow window) {
+
+        window.draw(textBackground);
+        window.draw(userLevel);
+    }
+
+    public static void pause(int time)
+    {
+        try {
+            Thread.sleep(time);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+    }
 }
