@@ -13,13 +13,35 @@ public class LevelReader
 
     public LevelReader() throws Exception
     {
+
+    }
+
+    //	Converts string to BlockType form. If the string is invalid, type PATH will be returned
+    public Tile.BlockType stringToBlockType(String blockType)
+    {
+        if (blockType.equals("START")) return Tile.BlockType.START;
+        if (blockType.equals("FINISH")) return Tile.BlockType.FINISH;
+        if (blockType.equals("DOOR")) return Tile.BlockType.DOOR;
+        if (blockType.equals("WALL")) return Tile.BlockType.WALL;
+        if (blockType.equals("VOID")) return Tile.BlockType.VOID;
+        if (blockType.equals("CHARGE")) return Tile.BlockType.CHARGE;
+        if (blockType.equals("FLOOR")) return Tile.BlockType.FLOOR;
+
+        return Tile.BlockType.WALL;
+    }
+
+    public Tile.BlockType[][] getLevel(){ return level; }
+
+    public int getSizeOfMaze(){ return sizeOfMaze; }
+
+    public void loadMap(String levelNumber) throws IOException{
         StringBuilder stringBuilder = new StringBuilder();
         int i; int x = 0; int y = 0;
         int currentlyReadChar = 0;
         sizeOfMaze = 0;
 
         //Open up file
-        InputStream in = new FileInputStream(new File("res/Levels/Levels.txt"));
+        InputStream in = new FileInputStream(new File("res/Levels/" + levelNumber + ".txt"));
         Reader reader = new InputStreamReader(in);
 
         //Read map size
@@ -31,7 +53,7 @@ public class LevelReader
 
         //Clear the reader
         reader.close();
-        in = new FileInputStream(new File("res/Levels/Levels.txt"));
+        in = new FileInputStream(new File("res/Levels/" + levelNumber + ".txt"));
         reader = new InputStreamReader(in);
 
         //Initialise Level
@@ -59,23 +81,5 @@ public class LevelReader
 
         System.out.println(Arrays.deepToString(level));// <- Uncomment to see 2D array
     }
-
-    //	Converts string to BlockType form. If the string is invalid, type PATH will be returned
-    public Tile.BlockType stringToBlockType(String blockType)
-    {
-        if (blockType.equals("START")) return Tile.BlockType.START;
-        if (blockType.equals("FINISH")) return Tile.BlockType.FINISH;
-        if (blockType.equals("DOOR")) return Tile.BlockType.DOOR;
-        if (blockType.equals("WALL")) return Tile.BlockType.WALL;
-        if (blockType.equals("VOID")) return Tile.BlockType.VOID;
-        if (blockType.equals("CHARGE")) return Tile.BlockType.CHARGE;
-        if (blockType.equals("FLOOR")) return Tile.BlockType.FLOOR;
-
-        return Tile.BlockType.WALL;
-    }
-
-    public Tile.BlockType[][] getLevel(){ return level; }
-
-    public int getSizeOfMaze(){ return sizeOfMaze; }
 
 }
