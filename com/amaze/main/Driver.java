@@ -1,13 +1,15 @@
 package com.amaze.main;
-/**
- * This class is responsible for creating an instance of a Maze.
- */
 
+import com.amaze.MapMaker.MapMakerScene;
+
+/**
+ * This class is responsible for creating an instance of aMaze.
+ */
 
 class Driver{
 
-    private static int BLOCK_SIZE; //Number of blocks to display on X/Y axis
-    private static int WINDOW_SIZE; //Resolution(number of pixels) on X/Y axis
+    static int BLOCK_SIZE; //Number of blocks to display on X/Y axis
+    static int WINDOW_SIZE; //Resolution(number of pixels) on X/Y axis
     private static boolean correctSize; //Used to check if we're using the correct resolution.
 
     public static void main(String[] args) throws Exception{
@@ -30,19 +32,25 @@ class Driver{
         Window window = new Window(WINDOW_SIZE, WINDOW_SIZE);
         window.setFramerateLimit(60);
 
-        //Create Main Menu
+        //Create Menu Scene
         MenuScene menu = new MenuScene("Main Menu",window);
 
-        GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), BLOCK_SIZE, level.getLevel());
+        //LevelMenuScene levelMenu = new LevelMenuScene("Level Menu", window);
+        //GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel());
+        //MapMakerScene mapMaker = new MapMakerScene("Level Menu", window, 30, 30);
 
-        /*level.loadMap("3");
-        BLOCK_SIZE = WINDOW_SIZE / level.getSizeOfMaze();
-        game.loadNewTileMap(window,level.getSizeOfMaze(),BLOCK_SIZE,level.getLevel());*/
+        window.addScenes(menu);
 
-        window.addScenes(menu, game);
+
+        /**
+         * GameScene and LevelMenuScene calls are now happening in the appropriate places.
+         * By doing this we don't need to allocate additional memory to store information about the game and level menu
+         * right when the application is launched. It makes code much cleaner and is a good practice in general.
+         *
+         * All functionality remains intact
+         */
 
         //Start Displaying
         window.displayThis();
     }
-
 }
