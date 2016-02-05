@@ -75,7 +75,7 @@ public class GameScene extends Scene {
         try {
             music.openFromFile(Paths.get("res/music/gs2.wav"));
         } catch (IOException e) {
-            System.out.println("There was a problem loading the background music.");
+            System.out.println("There was a problem loading the background music \n Error: " + e);
         }
     }
 
@@ -127,13 +127,12 @@ public class GameScene extends Scene {
      * When event is performed (e.g - user clicks on the button) Appropriate function
      * should be called within this function to handle the event.
      *
-     * P.S I'm unsure whether or not it would be appropriate for this function to deal with
-     * collision and general game logic. This is primarily for input events (e.g arrow up key)
-     * Check MenuScene class for structure.
-     *
      * @param event - user event.
      */
     public void executeEvent(Event event) {
+
+        int stepDepth = 5; //The distance the player is moved on keypress.
+
         switch(event.type) {
             case CLOSED:
                 getWindow().close();
@@ -141,10 +140,22 @@ public class GameScene extends Scene {
                 break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
-                    case UP: player.move(0,-5); break;
-                    case DOWN: player.move(0,5); break;
-                    case LEFT: player.move(-5,0); break;
-                    case RIGHT: player.move(5,0); break;
+                    case UP:
+                        player.move(0,-stepDepth);
+                        detectionHandler(detectCollision(), "DOWN");
+                        break;
+                    case DOWN:
+                        player.move(0,stepDepth);
+                        detectionHandler(detectCollision(), "UP");
+                        break;
+                    case LEFT:
+                        player.move(-stepDepth,0);
+                        detectionHandler(detectCollision(), "RIGHT");
+                        break;
+                    case RIGHT:
+                        player.move(stepDepth,0);
+                        detectionHandler(detectCollision(), "LEFT");
+                        break;
                     case ESCAPE:
                         getWindow().setScene(0);
                         getWindow().getScene(0).display(getWindow());
@@ -152,6 +163,83 @@ public class GameScene extends Scene {
                 }
                 break;
         }
+    }
+
+    /**
+     * Function to detect if the player has moved onto a tile.
+     */
+    public Tile.BlockType detectCollision() {
+
+        //Find the block location from the pixel X&Y
+        int playerX = Math.round(getPlayerX() / blockSize);
+        int playerY = Math.round(getPlayerY() / blockSize);
+
+        //Return the block the player is behind
+        return tileMap[playerX][playerY].getTileType();
+    }
+
+    /**
+     * Function to see what type of block you have collided with and act accordingly.
+     *
+     * @param reboundDir The direction the avatar should be rebounded.
+     * @param type The type of block that has been detected.
+     */
+    public void detectionHandler(Tile.BlockType type, String reboundDir) {
+
+        switch(type) {
+            case WALL:
+                reboundPlayer(reboundDir);
+            case DOOR:
+                //TODO Insert the door handling code here.
+            case START:
+                break;
+            case FINISH:
+                //TODO Insert the finish handling code here.
+            case VOID:
+                //TODO Insert the void handling code here.
+            case CHARGE:
+                //TODO Insert the charge handling code here.
+            case FLOOR:
+                break;
+            default:
+                System.out.println("Please select a defined BlockType.");
+        }
+    }
+
+    /**
+     * Function to rebound the player the amount of steps defined, given a direction.
+     *
+     * @param dir The direction the avatar should be rebounded.
+     */
+    public void reboundPlayer(String dir) {
+
+        int reboundStep = 7; //Number of steps to rebound the player.
+
+        switch(dir) {
+            case "UP":player.move(0,-reboundStep); break;
+            case "DOWN":player.move(0,reboundStep); break;
+            case "LEFT":player.move(-reboundStep,0); break;
+            case "RIGHT":player.move(reboundStep,0); break;
+            default:
+                System.out.println("Please select a direction defined.");
+                break;
+        }
+    }
+
+    /**
+     * Function to return the X pixels of the player.
+     */
+    public float getPlayerX() {
+        Vector2f res = player.getPosition();
+        return res.x;
+    }
+
+    /**
+     * Function to return the Y pixels of the player.
+     */
+    public float getPlayerY() {
+        Vector2f res = player.getPosition();
+        return res.y;
     }
 
     /**
