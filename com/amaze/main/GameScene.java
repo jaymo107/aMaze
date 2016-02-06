@@ -4,8 +4,11 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Texture;
+import org.jsfml.system.Clock;
+
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
+
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -17,12 +20,14 @@ import java.nio.file.Paths;
 public class GameScene extends Scene {
 
     private int blockSize;              //Size of each block. W and H
-    private int blockX;                 //Number of blocks in X direction
-    private int blockY;                 //Number of blocks in Y direction
+    public static int blockX;                 //Number of blocks in X direction
+    public static int blockY;                 //Number of blocks in Y direction
     private Tile tileMap[][];           //Represents the maze
     private Avatar player;              //Represents the player(avatar)
+    private Clock clock;
     private Battery battery;            //
     private Music music;                //Background music
+    private FogOfWar fog;
 
     /**
      * This constructor creates an instance of a GameScene.
@@ -77,6 +82,9 @@ public class GameScene extends Scene {
         } catch (IOException e) {
             System.out.println("There was a problem loading the background music \n Error: " + e);
         }
+         
+        fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow());
+        
     }
 
     /**(
@@ -108,11 +116,15 @@ public class GameScene extends Scene {
         window.setTitle(getSceneTitle());
         music.play();
         music.setLoop(true);
+        
+        clock = new Clock();
 
         while(this.isRunning()) try {
-            window.clear(Color.WHITE);
+            window.clear(Color.BLACK);
             drawGraphics(window);
-
+            
+            fog.update(clock);
+            
             for (Event event : window.pollEvents()) {
                 executeEvent(event);
             }
@@ -248,10 +260,16 @@ public class GameScene extends Scene {
      * @param window - reference to the main window.
      */
 
+
     public void drawGraphics(RenderWindow window) throws Exception{
+
         for (int j = 0; j < blockY; j++) {
             for (int i = 0; i < blockX; i++) {
+              
+              //if(fog.getView(i, j, player))
                 window.draw(tileMap[i][j]);
+              
+                
             }
         }
 
