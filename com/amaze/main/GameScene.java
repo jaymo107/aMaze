@@ -12,6 +12,7 @@ import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 
 import com.amaze.entities.Avatar;
+import com.amaze.levelmaker.Tile.BlockType;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -30,6 +31,7 @@ public class GameScene extends Scene {
     private Battery battery;            //
     private Music music;                //Background music
     private FogOfWar fog;
+    private Texture[] tileTexture;
     
 
     /**
@@ -54,7 +56,7 @@ public class GameScene extends Scene {
         player = new Avatar(0,0,blockSize);
 
         /* Cache textures before we start using them in order to increase performance */
-        Texture tileTexture[] = new Texture[7];
+        this.tileTexture = new Texture[7];
         for (int i = 0; i < tileTexture.length; i++) {
             tileTexture[i] = new Texture();
         }
@@ -150,7 +152,16 @@ public class GameScene extends Scene {
         int stepDepth = 5; //The distance the player is moved on keypress.
         
         
-           
+        //check if the block is a carge
+        if(detectCollision().equals(Tile.BlockType.CHARGE)){
+          fog.increase();
+          try {
+            tileMap[player.tilePosition().x][player.tilePosition().y] =
+                new Tile(null, player.tilePosition().x, player.tilePosition().y, GameScene.blockSize, GameScene.blockSize, Tile.BlockType.FLOOR, this.tileTexture);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
         
 
         switch(event.type) {

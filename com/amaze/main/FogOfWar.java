@@ -10,7 +10,7 @@ public class FogOfWar {
   
   public static final int MAX_SIZE = 20;
   private final int CHUNK_SIZE = 1;
-  private final int CHARGE_SIZE = CHUNK_SIZE * 10;
+  private final int CHARGE_SIZE = CHUNK_SIZE * 5;
   private Image fog;
   private int size;
   private Window window;

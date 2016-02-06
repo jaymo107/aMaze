@@ -5,6 +5,9 @@ import org.jsfml.graphics.Image;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.system.Vector2f;
+
+import com.amaze.levelmaker.Tile.BlockType;
+
 import org.jsfml.system.*;
 
 import java.io.IOException;
@@ -24,6 +27,7 @@ public class Tile extends RectangleShape{
     private Vector2f position;
     private Vector2f tileSize;
     private BlockType blockType;
+    private Texture tileTexture;
 
     public enum BlockType {
         WALL, FLOOR, DOOR, START,
@@ -43,7 +47,7 @@ public class Tile extends RectangleShape{
         this.currentY = originY;
         this.position = new Vector2f(originX,originY);
         this.tileSize = new Vector2f(sizeX,sizeY);
-        Texture tileTexture = new Texture();
+        tileTexture = new Texture();
         tileTexture.setSmooth(true);
 
         //Set image according to type
@@ -107,6 +111,14 @@ public class Tile extends RectangleShape{
 
     public BlockType getTileType() {
         return blockType;
+    }
+
+
+    public void setBlockType(BlockType floor, Texture[] tileTexture) {
+      // TODO Auto-generated method stub
+      this.blockType = floor;
+      tileTexture[1].setSmooth(true);
+      this.tileTexture = tileTexture[1];
     }
 
 }
