@@ -130,8 +130,8 @@ public class LevelMenuScene extends Scene {
 
         window.addScenes(game);
 
-        window.setScene(window.getCurrentScene()+1);
-        window.getScene(window.getCurrentScene()).display(getWindow());
+        window.getScene(window.getArrayList().indexOf(game)).display(window);
+        this.setRunning(false);
     }
 
     @Override

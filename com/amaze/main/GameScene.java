@@ -177,9 +177,10 @@ public class GameScene extends Scene {
                         detectionHandler(detectCollision(), "LEFT");
                         break;
                     case ESCAPE:
+                        music.pause();
                         getWindow().setScene(0);
                         getWindow().getScene(0).display(getWindow());
-                        break;
+                        this.setRunning(false);
                 }
                 break;
         }
