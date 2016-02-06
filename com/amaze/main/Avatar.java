@@ -3,6 +3,7 @@ package com.amaze.main;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
 
 import java.nio.file.Paths;
 
@@ -15,6 +16,7 @@ public class Avatar extends RectangleShape {
     private int currentY;
     private int level;          // Level that player is on
     private int score;          // Holds player score
+    private Vector2i oldTile;
 
     /**
      * Basically does some initial housekeeping.
@@ -31,6 +33,7 @@ public class Avatar extends RectangleShape {
         this.setSize(new Vector2f((float)(blockSize / 1.2),(float)(blockSize / 1.2)));
         this.setPosition(startX,startY);
         this.setTexture(t);
+        this.oldTile = new Vector2i(0,0); 
     }
 
     /**
@@ -41,13 +44,23 @@ public class Avatar extends RectangleShape {
 
     }
     
-    public int getXTile(){
-      return (int) ((int)GameScene.blockX / this.getPosition().x);
+    public Vector2i tilePosition(){
+      return new Vector2i(Math.round(this.getPosition().x / GameScene.blockSize), Math.round(this.getPosition().y / GameScene.blockSize));
     }
     
-    public int getYTile(){
-      return 0;
+    /**
+     * Event for when the user has moved tiles
+     * @return
+     */
+    public boolean hasMovedTiles(){
+      if(!this.oldTile.equals(this.tilePosition())){
+        this.oldTile = this.tilePosition();
+        return true;
+      }
+      
+      return false;
     }
+
 
     public int getLevel(){
         return level;
