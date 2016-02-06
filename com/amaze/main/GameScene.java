@@ -19,7 +19,7 @@ import java.nio.file.Paths;
  */
 public class GameScene extends Scene {
 
-    private int blockSize;              //Size of each block. W and H
+    public static int blockSize;              //Size of each block. W and H
     public static int blockX;                 //Number of blocks in X direction
     public static int blockY;                 //Number of blocks in Y direction
     private Tile tileMap[][];           //Represents the maze
@@ -28,6 +28,7 @@ public class GameScene extends Scene {
     private Battery battery;            //
     private Music music;                //Background music
     private FogOfWar fog;
+    
 
     /**
      * This constructor creates an instance of a GameScene.
@@ -84,6 +85,7 @@ public class GameScene extends Scene {
         }
          
         fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow());
+        
         
     }
 
@@ -144,6 +146,10 @@ public class GameScene extends Scene {
     public void executeEvent(Event event) {
 
         int stepDepth = 5; //The distance the player is moved on keypress.
+        
+        
+           
+        
 
         switch(event.type) {
             case CLOSED:
@@ -226,6 +232,8 @@ public class GameScene extends Scene {
     public void reboundPlayer(String dir) {
 
         int reboundStep = 7; //Number of steps to rebound the player.
+        
+        
 
         switch(dir) {
             case "UP":player.move(0,-reboundStep); break;
