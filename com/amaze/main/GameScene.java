@@ -274,7 +274,7 @@ public class GameScene extends Scene {
         for (int j = 0; j < blockY; j++) {
             for (int i = 0; i < blockX; i++) {
               
-              //if(fog.getView(i, j, player))
+              if(fog.getView(i, j, player))
                 window.draw(tileMap[i][j]);
               
                 
