@@ -11,6 +11,8 @@ import org.jsfml.system.Vector2i;
 
 import org.jsfml.window.event.Event;
 
+import com.amaze.entities.Avatar;
+
 import java.io.IOException;
 import java.nio.file.Paths;
 

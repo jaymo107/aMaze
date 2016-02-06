@@ -1,9 +1,11 @@
-package com.amaze.main;
+package com.amaze.entities;
 
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
+
+import com.amaze.main.GameScene;
 
 import java.nio.file.Paths;
 

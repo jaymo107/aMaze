@@ -4,6 +4,8 @@ import org.jsfml.graphics.Image;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
 
+import com.amaze.entities.Avatar;
+
 public class FogOfWar {
   
   public static final int MAX_SIZE = 20;
