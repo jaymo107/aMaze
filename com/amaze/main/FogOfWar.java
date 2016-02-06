@@ -8,6 +8,7 @@ public class FogOfWar {
   
   public static final int MAX_SIZE = 20;
   private final int CHUNK_SIZE = 1;
+  private final int CHARGE_SIZE = CHUNK_SIZE * 10;
   private Image fog;
   private int size;
   private Window window;
@@ -28,7 +29,7 @@ public class FogOfWar {
   }
   
   public void increase(){
-     this.size += CHUNK_SIZE;
+     this.size += CHARGE_SIZE;
   }
   
   public int getSize(){
@@ -60,15 +61,14 @@ public class FogOfWar {
       this.drain();
       clock.restart();
     }
-    System.out.println(this.getSize());
   }
   
   /*
    * Based off the avatar, check the coordinate and return true if the tile can be rendered
    */
   public boolean getView(int x, int y, Avatar player){
-    System.out.println(player.getXTile());
-    if(x > player.getPosition().x - this.getSize() && x < player.getPosition().x + this.getSize() && y < player.getPosition().y + this.getSize() && y > player.getPosition().y - this.getSize()) return true;
+    System.out.println();
+    if(x > player.tilePosition().x - this.getSize() && x < player.tilePosition().x + this.getSize() && y < player.tilePosition().y + this.getSize() && y > player.tilePosition().y - this.getSize()) return true;
     return false;
   }
   
