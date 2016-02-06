@@ -142,9 +142,19 @@ public class LevelMenuScene extends Scene {
                 System.exit(0);
                 break;
             case KEY_PRESSED:
+
                 switch (event.asKeyEvent().key) {
+
                     case UP: arrowKeyUp(); break;
+
                     case DOWN: arrowKeyDown(); break;
+
+                    case ESCAPE:
+                        this.setRunning(false);
+                        getWindow().setScene(0);
+                        getWindow().getScene(0).display(getWindow());
+                        break;
+
                     case RETURN:
                         try {
                             enterPressed();
@@ -153,7 +163,7 @@ public class LevelMenuScene extends Scene {
                         }
                         break;
                 }
-                break;
+
         }
     }
     public String getUserLevelNumber()

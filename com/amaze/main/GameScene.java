@@ -148,10 +148,6 @@ public class GameScene extends Scene {
     public void executeEvent(Event event) {
 
         int stepDepth = 5; //The distance the player is moved on keypress.
-        
-        
-           
-        
 
         switch(event.type) {
             case CLOSED:
