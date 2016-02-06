@@ -45,7 +45,8 @@ public class Avatar extends RectangleShape {
     }
     
     public Vector2i tilePosition(){
-      return new Vector2i(Math.round(this.getPosition().x / GameScene.blockSize), Math.round(this.getPosition().y / GameScene.blockSize));
+      return new Vector2i(Math.round(this.getPosition().x / GameScene.blockSize),
+          Math.round(this.getPosition().y / GameScene.blockSize));
     }
     
     /**
