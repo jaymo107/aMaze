@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
- * This class will handle the menu and buttons associated with it.
+ * This class will handle the menu and buttons associated with it
  */
 public class MenuScene extends Scene {
 
@@ -87,8 +87,8 @@ public class MenuScene extends Scene {
                 b.performAction();
 
                 if (b instanceof PlayButton) {
-                    playing = true;
-                    music.stop();
+                    //playing = true;
+                    //music.stop();
                 }
             }
         }
@@ -112,7 +112,10 @@ public class MenuScene extends Scene {
                 switch (event.asKeyEvent().key) {
                     case UP: arrowKeyUp(); break;
                     case DOWN: arrowKeyDown(); break;
-                    case RETURN: enterPressed(); break;
+                    case RETURN:
+//                        getWindow().setScene(1);
+//                        getWindow().getScene(1).display(getWindow());
+                        enterPressed(); break;
                 }
                 break;
         }
