@@ -18,7 +18,7 @@ public class FogOfWar {
   /**
    * The amount of time before it drains
    */
-  private int drainTime = 30000;
+  private int drainTime = 3000;
   
   /**
    * Set the initial size
