@@ -85,7 +85,7 @@ public class GameScene extends Scene {
         }
 
         /* Create fog of war */
-        fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow());
+        fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow(),battery);
 
         /* Load font and text*/
         Font scoreFont = new Font();
@@ -234,7 +234,8 @@ public class GameScene extends Scene {
             case CHARGE:
                 //TODO Insert the charge handling code here.
                 //battery.changeChargeLevel(battery.getChargeLevel() + 1);
-                battery.increaseChargeLevel(3);
+                //battery.increaseChargeLevel(1);
+                fog.increase();
                 break;
             case FLOOR:
                 break;

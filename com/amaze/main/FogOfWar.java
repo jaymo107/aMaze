@@ -8,13 +8,14 @@ import com.amaze.entities.Avatar;
 
 public class FogOfWar {
   
-  public static final int MAX_SIZE = 90;
+  public static final int MAX_SIZE = 20;
   private final int CHUNK_SIZE = 1;
   private final int CHARGE_SIZE = CHUNK_SIZE * 10;
   private Image fog;
   private int size;
   private Window window;
   private long elapsedTime;
+  private Battery battery;
   /**
    * The amount of time before it drains
    */
@@ -23,9 +24,10 @@ public class FogOfWar {
   /**
    * Set the initial size
    */
-  public FogOfWar(int size, Window window){
+  public FogOfWar(int size, Window window, Battery battery){
     this.size = size;
     this.window = window;
+    this.battery = battery;
     fog = new Image();
     elapsedTime = 0;
   }
@@ -69,7 +71,6 @@ public class FogOfWar {
    * Based off the avatar, check the coordinate and return true if the tile can be rendered
    */
   public boolean getView(int x, int y, Avatar player){
-    System.out.println();
     return x > player.tilePosition().x - this.getSize() && x < player.tilePosition().x + this.getSize() && y < player.tilePosition().y + this.getSize() && y > player.tilePosition().y - this.getSize();
   }
   
