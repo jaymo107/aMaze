@@ -8,7 +8,7 @@ import com.amaze.entities.Avatar;
 
 public class FogOfWar {
   
-  public static final int MAX_SIZE = 90;
+  public static final int MAX_SIZE = 20;
   private final int CHUNK_SIZE = 1;
   private final int CHARGE_SIZE = CHUNK_SIZE * 10;
   private Image fog;
@@ -18,7 +18,7 @@ public class FogOfWar {
   /**
    * The amount of time before it drains
    */
-  private int drainTime = 3000;
+  private int drainTime = 2000;
   
   /**
    * Set the initial size
@@ -70,7 +70,8 @@ public class FogOfWar {
    */
   public boolean getView(int x, int y, Avatar player){
     System.out.println();
-    return x > player.tilePosition().x - this.getSize() && x < player.tilePosition().x + this.getSize() && y < player.tilePosition().y + this.getSize() && y > player.tilePosition().y - this.getSize();
+    if(x > player.tilePosition().x - this.getSize() && x < player.tilePosition().x + this.getSize() && y < player.tilePosition().y + this.getSize() && y > player.tilePosition().y - this.getSize()) return true;
+    return false;
   }
   
   
