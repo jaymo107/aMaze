@@ -1,9 +1,6 @@
 package com.amaze.main;
 import org.jsfml.audio.Music;
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RectangleShape;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Texture;
+import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
 
 import org.jsfml.system.Vector2f;
@@ -30,7 +27,9 @@ public class GameScene extends Scene {
     private Battery battery;            //
     private Music music;                //Background music
     private FogOfWar fog;
-    
+    private Text txtScore;
+    private Text txtTime;
+
 
     /**
      * This constructor creates an instance of a GameScene.
@@ -45,7 +44,7 @@ public class GameScene extends Scene {
     public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
         super(sceneTitle, window);
 
-        this.blockSize = blockSize;
+        GameScene.blockSize = blockSize;
 
         blockX = level.length;
         blockY = level.length;
@@ -62,33 +61,46 @@ public class GameScene extends Scene {
         tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
         tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
         tileTexture[2].loadFromFile(Paths.get("res/images/door.png"));
-        tileTexture[3].loadFromFile(Paths.get("res/images/blue.png"));
-        tileTexture[4].loadFromFile(Paths.get("res/images/blue.png"));
+        tileTexture[3].loadFromFile(Paths.get("res/images/start.png"));
+        tileTexture[4].loadFromFile(Paths.get("res/images/finish.png"));
         tileTexture[5].loadFromFile(Paths.get("res/images/void.png"));
         tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
 
         /* Create new instances of tiles */
         for (int j = 0; j < blocks; j++) {
             for (int i = 0; i < blocks; i++) {
-                tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j], tileTexture);
+                tileMap[i][j] = new Tile("",translateX(i),translateY(j), GameScene.blockSize, GameScene.blockSize,level[i][j], tileTexture);
             }
         }
 
         /* Create instance of battery */
-        battery = new Battery(window.getScreenHeight(),window.getScreenHeight());
-        battery.changeChargeLevel(6);
+        battery = new Battery(window.getScreenHeight(),window.getScreenHeight(),6);
 
         /* Load background music */
         music = new Music();
         try {
-            music.openFromFile(Paths.get("res/music/gs2.wav"));
+            music.openFromFile(Paths.get("res/music/move.ogg"));
         } catch (IOException e) {
             System.out.println("There was a problem loading the background music \n Error: " + e);
         }
-         
-        fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow());
-        
-        
+
+        /* Create fog of war */
+        fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow(),battery);
+
+        /* Load font and text*/
+        Font scoreFont = new Font();
+        try {
+            scoreFont.loadFromFile(Paths.get("res/fonts/Arial.ttf"));
+        } catch (IOException e){
+
+            System.out.println("Could not load the font!");
+        }
+
+        txtScore = new Text("Score: \t100",scoreFont);
+        txtScore.setPosition(15,window.getScreenHeight() - 40);
+
+        txtTime = new Text("Time: \t1:23",scoreFont);
+        txtTime.setPosition(window.getScreenWidth() - 180,window.getScreenHeight() - 40);
     }
 
     /**(
@@ -120,15 +132,15 @@ public class GameScene extends Scene {
         window.setTitle(getSceneTitle());
         music.play();
         music.setLoop(true);
-        
+
         clock = new Clock();
 
         while(this.isRunning()) try {
             window.clear(Color.BLACK);
             drawGraphics(window);
-            
+
             fog.update(clock);
-            
+
             for (Event event : window.pollEvents()) {
                 executeEvent(event);
             }
@@ -151,6 +163,7 @@ public class GameScene extends Scene {
 
         switch(event.type) {
             case CLOSED:
+
                 getWindow().close();
                 System.exit(0);
                 break;
@@ -206,16 +219,24 @@ public class GameScene extends Scene {
         switch(type) {
             case WALL:
                 reboundPlayer(reboundDir);
+                break;
             case DOOR:
                 //TODO Insert the door handling code here.
+                break;
             case START:
                 break;
             case FINISH:
                 //TODO Insert the finish handling code here.
+                break;
             case VOID:
                 //TODO Insert the void handling code here.
+                break;
             case CHARGE:
                 //TODO Insert the charge handling code here.
+                //battery.changeChargeLevel(battery.getChargeLevel() + 1);
+                //battery.increaseChargeLevel(1);
+                fog.increase();
+                break;
             case FLOOR:
                 break;
             default:
@@ -231,8 +252,8 @@ public class GameScene extends Scene {
     public void reboundPlayer(String dir) {
 
         int reboundStep = 7; //Number of steps to rebound the player.
-        
-        
+
+
 
         switch(dir) {
             case "UP":player.move(0,-reboundStep); break;
@@ -272,11 +293,11 @@ public class GameScene extends Scene {
 
         for (int j = 0; j < blockY; j++) {
             for (int i = 0; i < blockX; i++) {
-              
-              if(fog.getView(i, j, player))
-                window.draw(tileMap[i][j]);
-              
-                
+
+                if(fog.getView(i, j, player))
+                    window.draw(tileMap[i][j]);
+
+
             }
         }
 
@@ -285,6 +306,12 @@ public class GameScene extends Scene {
 
         //Draw the battery
         window.draw(battery);
+
+        //Draw score text
+        window.draw(txtScore);
+
+        //Draw time text
+        window.draw(txtTime);
 
         /*batteryRectangleShape r = new RectangleShape(new Vector2f(500,0));
         r.setFillColor(Color.YELLOW);
@@ -303,7 +330,7 @@ public class GameScene extends Scene {
      * @throws Exception
      */
     public void loadNewTileMap(Window window, int blocks, int blockSize,Tile.BlockType[][] level) throws Exception{
-        this.blockSize = blockSize;
+        GameScene.blockSize = blockSize;
 
         blockX = level.length;
         blockY = level.length;
@@ -318,15 +345,15 @@ public class GameScene extends Scene {
         tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
         tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
         tileTexture[2].loadFromFile(Paths.get("res/images/door.png"));
-        tileTexture[3].loadFromFile(Paths.get("res/images/blue.png"));
-        tileTexture[4].loadFromFile(Paths.get("res/images/blue.png"));
+        tileTexture[3].loadFromFile(Paths.get("res/images/start.png"));
+        tileTexture[4].loadFromFile(Paths.get("res/images/finish.png"));
         tileTexture[5].loadFromFile(Paths.get("res/images/void.png"));
         tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
 
         /* Create new instances of tiles */
         for (int j = 0; j < blocks; j++) {
             for (int i = 0; i < blocks; i++) {
-                tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j], tileTexture);
+                tileMap[i][j] = new Tile("",translateX(i),translateY(j), GameScene.blockSize, GameScene.blockSize,level[i][j], tileTexture);
             }
         }
     }

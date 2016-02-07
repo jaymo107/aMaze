@@ -11,51 +11,83 @@ import java.nio.file.Paths;
  * Represents a battery
  */
 public class Battery extends RectangleShape {
-    private int level = 9; //Ranges from 0 to 7
+    private int chargeLevel; //Ranges from 0 to 6
     private Texture texture;
 
     /**
      *
      * @param resX Size of window X
      * @param resY Size of window Y
+     * @param defaultLevel Represents the level the battery will start at
      */
-    public Battery(int resX, int resY) throws IOException{
-        this.setPosition(resX - (resX / 2) - 50,resY - 70);
+    public Battery(int resX, int resY, int defaultLevel) throws IOException{
+        this.setPosition(resX - (resX / 2) - 50,resY - 60);
         this.setSize(new Vector2f(100,80));
+        this.chargeLevel = defaultLevel;
         this.texture = new Texture();
-        texture.loadFromFile(Paths.get("res/images/battery/1.png"));
-        this.setTexture(texture);
+        changeChargeLevel(chargeLevel);
+    }
+
+    /**
+     * Changes charge level based on input number
+     * Changes the image shown too
+     * @param level
+     */
+    private void changeChargeLevel(int level){
+
+        try{
+            switch(level){
+                case 0:
+                    texture.loadFromFile(Paths.get("res/images/battery/1.png"));
+                    break;
+                case 1:
+                    texture.loadFromFile(Paths.get("res/images/battery/1.png"));
+                    break;
+                case 2:
+                    texture.loadFromFile(Paths.get("res/images/battery/2.png"));
+                    break;
+                case 3:
+                    texture.loadFromFile(Paths.get("res/images/battery/3.png"));
+                    break;
+                case 4:
+                    texture.loadFromFile(Paths.get("res/images/battery/4.png"));
+                    break;
+                case 5:
+                    texture.loadFromFile(Paths.get("res/images/battery/5.png"));
+                    break;
+                case 6:
+                    texture.loadFromFile(Paths.get("res/images/battery/6.png"));
+                    break;
+                default:
+                    texture.loadFromFile(Paths.get("res/images/battery/6.png"));
+                    break;
+            }
+            this.setTexture(texture);
+        }catch (Exception e){
+            System.out.println("There was a problem with loading the battery icon");
+        }
 
     }
 
-    public void changeChargeLevel(int level) throws Exception{
+    public int getChargeLevel(){
+        return chargeLevel;
+    }
 
-        switch(level){
-            case 0:
-                texture.loadFromFile(Paths.get("res/images/battery/1.png"));
-                break;
-            case 1:
-                texture.loadFromFile(Paths.get("res/images/battery/1.png"));
-                break;
-            case 2:
-                texture.loadFromFile(Paths.get("res/images/battery/2.png"));
-                break;
-            case 3:
-                texture.loadFromFile(Paths.get("res/images/battery/3.png"));
-                break;
-            case 4:
-                texture.loadFromFile(Paths.get("res/images/battery/4.png"));
-                break;
-            case 5:
-                texture.loadFromFile(Paths.get("res/images/battery/5.png"));
-                break;
-            case 6:
-                texture.loadFromFile(Paths.get("res/images/battery/6.png"));
-                break;
-            default:
-                texture.loadFromFile(Paths.get("res/images/battery/6.png"));
-                break;
-        }
-        this.setTexture(texture);
+    /**
+     * Increase battery charge level by a specified amount
+     * @param level
+     */
+    public void increaseChargeLevel(int level){
+        this.chargeLevel = this.chargeLevel + level;
+        changeChargeLevel(this.chargeLevel);
+    }
+
+    /**
+     * Decrease battery charge level by a specified amount
+     * @param level
+     */
+    public void decreaseChargeLevel(int level){
+        this.chargeLevel = this.chargeLevel - level;
+        changeChargeLevel(this.chargeLevel);
     }
 }
