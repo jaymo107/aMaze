@@ -49,7 +49,7 @@ public class LevelMenuScene extends Scene {
         textBackround.setTexture(backgroundImage);
 
         //Create text
-        userLevel = new Text("Level 1", maze, 170);
+        userLevel = new Text("Level 1", maze, 160);
         userLevel.setColor(Color.BLACK);
         userLevel.setStyle(Text.BOLD);
         userLevel.setOrigin((window.getScreenWidth()/9.5F) * -1, (window.getScreenHeight()/3F) * -1);
