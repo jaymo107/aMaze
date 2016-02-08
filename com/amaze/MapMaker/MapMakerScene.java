@@ -78,10 +78,7 @@ public class MapMakerScene extends Scene {
 
     public void executeEvent(Event event) {
         switch(event.type) {
-            case CLOSED:
-                getWindow().close();
-                System.exit(0);
-                break;
+            case CLOSED: systemExit(); break;
             case MOUSE_BUTTON_PRESSED:
                 for (Tile[] rows: tiles) {
                     for (Tile tile: rows) {
@@ -93,21 +90,17 @@ public class MapMakerScene extends Scene {
                 break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
-//                    case ESCAPE:
-//                        getWindow().setScene(0);
-//                        getWindow().getScene(0).display(getWindow());
-//                        this.setRunning(false);
-//                        break;
+                    case ESCAPE:
+                        exitScene(this);
+                        break;
                     case RETURN:
-                        enterPressed = true;
+                        //enterPressed = true;
                         outputLevel();
                             //window.clear();
                             drawExportWindow(window);
                             window.display();
                             pause(2000);
-                            getWindow().setScene(0);
-                            getWindow().getScene(0).display(getWindow());
-                            this.setRunning(false);
+                            exitScene(this);
                         break;
                 }
         }

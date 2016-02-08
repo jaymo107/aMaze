@@ -39,4 +39,15 @@ public abstract class Scene implements Displayable {
 
     public Window getWindow() { return window; }
 
+    public void systemExit() {
+
+        window.close();
+        System.exit(0);
+    }
+    public void exitScene(Scene currentScene) {
+
+        window.setScene(0);
+        window.getScene(0).display(getWindow());
+        currentScene.setRunning(false);
+    }
 }

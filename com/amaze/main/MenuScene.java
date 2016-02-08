@@ -2,6 +2,7 @@ package com.amaze.main;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -54,14 +55,16 @@ public class MenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyUp() {
-        if(currentButton == 0) {
-            buttons[currentButton].setSelected(true);
+        if (currentButton == 0) {
+
+            buttons[currentButton].setSelected(false);
+            buttons[NUMBER_OF_ITEMS - 1].setSelected(true);
+            currentButton = NUMBER_OF_ITEMS - 1;
         } else {
             buttons[currentButton].setSelected(false);
             buttons[--currentButton].setSelected(true);
         }
     }
-
     /**
      * This function is triggered when user presses arrow key down.
      * Every time this function is called, next item on the menu will be selected.
@@ -69,7 +72,10 @@ public class MenuScene extends Scene {
      */
     public void arrowKeyDown() {
         if(currentButton == NUMBER_OF_ITEMS - 1) {
-            buttons[currentButton].setSelected(true);
+
+            buttons[currentButton].setSelected(false);
+            buttons[0].setSelected(true);
+            currentButton = 0;
         } else {
             buttons[currentButton].setSelected(false);
             buttons[++currentButton].setSelected(true);
@@ -104,18 +110,12 @@ public class MenuScene extends Scene {
      */
     public void executeEvent(Event event) {
         switch(event.type) {
-            case CLOSED:
-                getWindow().close();
-                System.exit(0);
-                break;
+            case CLOSED: systemExit();
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
                     case UP: arrowKeyUp(); break;
                     case DOWN: arrowKeyDown(); break;
-                    case RETURN:
-//                        getWindow().setScene(1);
-//                        getWindow().getScene(1).display(getWindow());
-                        enterPressed(); break;
+                    case RETURN: enterPressed(); break;
                 }
                 break;
         }

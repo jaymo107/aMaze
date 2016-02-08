@@ -162,11 +162,7 @@ public class GameScene extends Scene {
         int stepDepth = 5; //The distance the player is moved on keypress.
 
         switch(event.type) {
-            case CLOSED:
-
-                getWindow().close();
-                System.exit(0);
-                break;
+            case CLOSED: systemExit(); break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
                     case UP:
@@ -186,10 +182,9 @@ public class GameScene extends Scene {
                         detectionHandler(detectCollision(), "LEFT");
                         break;
                     case ESCAPE:
-                        music.pause();
-                        getWindow().setScene(0);
-                        getWindow().getScene(0).display(getWindow());
-                        this.setRunning(false);
+                        music.stop();
+                        exitScene(this);
+                        break;
                 }
                 break;
         }

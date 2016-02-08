@@ -137,24 +137,12 @@ public class LevelMenuScene extends Scene {
     @Override
     public void executeEvent(Event event) {
         switch(event.type) {
-            case CLOSED:
-                getWindow().close();
-                System.exit(0);
-                break;
+            case CLOSED: systemExit(); break;
             case KEY_PRESSED:
-
                 switch (event.asKeyEvent().key) {
-
                     case UP: arrowKeyUp(); break;
-
                     case DOWN: arrowKeyDown(); break;
-
-                    case ESCAPE:
-                        this.setRunning(false);
-                        getWindow().setScene(0);
-                        getWindow().getScene(0).display(getWindow());
-                        break;
-
+                    case ESCAPE: exitScene(this); break;
                     case RETURN:
                         try {
                             enterPressed();
