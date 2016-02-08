@@ -1,8 +1,6 @@
 package com.amaze.main;
 import org.jsfml.audio.Music;
-import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -20,9 +18,7 @@ public class MenuScene extends Scene {
     private Background background;
     private Music music;
 
-    private boolean playing = false;
-
-    /**
+	/**
      * Constructs buttons to be displayed on the main window.
      *
      * @param sceneTitle - title of the Scene
@@ -56,7 +52,6 @@ public class MenuScene extends Scene {
      */
     public void arrowKeyUp() {
         if (currentButton == 0) {
-
             buttons[currentButton].setSelected(false);
             buttons[NUMBER_OF_ITEMS - 1].setSelected(true);
             currentButton = NUMBER_OF_ITEMS - 1;
@@ -72,7 +67,6 @@ public class MenuScene extends Scene {
      */
     public void arrowKeyDown() {
         if(currentButton == NUMBER_OF_ITEMS - 1) {
-
             buttons[currentButton].setSelected(false);
             buttons[0].setSelected(true);
             currentButton = 0;
@@ -91,11 +85,6 @@ public class MenuScene extends Scene {
         for (Button b: buttons) {
             if (b.isSelected()) {
                 b.performAction();
-
-                if (b instanceof PlayButton) {
-                    //playing = true;
-                    //music.stop();
-                }
             }
         }
     }
@@ -122,43 +111,16 @@ public class MenuScene extends Scene {
     }
 
     /**
-     * Displays all the items associated with the Menu on the primary window.
-     * @param window - primary window on which scenes are displayed
-     */
-    public void display(RenderWindow window) {
-        setRunning(true);
-        window.setTitle(getSceneTitle());
-//        if (!playing) {
-//            music.play();
-//            music.setLoop(true);
-//        }
-
-        while(this.isRunning()) try {
-			window.clear(Color.WHITE);
-			drawMenuItems(window);
-
-			for (Event event : window.pollEvents()) {
-                //Different behaviour depending on
-                executeEvent(event);
-            }
-            window.display();
-
-        }catch (Exception e) {
-            setRunning(false);
-        }
-    }
-
-    /**
      * Draws items associated with MenuScene in the main Window.
      * @param window - reference to the window.
      */
-    private void drawMenuItems(RenderWindow window) {
-
+    public void drawGraphics(RenderWindow window) {
         window.draw(background);
 
-        for(Button b: getButtons()) {
+		for(Button b: getButtons()) {
             window.draw(b);
         }
+
         window.draw(title);
     }
 

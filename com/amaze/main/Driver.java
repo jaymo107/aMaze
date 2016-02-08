@@ -1,7 +1,5 @@
 package com.amaze.main;
 
-import com.amaze.MapMaker.MapMakerScene;
-
 /**
  * This class is responsible for creating an instance of aMaze.
  */
@@ -39,7 +37,7 @@ class Driver{
         //GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel());
         //MapMakerScene mapMaker = new MapMakerScene("Level Menu", window, 30, 30);
 
-        window.addScenes(menu);
+        window.addScene(menu);
 
 
         /**

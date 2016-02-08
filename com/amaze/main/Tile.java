@@ -1,18 +1,11 @@
 package com.amaze.main;
 
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.Image;
-import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.RectangleShape;
+import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
-import org.jsfml.system.*;
+import org.jsfml.system.Vector2i;
 
 import java.io.IOException;
-import java.net.URI;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import org.jsfml.*;
 
 /**
  * Represents a Tile and displays depending on type
@@ -26,8 +19,7 @@ public class Tile extends RectangleShape{
     private BlockType blockType;
 
     public enum BlockType {
-        WALL, FLOOR, DOOR, START,
-        FINISH,VOID,CHARGE
+        WALL, FLOOR, DOOR, START, FINISH, VOID, CHARGE
     }
 
     /**

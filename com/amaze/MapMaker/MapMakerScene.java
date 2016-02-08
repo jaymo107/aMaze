@@ -26,7 +26,6 @@ public class MapMakerScene extends Scene {
     private int blockSize;
 
     private Tile.BlockType[] allValues = Tile.BlockType.values();
-    private Window window;
 
 	private RectangleShape textBackground;
     private Text userLevel;
@@ -35,7 +34,6 @@ public class MapMakerScene extends Scene {
 
     public MapMakerScene(String sceneTitle, Window window, int blocks, int blockSize) throws IOException {
         super(sceneTitle, window);
-        this.window = window;
         tiles = new Tile[blocks][blocks];
 
         this.blocks = blocks;
@@ -58,24 +56,6 @@ public class MapMakerScene extends Scene {
         exportSuccessful();
     }
 
-    public void display(RenderWindow window) {
-        setRunning(true);
-        window.setTitle(getSceneTitle());
-
-        while(this.isRunning()) try {
-            window.clear(Color.WHITE);
-            drawTile(window);
-
-            for (Event event : window.pollEvents()) {
-                executeEvent(event);
-            }
-            window.display();
-
-        }catch (Exception e) {
-            setRunning(false);
-        }
-    }
-
     public void executeEvent(Event event) {
         switch(event.type) {
             case CLOSED: systemExit(); break;
@@ -91,8 +71,8 @@ public class MapMakerScene extends Scene {
                     case ESCAPE:exitScene(this); break;
                     case RETURN:
                         outputLevel();
-						drawExportWindow(window);
-						window.display();
+						drawExportWindow(getWindow());
+						getWindow().display();
 						pause(2000);
 						exitScene(this);
                         break;
@@ -106,7 +86,7 @@ public class MapMakerScene extends Scene {
         tile.changeBlockType(allValues[nextImageIndex]);
     }
 
-    public void drawTile(RenderWindow window) {
+    public void drawGraphics(RenderWindow window) {
         for (Tile[] rows: tiles) {
             for (Tile tile: rows) {
                 window.draw(tile);
@@ -165,9 +145,9 @@ public class MapMakerScene extends Scene {
 
     public void exportSuccessful() {
         try {
-            Vector2f size = new Vector2f(window.getScreenWidth() / 1.2F, (window.getScreenHeight() / 5));
+            Vector2f size = new Vector2f(getWindow().getScreenWidth() / 1.2F, (getWindow().getScreenHeight() / 5));
             textBackground = new RectangleShape(size);
-            textBackground.setPosition(window.getScreenWidth() / 12F, (window.getScreenHeight() / 2.5F)-65);
+            textBackground.setPosition(getWindow().getScreenWidth() / 12F, (getWindow().getScreenHeight() / 2.5F)-65);
 
             Font maze = new Font();
             maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
@@ -180,7 +160,7 @@ public class MapMakerScene extends Scene {
             userLevel = new Text("Export Successful", maze, 75);
             userLevel.setColor(Color.BLACK);
             userLevel.setStyle(Text.BOLD);
-            userLevel.setOrigin((window.getScreenWidth() / 9.5F) * -1, (window.getScreenHeight() / 3F) * -1);
+            userLevel.setOrigin((getWindow().getScreenWidth() / 9.5F) * -1, (getWindow().getScreenHeight() / 3F) * -1);
         }
         catch (Exception e){
 			System.err.println("Export Failed");

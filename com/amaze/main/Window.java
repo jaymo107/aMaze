@@ -8,7 +8,6 @@ import org.jsfml.window.WindowStyle;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * This is a class responsible for holding a window for aMaze
@@ -81,16 +80,16 @@ public class Window extends RenderWindow{
     public void displayThis() {
         while (this.isOpen()) {
             //Shows the scene that was selected on the menu.
-            scenes.get(currentScene).display(this);
+            scenes.get(currentScene).display();
         }
     }
 
     /**
      * Adds one or more scenes to ArrayList
-     * @param scenes - visual representation of a certain aMaze game part.
+     * @param scene - visual representation of a certain aMaze game part.
      */
-    public void addScenes(Displayable... scenes) {
-        Collections.addAll(this.scenes, scenes);
+    public void addScene(Displayable scene) {
+        scenes.add(scene);
     }
 
     public int getScreenHeight() { return screenHeight; }
@@ -102,8 +101,6 @@ public class Window extends RenderWindow{
      * @param i - the index of the scene in the ArrayList
      */
     public Displayable getScene(int i) { return scenes.get(i); }
-
-    public int getCurrentScene() {return currentScene; }
 
     /**
      * Sets scene variable which is responsible for selecting appropriate scene to be displayed.

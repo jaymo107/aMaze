@@ -50,10 +50,10 @@ public class FogOfWar {
 	 * The function which will automatically drain the battery
 	 */
 	public void update(Clock clock){
+		if (size <= 0) return;
+
 		//update the elapsed time
 		elapsedTime = clock.getElapsedTime().asMilliseconds();
-
-		if (size <= 0) return;
 
 		//check if elapsed time is greater than the trigger
 		if (elapsedTime >= drainTime) {
@@ -68,10 +68,10 @@ public class FogOfWar {
 	 * Based off the avatar, check the coordinate and return true if the tile can be rendered
 	 */
 	public boolean getView(int x, int y, Avatar player){
-		return  x > player.tilePosition().x - this.getSize() &&
-				x < player.tilePosition().x + this.getSize() &&
-				y < player.tilePosition().y + this.getSize() &&
-				y > player.tilePosition().y - this.getSize();
+		return  x < player.tilePosition().x + size &&
+				x > player.tilePosition().x - size &&
+				y < player.tilePosition().y + size &&
+				y > player.tilePosition().y - size;
 	}
 
 }

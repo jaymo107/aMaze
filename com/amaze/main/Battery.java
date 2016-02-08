@@ -34,39 +34,12 @@ public class Battery extends RectangleShape {
      * @param level
      */
     private void changeChargeLevel(int level){
-
         try{
-            switch(level){
-                case 0:
-                    texture.loadFromFile(Paths.get("res/images/battery/1.png"));
-                    break;
-                case 1:
-                    texture.loadFromFile(Paths.get("res/images/battery/1.png"));
-                    break;
-                case 2:
-                    texture.loadFromFile(Paths.get("res/images/battery/2.png"));
-                    break;
-                case 3:
-                    texture.loadFromFile(Paths.get("res/images/battery/3.png"));
-                    break;
-                case 4:
-                    texture.loadFromFile(Paths.get("res/images/battery/4.png"));
-                    break;
-                case 5:
-                    texture.loadFromFile(Paths.get("res/images/battery/5.png"));
-                    break;
-                case 6:
-                    texture.loadFromFile(Paths.get("res/images/battery/6.png"));
-                    break;
-                default:
-                    texture.loadFromFile(Paths.get("res/images/battery/6.png"));
-                    break;
-            }
+			texture.loadFromFile(Paths.get("res/images/battery/" + Integer.toString(level) + ".png"));
             this.setTexture(texture);
         }catch (Exception e){
             System.out.println("There was a problem with loading the battery icon");
         }
-
     }
 
     public int getChargeLevel(){

@@ -11,21 +11,16 @@ public class LevelMenuScene extends Scene {
 
     Text userLevel;
     Background background;
-    RectangleShape textBackround;
+    RectangleShape textBackground;
     Texture backgroundImage = new Texture();
-    Window window;
 
     static final int MAX_LEVEL = 20;
     static final int MIN_LEVEL = 1;
 
-
     int userLevelNumber = 1;
 
     public LevelMenuScene(String sceneTitle, Window window) throws IOException {
-
         super(sceneTitle,window);
-
-        this.window = window;
 
         //Create background
         background = new Background(window.getScreenWidth(), window.getScreenHeight());
@@ -35,18 +30,17 @@ public class LevelMenuScene extends Scene {
         try {
             maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
         } catch (IOException e){
-
             System.out.println("Could not load the font!");
         }
 
         //Vector2f position = new Vector2f(xCord, yCord);
         Vector2f size = new Vector2f(window.getScreenWidth()/1.2F, window.getScreenHeight()/5);
-        textBackround = new RectangleShape(size);
-        textBackround.setPosition(window.getScreenWidth()/12F, window.getScreenHeight()/2.5F);
+        textBackground = new RectangleShape(size);
+        textBackground.setPosition(window.getScreenWidth()/12F, window.getScreenHeight()/2.5F);
 
 
         backgroundImage.loadFromFile(Paths.get("res/menuGraphics/Wall.png"));
-        textBackround.setTexture(backgroundImage);
+        textBackground.setTexture(backgroundImage);
 
         //Create text
         userLevel = new Text("Level 1", maze, 170);
@@ -59,38 +53,16 @@ public class LevelMenuScene extends Scene {
 
     }
 
-    @Override
-    public void display(RenderWindow window) {
-        setRunning(true);
-        window.setTitle(getSceneTitle());
-
-        while(this.isRunning()) try {
-            window.clear(Color.WHITE);
-            draw(window);
-
-            for (Event event : window.pollEvents()) {
-                executeEvent(event);
-            }
-            window.display();
-
-        }catch (Exception e) {
-            setRunning(false);
-        }
-    }
     /**
      * This function is triggered when user presses arrow key up.
      * Every time this function is called, next item on the menu will be selected.
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyUp() {
-
         if(userLevelNumber < MAX_LEVEL) {
-
-            this.userLevelNumber++;
-        }
-        else {
-
-            this.userLevelNumber = MAX_LEVEL;
+            userLevelNumber++;
+        } else {
+            userLevelNumber = MAX_LEVEL;
         }
         userLevel.setString("Level " + userLevelNumber);
     }
@@ -101,14 +73,10 @@ public class LevelMenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyDown() {
-
         if(userLevelNumber == MIN_LEVEL) {
-
-            this.userLevelNumber = MIN_LEVEL;
-        }
-        else {
-
-            this.userLevelNumber--;
+            userLevelNumber = MIN_LEVEL;
+        } else {
+            userLevelNumber--;
         }
         userLevel.setString("Level " + userLevelNumber);
     }
@@ -126,15 +94,14 @@ public class LevelMenuScene extends Scene {
 
         Driver.BLOCK_SIZE = Driver.WINDOW_SIZE / level.getSizeOfMaze();
 
-        GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel());
+        GameScene game = new GameScene("Game", getWindow(), level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel());
 
-        window.addScenes(game);
+		getWindow().addScene(game);
 
-        window.getScene(window.getArrayList().indexOf(game)).display(window);
+		getWindow().getScene(getWindow().getArrayList().indexOf(game)).display();
         this.setRunning(false);
     }
 
-    @Override
     public void executeEvent(Event event) {
         switch(event.type) {
             case CLOSED: systemExit(); break;
@@ -154,16 +121,16 @@ public class LevelMenuScene extends Scene {
 
         }
     }
-    public String getUserLevelNumber()
+
+	public String getUserLevelNumber()
     {
         return String.valueOf(userLevelNumber);
     }
 
-
-    public void draw(RenderWindow window) {
-
+    public void drawGraphics(RenderWindow window) {
         window.draw(background);
-        window.draw(textBackround);
+        window.draw(textBackground);
         window.draw(userLevel);
     }
+
 }
