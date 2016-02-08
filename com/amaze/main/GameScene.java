@@ -41,6 +41,8 @@ public class GameScene extends Scene {
 	public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
 		super(sceneTitle, window);
 
+        Tile currentlyLoaded;
+
 		GameScene.blockSize = blockSize;
 
 		blockX = level.length;
@@ -90,6 +92,17 @@ public class GameScene extends Scene {
 
 		txtTime = new Text("Time: \t1:23", scoreFont);
 		txtTime.setPosition(window.getScreenWidth() - 180, window.getScreenHeight() - 40);
+
+        /* Change avatar location */
+        for(int i = 0;i < blocks; i++){
+            for(int j = 0; j < blocks; j++){
+                currentlyLoaded = tileMap[i][j];
+
+                if(currentlyLoaded.getTileType() == Tile.BlockType.START){
+                    player.setPosition(currentlyLoaded.getPosition());
+                }
+            }
+        }
 	}
 
 	/**
