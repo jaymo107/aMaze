@@ -8,7 +8,6 @@ import org.jsfml.system.Vector2i;
 import org.jsfml.window.Mouse;
 import org.jsfml.window.event.Event;
 
-import javax.swing.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,10 +27,11 @@ public class MapMakerScene extends Scene {
 
     private Tile.BlockType[] allValues = Tile.BlockType.values();
     private Window window;
-    private Boolean enterPressed = false;
 
-    private RectangleShape textBackground;
-    Text userLevel;
+	private RectangleShape textBackground;
+    private Text userLevel;
+
+	private static Integer currentLevel = 15;
 
     public MapMakerScene(String sceneTitle, Window window, int blocks, int blockSize) throws IOException {
         super(sceneTitle, window);
@@ -82,25 +82,19 @@ public class MapMakerScene extends Scene {
             case MOUSE_BUTTON_PRESSED:
                 for (Tile[] rows: tiles) {
                     for (Tile tile: rows) {
-                        if (mouseIsOnTile(tile)) {
-                            changeTexture(tile);
-                        }
+                        if (isMouseOn(tile)) changeTexture(tile);
                     }
                 }
                 break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
-                    case ESCAPE:
-                        exitScene(this);
-                        break;
+                    case ESCAPE:exitScene(this); break;
                     case RETURN:
-                        //enterPressed = true;
                         outputLevel();
-                            //window.clear();
-                            drawExportWindow(window);
-                            window.display();
-                            pause(2000);
-                            exitScene(this);
+						drawExportWindow(window);
+						window.display();
+						pause(2000);
+						exitScene(this);
                         break;
                 }
         }
@@ -140,7 +134,7 @@ public class MapMakerScene extends Scene {
         return blockSize * blockY;
     }
 
-    public boolean mouseIsOnTile(Tile tile) {
+    public boolean isMouseOn(Tile tile) {
         Vector2i mousePos = Mouse.getPosition(getWindow());
         Vector2f tilePos = tile.getPosition();
 
@@ -153,7 +147,7 @@ public class MapMakerScene extends Scene {
 
     public void outputLevel() {
         try {
-            PrintWriter writer = new PrintWriter(new FileWriter("Levels2.txt", true));
+            PrintWriter writer = new PrintWriter(new FileWriter("res/Levels/" + (currentLevel++).toString() + ".txt", true));
 
             for (int y = 0; y < blocks; y++) {
                 for (int x = 0; x < blocks; x++) {
@@ -169,8 +163,7 @@ public class MapMakerScene extends Scene {
         }
     }
 
-    public void exportSuccessful()
-    {
+    public void exportSuccessful() {
         try {
             Vector2f size = new Vector2f(window.getScreenWidth() / 1.2F, (window.getScreenHeight() / 5));
             textBackground = new RectangleShape(size);
@@ -190,22 +183,21 @@ public class MapMakerScene extends Scene {
             userLevel.setOrigin((window.getScreenWidth() / 9.5F) * -1, (window.getScreenHeight() / 3F) * -1);
         }
         catch (Exception e){
-
+			System.err.println("Export Failed");
         }
     }
 
     public void drawExportWindow(RenderWindow window) {
-
         window.draw(textBackground);
         window.draw(userLevel);
     }
 
-    public static void pause(int time)
-    {
+    private static void pause(int time) {
         try {
             Thread.sleep(time);
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
     }
+
 }
