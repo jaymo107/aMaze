@@ -20,6 +20,7 @@ public class Battery extends RectangleShape {
      * @param resY Size of window Y
      * @param defaultLevel Represents the level the battery will start at
      */
+
     public Battery(int resX, int resY, int defaultLevel) throws IOException{
         this.setPosition(resX - (resX / 2) - 50,resY - 60);
         this.setSize(new Vector2f(100,80));
@@ -33,6 +34,7 @@ public class Battery extends RectangleShape {
      * Changes the image shown too
      * @param level
      */
+
     private void changeChargeLevel(int level){
         try{
 			texture.loadFromFile(Paths.get("res/images/battery/" + Integer.toString(level) + ".png"));
@@ -50,8 +52,9 @@ public class Battery extends RectangleShape {
      * Increase battery charge level by a specified amount
      * @param level
      */
+
     public void increaseChargeLevel(int level){
-        this.chargeLevel = this.chargeLevel + level;
+        this.chargeLevel = (this.chargeLevel + level) % 6;
         changeChargeLevel(this.chargeLevel);
     }
 
@@ -59,6 +62,7 @@ public class Battery extends RectangleShape {
      * Decrease battery charge level by a specified amount
      * @param level
      */
+
     public void decreaseChargeLevel(int level){
         this.chargeLevel = this.chargeLevel - level;
         changeChargeLevel(this.chargeLevel);
