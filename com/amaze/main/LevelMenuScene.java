@@ -65,6 +65,7 @@ public class LevelMenuScene extends Scene {
             userLevelNumber = MAX_LEVEL;
         }
         userLevel.setString("Level " + userLevelNumber);
+        changeBackground(userLevelNumber);
     }
 
     /**
@@ -79,6 +80,7 @@ public class LevelMenuScene extends Scene {
             userLevelNumber--;
         }
         userLevel.setString("Level " + userLevelNumber);
+        changeBackground(userLevelNumber);
     }
 
     /**
@@ -132,5 +134,14 @@ public class LevelMenuScene extends Scene {
         window.draw(textBackground);
         window.draw(userLevel);
     }
+    public void changeBackground(int levelNumber) {
 
+        LevelReader backgroundLevelLoader = new LevelReader();
+
+        try {
+            backgroundLevelLoader.loadMap(String.valueOf(levelNumber));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

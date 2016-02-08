@@ -91,6 +91,29 @@ public class GameScene extends Scene {
 		txtTime = new Text("Time: \t1:23", scoreFont);
 		txtTime.setPosition(window.getScreenWidth() - 180, window.getScreenHeight() - 40);
 	}
+	public GameScene(String sceneTitle, Window window, int blocks, Tile.BlockType[][] level) throws Exception {
+		super(sceneTitle, window);
+
+		blockX = level.length;
+		blockY = level.length;
+
+		tileMap = new Tile[blocks][blocks];
+
+        /* Cache textures before we start using them in order to increase performance */
+		Texture tileTexture[] = new Texture[7];
+		for (int i = 0; i < tileTexture.length; i++) {
+			tileTexture[i] = new Texture();
+			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
+		}
+
+        /* Create new instances of tiles */
+		for (int j = 0; j < blocks; j++) {
+			for (int i = 0; i < blocks; i++) {
+				tileMap[i][j] = new Tile("", translateX(i), translateY(j), GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
+			}
+		}
+
+	}
 
 	/**
 	 * (
