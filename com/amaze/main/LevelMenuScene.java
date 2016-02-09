@@ -6,8 +6,11 @@ import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LevelMenuScene extends Scene {
 
@@ -18,9 +21,12 @@ public class LevelMenuScene extends Scene {
     Window wnd;
     Tile[][] tileMap;                           //Used for displaying map in background
     private int blocks;
+    private int fontSize = 170;
 
     static final int MAX_LEVEL = 20;
     static final int MIN_LEVEL = 1;
+
+    List<String> results = new ArrayList<String>();
 
     int userLevelNumber = 1;
 
@@ -40,25 +46,35 @@ public class LevelMenuScene extends Scene {
             System.out.println("Could not load the font!");
         }
 
-        //Vector2f position = new Vector2f(xCord, yCord);
-        Vector2f size = new Vector2f(window.getScreenWidth()/1.2F, window.getScreenHeight()/5);
+        //Setting size of background shader (white part)
+        Vector2f size = new Vector2f(window.getScreenWidth(), window.getScreenHeight());
         textBackground = new RectangleShape(size);
-        textBackground.setPosition(window.getScreenWidth()/12F, window.getScreenHeight()/2.5F);
+        textBackground.setPosition(0,0);
 
-
+        //Loading of Background Image for Text box
         backgroundImage.loadFromFile(Paths.get("res/menuGraphics/Wall.png"));
         textBackground.setTexture(backgroundImage);
 
         //Create text
-        userLevel = new Text("Level 1", maze, 170);
+        userLevel = new Text("Level 1", maze, fontSize);
         userLevel.setColor(Color.BLACK);
         userLevel.setStyle(Text.BOLD);
-        userLevel.setOrigin((window.getScreenWidth()/9.5F) * -1, (window.getScreenHeight()/3F) * -1);
+        userLevel.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + fontSize);
 
-        System.out.println(window.getScreenHeight());
-        System.out.println(window.getScreenWidth());
         changeBackground(userLevelNumber);
 
+
+        //Following set of codes adds all the files to the located in Levels folder to results arrayList
+        File[] files = new File("res/Levels").listFiles();
+
+        for(File file: files) {
+
+            if(file.isFile()) {
+
+                results.add(file.getName());
+            }
+        }
+        System.out.println(results);
     }
 
     /**
@@ -67,10 +83,10 @@ public class LevelMenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyUp() {
-        if(userLevelNumber < MAX_LEVEL) {
+        if(userLevelNumber < results.size() - 1) {
             userLevelNumber++;
         } else {
-            userLevelNumber = MAX_LEVEL;
+            userLevelNumber = results.size() - 1;
         }
         userLevel.setString("Level " + userLevelNumber);
         changeBackground(userLevelNumber);
@@ -114,7 +130,6 @@ public class LevelMenuScene extends Scene {
 
     public void executeEvent(Event event) {
         switch(event.type) {
-            case CLOSED: systemExit(); break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
                     case UP: arrowKeyUp(); break;
@@ -128,28 +143,22 @@ public class LevelMenuScene extends Scene {
                         }
                         break;
                 }
-
         }
     }
 
-	public String getUserLevelNumber()
-    {
-        return String.valueOf(userLevelNumber);
-    }
+	public String getUserLevelNumber() { return String.valueOf(userLevelNumber); }
 
     public void drawGraphics(RenderWindow window) {
-        //window.draw(background);
 
         for (int j = 0; j < blocks; j++) {
             for (int i = 0; i < blocks; i++) {
                 window.draw(tileMap[i][j]);
             }
         }
-
         window.draw(textBackground);
         window.draw(userLevel);
     }
-    public void changeBackground(int levelNumber){
+    public void changeBackground(int levelNumber) {
         Tile.BlockType[][] tempTiles;   //Holds reference to newly loaded tile map of the types
         int blockSize;
 
@@ -158,9 +167,9 @@ public class LevelMenuScene extends Scene {
         for (int i = 0; i < tileTexture.length; i++) {
             tileTexture[i] = new Texture();
 
-            try{
+            try {
                 tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
-            }catch (IOException e){
+            } catch (IOException e) {
                 System.out.println("Error loading tile image for menu background");
             }
 
@@ -190,14 +199,6 @@ public class LevelMenuScene extends Scene {
             }
         }
 
-
-        //wnd.setSize(new Vector2i(10,10));
-        wnd.create(new VideoMode((int)tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize,(int)tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize),"sadas");
-
-        /* Convert 2d array of types into tiles */
-        System.out.println("hello");
-
-
-
+        wnd.create(new VideoMode((int) tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int) tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize), "Level Menu");
     }
 }

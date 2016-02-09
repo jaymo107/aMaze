@@ -29,11 +29,11 @@ public class MenuScene extends Scene {
         super(sceneTitle, window);
 
         background = new Background(window.getScreenWidth(), window.getScreenHeight());
-        title = new Title(800, 300);
+        title = new Title(800, 300, (window.getScreenWidth() / 2) - 400, (window.getScreenHeight() / (NUMBER_OF_ITEMS + 1)) - 200);
 
-        buttons[0] = new PlayButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS), 400, 125,  window, this);
-        buttons[1] = new MapMakerButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 400, 125,  window, this);
-        buttons[2] = new ExitButton(window.getScreenWidth() / 3.75F, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 400,125,  window, this);
+        buttons[0] = new PlayButton((window.getScreenWidth() / 2) - 200, (window.getScreenHeight() / NUMBER_OF_ITEMS), 400, 125,  window, this);
+        buttons[1] = new MapMakerButton((window.getScreenWidth() / 2) - 200, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 400, 125,  window, this);
+        buttons[2] = new ExitButton((window.getScreenWidth() / 2) - 200, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 400,125,  window, this);
 
         music = new Music();
         try {
@@ -42,7 +42,7 @@ public class MenuScene extends Scene {
             System.out.println("There was a problem loading the background music.");
         }
 
-        music.play();
+        //music.play();
         buttons[0].setSelected(true);
     }
 
@@ -124,5 +124,4 @@ public class MenuScene extends Scene {
 
         window.draw(title);
     }
-
 }

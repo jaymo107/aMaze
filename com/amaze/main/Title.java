@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 public class Title extends RectangleShape {
 
     private Vector2f size;
+    private Vector2f position;
     private Texture icon;
 
 
@@ -22,11 +23,13 @@ public class Title extends RectangleShape {
      * @param width - width of the title
      * @param height - height of the title
      */
-    public Title(float width, float height) throws IOException {
+    public Title(float width, float height, float xCord, float yCord) throws IOException {
 
         size = new Vector2f(width,height);
+        position = new Vector2f(xCord, yCord);
 
         this.setSize(size);
+        this.setPosition(position);
 
         icon = new Texture();
         icon.loadFromFile(Paths.get("res/menuGraphics/logo.png"));
