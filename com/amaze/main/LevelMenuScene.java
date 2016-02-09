@@ -74,7 +74,7 @@ public class LevelMenuScene extends Scene {
                 results.add(file.getName());
             }
         }
-        System.out.println(results);
+        //System.out.println(results);
     }
 
     /**
