@@ -28,7 +28,7 @@ class Driver{
 
         // Create new window and set FPS limit to 60
         Window window = new Window(WINDOW_SIZE, WINDOW_SIZE + 60);
-        window.setFramerateLimit(60);
+        window.setFramerateLimit(30);
 
         //Create Menu Scene
         MenuScene menu = new MenuScene("Main Menu",window);

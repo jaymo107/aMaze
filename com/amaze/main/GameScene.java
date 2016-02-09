@@ -33,6 +33,10 @@ public class GameScene extends Scene {
 	private Vector2i startTile;
 	private Vector2i endTile;
 
+	boolean up = false;
+	boolean down = false;
+	boolean left = false;
+	boolean right = false;
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -200,42 +204,46 @@ public class GameScene extends Scene {
 
 		int stepDepth = 5; //The distance the player is moved on keypress.
 
-		switch (event.type) {
-			case CLOSED:
-				systemExit();
-				break;
-			case KEY_PRESSED:
+		if(event.type == Event.Type.KEY_PRESSED) {
+//			case Event.Type.CLOSED:
+//				systemExit();
+//				break;
+
 				switch (event.asKeyEvent().key) {
 					case UP:
 						if(getPlayerY() <= 0) {
 							break;
 						} else {
-							player.move(0, -stepDepth);
-							detectionHandler(detectCollision(), "DOWN");
+							up = true;
+							//player.move(0, -stepDepth);
+							//detectionHandler(detectCollision(), "DOWN");
 						}
 						break;
 					case DOWN:
 						if(getPlayerY() > translateY(blockY-1)) {
 							break;
 						} else {
-							player.move(0, stepDepth);
-							detectionHandler(detectCollision(), "UP");
+//							player.move(0, stepDepth);
+//							detectionHandler(detectCollision(), "UP");
+							down = true;
 						}
 						break;
 					case LEFT:
 						if(getPlayerX() <= 0) {
 							break;
 						} else {
-							player.move(-stepDepth, 0);
-							detectionHandler(detectCollision(), "RIGHT");
+							left = true;
+//							player.move(-stepDepth, 0);
+//							detectionHandler(detectCollision(), "RIGHT");
 						}
 						break;
 					case RIGHT:
 						if(getPlayerX() > translateX(blockX-1)) {
 							break;
 						} else {
-							player.move(stepDepth, 0);
-							detectionHandler(detectCollision(), "LEFT");
+							right = true;
+//							player.move(stepDepth, 0);
+//							detectionHandler(detectCollision(), "LEFT");
 						}
 						break;
 					case ESCAPE:
@@ -243,7 +251,20 @@ public class GameScene extends Scene {
 						exitScene(this);
 						break;
 				}
-				break;
+
+		}
+
+
+		if(event.type == Event.Type.KEY_RELEASED){
+			if(event.asKeyEvent().key == event.asKeyEvent().key.UP){
+				up = false;
+			}else if(event.asKeyEvent().key == event.asKeyEvent().key.DOWN){
+				down = false;
+			}else if(event.asKeyEvent().key == event.asKeyEvent().key.LEFT){
+				left = false;
+			}else if(event.asKeyEvent().key == event.asKeyEvent().key.RIGHT){
+				right = false;
+			}
 		}
 	}
 
@@ -354,6 +375,21 @@ public class GameScene extends Scene {
 					window.draw(tileMap[i][j]);
 				}
 			}
+		}
+
+		/* Check if the key has been pressed */
+		if (up) {
+			player.move(0, -5);
+			detectionHandler(detectCollision(), "DOWN");
+		}else if(down){
+			player.move(0, 5);
+			detectionHandler(detectCollision(), "UP");
+		}else if(left){
+			player.move(-5, 0);
+			detectionHandler(detectCollision(), "RIGHT");
+		}else if(right){
+			player.move(5, 0);
+			detectionHandler(detectCollision(), "LEFT");
 		}
 
 		//Draw the player
