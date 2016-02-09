@@ -6,17 +6,18 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-/*
-Reads a text file with a csv type format into a BlockType 2D array (currently 5 x 5)
-*/
+/**
+ *Reads a text file with a csv type format into a BlockType 2D array (currently 5 x 5)
+ */
 public class LevelReader {
 
     private Tile.BlockType[][] level;//Change this for larger maps
     private int sizeOfMaze;
 
 
-//Converts string to BlockType form. If the string is invalid, type PATH will be returned
-
+	/**
+	 * Converts string to BlockType form. If the string is invalid, type PATH will be returned
+	 */
     public Tile.BlockType stringToBlockType(String blockType) {
 
         if (blockType.equals("START")) return Tile.BlockType.START;
@@ -87,32 +88,24 @@ public class LevelReader {
     }
 
     public void loadNewTileMap(Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
-        GameScene.blockSize = blockSize;
+        GameScene.setBlockSize(blockSize);
 
-        int blockX = level.length;
-        int blockY = level.length;
-        Tile[][] tileMap = new Tile[blocks][blocks];
+		Tile[][] tileMap = new Tile[blocks][blocks];
 
         /* Cache textures before we start using them in order to increase performance */
         Texture tileTexture[] = new Texture[7];
         for (int i = 0; i < tileTexture.length; i++) {
             tileTexture[i] = new Texture();
+			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
         }
-
-        tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
-        tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
-        tileTexture[2].loadFromFile(Paths.get("res/images/door.png"));
-        tileTexture[3].loadFromFile(Paths.get("res/images/start.png"));
-        tileTexture[4].loadFromFile(Paths.get("res/images/finish.png"));
-        tileTexture[5].loadFromFile(Paths.get("res/images/void.png"));
-        tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
 
         /* Create new instances of tiles */
         for (int j = 0; j < blocks; j++) {
             for (int i = 0; i < blocks; i++) {
-                tileMap[i][j] = new Tile("", blockSize * i, blockSize * j, GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
+                tileMap[i][j] = new Tile("", blockSize * i, blockSize * j, GameScene.getBlockSize(), GameScene.getBlockSize(), level[i][j], tileTexture);
             }
         }
     }
+
 }
 

@@ -46,22 +46,19 @@ public class Avatar extends RectangleShape {
 
     }
     
-    public Vector2i tilePosition(){
-      return new Vector2i(Math.round(this.getPosition().x / GameScene.blockSize),
-          Math.round(this.getPosition().y / GameScene.blockSize));
+    public Vector2i getTilePosition() {
+		return new Vector2i(Math.round(this.getPosition().x / GameScene.getBlockSize()), Math.round(this.getPosition().y / GameScene.getBlockSize()));
     }
     
     /**
      * Event for when the user has moved tiles
-     * @return
      */
     public boolean hasMovedTiles(){
-      if(!this.oldTile.equals(this.tilePosition())){
-        this.oldTile = this.tilePosition();
-        return true;
-      }
-      
-      return false;
+		if (!this.oldTile.equals(this.getTilePosition())) {
+			this.oldTile = this.getTilePosition();
+			return true;
+		}
+		return false;
     }
 
 

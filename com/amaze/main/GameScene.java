@@ -15,10 +15,10 @@ import java.nio.file.Paths;
  */
 public class GameScene extends Scene {
 
-	public static int blockSize;              //Size of each block. W and H
-	public static int blockX;                 //Number of blocks in X direction
-	public static int blockY;                 //Number of blocks in Y direction
+	private static int blockSize;       //Size of each block. W and H
 
+	private int blockX;                 //Number of blocks in X direction
+	private int blockY;                 //Number of blocks in Y direction
 	private Tile[][] tileMap;           //Represents the maze
 	private Avatar player;              //Represents the player(avatar)
 	private Battery battery;            //
@@ -341,39 +341,22 @@ public class GameScene extends Scene {
 		window.draw(txtTime);
 	}
 
-
-	/**
-	 * Generates a new map
-	 * @throws Exception
-	 */
-	public void loadNewTileMap(Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
-		GameScene.blockSize = blockSize;
-
-		blockX = level.length;
-		blockY = level.length;
-		tileMap = new Tile[blocks][blocks];
-
-        /* Cache textures before we start using them in order to increase performance */
-		Texture tileTexture[] = new Texture[7];
-		for (int i = 0; i < tileTexture.length; i++) {
-			tileTexture[i] = new Texture();
-			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
-		}
-
-        /* Create new instances of tiles */
-		for (int j = 0; j < blocks; j++) {
-			for (int i = 0; i < blocks; i++) {
-				tileMap[i][j] = new Tile("", translateX(i), translateY(j), GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
-			}
-		}
-	}
-
 	public Vector2i getStartTilePos() {
 		return startTile;
 	}
 
 	public Vector2i getEndTilePos() {
 		return endTile;
+	}
+
+	public static int getBlockSize() {
+		return blockSize;
+	}
+
+	public static void setBlockSize(int blockSize) {
+		if (blockSize > 0) {
+			GameScene.blockSize = blockSize;
+		}
 	}
 
 }
