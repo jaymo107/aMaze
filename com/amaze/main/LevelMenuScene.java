@@ -57,6 +57,7 @@ public class LevelMenuScene extends Scene {
 
         System.out.println(window.getScreenHeight());
         System.out.println(window.getScreenWidth());
+        changeBackground(userLevelNumber);
 
     }
 
