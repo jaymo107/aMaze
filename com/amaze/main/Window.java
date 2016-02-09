@@ -44,7 +44,7 @@ public class Window extends RenderWindow{
 
     int currentScene = 0;
 
-    /**
+    /** test
      *
      * @param resolutionX Width in pixels(physical size of window)
      * @param resolutionY Height in pixels(physical size of window)

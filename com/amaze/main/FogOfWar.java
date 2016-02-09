@@ -3,6 +3,7 @@ package com.amaze.main;
 import com.amaze.entities.Avatar;
 import org.jsfml.graphics.Image;
 import org.jsfml.system.Clock;
+import org.jsfml.system.Vector2i;
 
 public class FogOfWar {
 
@@ -22,15 +23,18 @@ public class FogOfWar {
 	 */
 	private int drainTime = 3000;
 
+	private GameScene gameScene;
+
 	/**
 	 * Set the initial size
 	 */
-	public FogOfWar(int size, Window window, Battery battery){
+	public FogOfWar(int size, Window window, Battery battery, GameScene gameScene){
 		this.size = size;
 		this.window = window;
 		this.battery = battery;
 		fog = new Image();
 		elapsedTime = 0;
+		this.gameScene = gameScene;
 	}
 
 	public void increase(){
@@ -68,15 +72,13 @@ public class FogOfWar {
 	/**
 	 * Based off the avatar, check the coordinate and return true if the tile can be rendered
 	 */
-	public boolean getView(int x, int y, Avatar player){
+	public boolean getView(int x, int y, Avatar player) {
+		Vector2i startPos = gameScene.getStartTilePos();
+		Vector2i endPos = gameScene.getEndTilePos();
 	 
-		return (x == 0 && y == 0 ||
-		    x == (GameScene.blockX-1) &&
-		    y == (GameScene.blockY -1)) ||
-		    x < player.tilePosition().x + size &&
-				x > player.tilePosition().x - size &&
-				y < player.tilePosition().y + size &&
-				y > player.tilePosition().y - size;
+		return (x == startPos.x && y == startPos.y || x == (endPos.x) && y == (endPos.y)) ||
+				x < player.tilePosition().x + size && x > player.tilePosition().x - size &&
+				y < player.tilePosition().y + size && y > player.tilePosition().y - size;
 	}
 
 }
