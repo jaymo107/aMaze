@@ -26,7 +26,8 @@ public class GameScene extends Scene {
 	private FogOfWar fog;
 	private Text txtScore;
 	private Text txtTime;
-
+	private int playerX;
+	private int playerY;
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -158,20 +159,36 @@ public class GameScene extends Scene {
 			case KEY_PRESSED:
 				switch (event.asKeyEvent().key) {
 					case UP:
-						player.move(0, -stepDepth);
-						detectionHandler(detectCollision(), "DOWN");
+						if(getPlayerY() <= 0) {
+							break;
+						} else {
+							player.move(0, -stepDepth);
+							detectionHandler(detectCollision(), "DOWN");
+						}
 						break;
 					case DOWN:
-						player.move(0, stepDepth);
-						detectionHandler(detectCollision(), "UP");
+						if(getPlayerY() > translateY(blockY-1)) {
+							break;
+						} else {
+							player.move(0, stepDepth);
+							detectionHandler(detectCollision(), "UP");
+						}
 						break;
 					case LEFT:
-						player.move(-stepDepth, 0);
-						detectionHandler(detectCollision(), "RIGHT");
+						if(getPlayerX() <= 0) {
+							break;
+						} else {
+							player.move(-stepDepth, 0);
+							detectionHandler(detectCollision(), "RIGHT");
+						}
 						break;
 					case RIGHT:
-						player.move(stepDepth, 0);
-						detectionHandler(detectCollision(), "LEFT");
+						if(getPlayerX() > translateX(blockX-1)) {
+							break;
+						} else {
+							player.move(stepDepth, 0);
+							detectionHandler(detectCollision(), "LEFT");
+						}
 						break;
 					case ESCAPE:
 						music.stop();
@@ -187,8 +204,9 @@ public class GameScene extends Scene {
 	 */
 	public Tile.BlockType detectCollision() {
 		//Find the block location from the pixel X&Y
-		int playerX = Math.round(getPlayerX() / blockSize);
-		int playerY = Math.round(getPlayerY() / blockSize);
+		playerX = Math.round(getPlayerX() / blockSize);
+		playerY = Math.round(getPlayerY() / blockSize);
+		System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
 
 		//Return the block the player is behind
 		return tileMap[playerX][playerY].getTileType();
