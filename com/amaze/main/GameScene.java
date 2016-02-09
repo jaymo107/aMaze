@@ -4,6 +4,7 @@ import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
@@ -27,6 +28,9 @@ public class GameScene extends Scene {
 	private FogOfWar fog;
 	private Text txtScore;
 	private Text txtTime;
+
+	private Vector2i startTile;
+	private Vector2i endTile;
 
 
 	/**
@@ -88,7 +92,7 @@ public class GameScene extends Scene {
 		}
 
         /* Create fog of war */
-		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow(), battery);
+		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow(), battery, this);
 
 		txtScore = new Text("Score: \t100", scoreFont);
 		txtScore.setPosition(15, window.getScreenHeight() - 40);
@@ -101,9 +105,13 @@ public class GameScene extends Scene {
             for(int j = 0; j < blocks; j++){
                 currentlyLoaded = tileMap[i][j];
 
-                if(currentlyLoaded.getTileType() == Tile.BlockType.START){
+                if (currentlyLoaded.getTileType() == Tile.BlockType.START) {
                     player.setPosition(currentlyLoaded.getPosition());
+					startTile = new Vector2i(Math.round(player.getPosition().x/blockSize), Math.round(player.getPosition().y/blockSize));
                 }
+				if (currentlyLoaded.getTileType() == Tile.BlockType.FINISH) {
+					endTile = new Vector2i(Math.round(currentlyLoaded.getPosition().x/blockSize), Math.round(currentlyLoaded.getPosition().y/blockSize));
+				}
             }
         }
 	}
@@ -378,6 +386,14 @@ public class GameScene extends Scene {
 				tileMap[i][j] = new Tile("", translateX(i), translateY(j), GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
 			}
 		}
+	}
+
+	public Vector2i getStartTilePos() {
+		return startTile;
+	}
+
+	public Vector2i getEndTilePos() {
+		return endTile;
 	}
 
 }
