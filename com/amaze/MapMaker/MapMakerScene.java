@@ -6,6 +6,7 @@ import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.Mouse;
+import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.FileWriter;
@@ -32,12 +33,12 @@ public class MapMakerScene extends Scene {
 
 	private static Integer currentLevel = 15;
 
-    public MapMakerScene(String sceneTitle, Window window, int blocks, int blockSize) throws IOException {
+    public MapMakerScene(String sceneTitle, Window window, int blocksX, int blocksY) throws IOException {
         super(sceneTitle, window);
-        tiles = new Tile[blocks][blocks];
 
-        this.blocks = blocks;
-        this.blockSize = blockSize;
+        this.blocks = blocksX;
+        tiles = new Tile[blocks][blocks];
+        this.blockSize = window.getSize().x / blocksX;  //Work out how many blocks
 
         blockTextures = new Texture[7];
         for (int i = 0; i < blockTextures.length; i++) {
@@ -53,6 +54,8 @@ public class MapMakerScene extends Scene {
                 tiles[x][y].setSize(new Vector2f(blockSize, blockSize));
             }
         }
+
+        window.create(new VideoMode((int)tiles[blocks - 1][blocks - 1].getPosition().x + blockSize, (int)(tiles[blocks - 1][blocks - 1].getPosition().y + blockSize)),"Game");
         exportSuccessful();
     }
 

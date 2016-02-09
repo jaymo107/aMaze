@@ -103,7 +103,7 @@ public class GridSelectionScene extends Scene {
     public void enterPressed() throws Exception {
 
         try {
-            MapMakerScene mapMaker = new MapMakerScene("Map Maker", getWindow(), mapWidth, mapHeight);
+            MapMakerScene mapMaker = new MapMakerScene("Map Maker", getWindow(), mapWidth, mapHeight); // mapwidth is number of blocks X
             wnd.addScene(mapMaker);
             wnd.setScene(wnd.getArrayList().indexOf(mapMaker));
             this.setRunning(false);
