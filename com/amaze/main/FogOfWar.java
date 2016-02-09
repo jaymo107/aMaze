@@ -68,7 +68,11 @@ public class FogOfWar {
 	 * Based off the avatar, check the coordinate and return true if the tile can be rendered
 	 */
 	public boolean getView(int x, int y, Avatar player){
-		return  x < player.tilePosition().x + size &&
+	 
+		return (x == 0 && y == 0 ||
+		    x == (GameScene.blockX-1) &&
+		    y == (GameScene.blockY -1)) ||
+		    x < player.tilePosition().x + size &&
 				x > player.tilePosition().x - size &&
 				y < player.tilePosition().y + size &&
 				y > player.tilePosition().y - size;
