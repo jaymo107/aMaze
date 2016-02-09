@@ -254,7 +254,9 @@ public class GameScene extends Scene {
 		//Find the block location from the pixel X&Y
 		playerX = Math.round(getPlayerX() / blockSize);
 		playerY = Math.round(getPlayerY() / blockSize);
-		System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
+
+		//Debugging - enable to display Player x & Y
+		//System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
 
 		//Return the block the player is behind
 		return tileMap[playerX][playerY].getTileType();
