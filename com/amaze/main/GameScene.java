@@ -1,9 +1,9 @@
 package com.amaze.main;
+
 import com.amaze.entities.Avatar;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
-import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
@@ -16,20 +16,17 @@ import java.nio.file.Paths;
  */
 public class GameScene extends Scene {
 
-	public static int blockSize;              //Size of each block. W and H
-	public static int blockX;                 //Number of blocks in X direction
-	public static int blockY;                 //Number of blocks in Y direction
+	public static int blockSize;              	//Size of each block. W and H
+	public static int blockX;                 	//Number of blocks in X direction
+	public static int blockY;                 	//Number of blocks in Y direction
 
-	private Tile[][] tileMap;           //Represents the maze
-	private Avatar player;              //Represents the player(avatar)
-	private Clock clock;
-	private Battery battery;            //
-	private Music music;                //Background music
+	private Tile[][] tileMap;           		//Represents the maze
+	private Avatar player;             			//Represents the player(avatar)
+	private Battery battery;
+	private Music music;                		//Background music
 	private FogOfWar fog;
 	private Text txtScore;
 	private Text txtTime;
-	private int playerX;
-	private int playerY;
 	private Vector2i startTile;
 	private Vector2i endTile;
 
@@ -98,7 +95,7 @@ public class GameScene extends Scene {
 		txtScore = new Text("Score: \t100", scoreFont);
 		txtScore.setPosition(15, window.getScreenHeight() - 40);
 
-		txtTime = new Text("Time: \t1:23", scoreFont);
+		txtTime = new Text("Time: \t0:00", scoreFont);
 		txtTime.setPosition(window.getScreenWidth() - 180, window.getScreenHeight() - 40);
 
         /* Change avatar location */
@@ -173,13 +170,24 @@ public class GameScene extends Scene {
 
 		music.play();
 		music.setLoop(true);
-		clock = new Clock();
+		Clock clock = new Clock();
+		Clock timer = new Clock();
+
+		int minute = 0;
 
 		while (isRunning()) try {
 			getWindow().clear(Color.BLACK);
 			drawGraphics(getWindow());
 
 			fog.update(clock);
+
+			int second = (int) timer.getElapsedTime().asSeconds();
+			txtTime.setString("Time: \t" + minute + ":" + ((second < 10) ? "0" + second : second));
+
+			if (second >= 60) {
+				timer.restart();
+				minute++;
+			}
 
 			for (Event event : getWindow().pollEvents()) {
 				executeEvent(event);
@@ -197,7 +205,6 @@ public class GameScene extends Scene {
 	 * @param event - user event.
 	 */
 	public void executeEvent(Event event) {
-
 		int stepDepth = 5; //The distance the player is moved on keypress.
 
 		switch (event.type) {
@@ -207,33 +214,25 @@ public class GameScene extends Scene {
 			case KEY_PRESSED:
 				switch (event.asKeyEvent().key) {
 					case UP:
-						if(getPlayerY() <= 0) {
-							break;
-						} else {
+						if (getPlayerY() > 0) {
 							player.move(0, -stepDepth);
 							detectionHandler(detectCollision(), "DOWN");
 						}
 						break;
 					case DOWN:
-						if(getPlayerY() > translateY(blockY-1)) {
-							break;
-						} else {
+						if (getPlayerY() <= translateY(blockY-1)) {
 							player.move(0, stepDepth);
 							detectionHandler(detectCollision(), "UP");
 						}
 						break;
 					case LEFT:
-						if(getPlayerX() <= 0) {
-							break;
-						} else {
+						if (getPlayerX() > 0) {
 							player.move(-stepDepth, 0);
 							detectionHandler(detectCollision(), "RIGHT");
 						}
 						break;
 					case RIGHT:
-						if(getPlayerX() > translateX(blockX-1)) {
-							break;
-						} else {
+						if (getPlayerX() <= translateX(blockX-1)) {
 							player.move(stepDepth, 0);
 							detectionHandler(detectCollision(), "LEFT");
 						}
@@ -252,8 +251,8 @@ public class GameScene extends Scene {
 	 */
 	public Tile.BlockType detectCollision() {
 		//Find the block location from the pixel X&Y
-		playerX = Math.round(getPlayerX() / blockSize);
-		playerY = Math.round(getPlayerY() / blockSize);
+		int playerX = Math.round(getPlayerX() / blockSize);
+		int playerY = Math.round(getPlayerY() / blockSize);
 		System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
 
 		//Return the block the player is behind
@@ -326,16 +325,14 @@ public class GameScene extends Scene {
 	 * Function to return the X pixels of the player.
 	 */
 	public float getPlayerX() {
-		Vector2f res = player.getPosition();
-		return res.x;
+		return player.getPosition().x;
 	}
 
 	/**
 	 * Function to return the Y pixels of the player.
 	 */
 	public float getPlayerY() {
-		Vector2f res = player.getPosition();
-		return res.y;
+		return player.getPosition().y;
 	}
 
 	/**
@@ -388,15 +385,8 @@ public class GameScene extends Scene {
 		Texture tileTexture[] = new Texture[7];
 		for (int i = 0; i < tileTexture.length; i++) {
 			tileTexture[i] = new Texture();
+			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
 		}
-
-		tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
-		tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
-		tileTexture[2].loadFromFile(Paths.get("res/images/door.png"));
-		tileTexture[3].loadFromFile(Paths.get("res/images/start.png"));
-		tileTexture[4].loadFromFile(Paths.get("res/images/finish.png"));
-		tileTexture[5].loadFromFile(Paths.get("res/images/void.png"));
-		tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
 
         /* Create new instances of tiles */
 		for (int j = 0; j < blocks; j++) {
