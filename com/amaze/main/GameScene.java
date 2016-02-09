@@ -4,6 +4,7 @@ import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -63,6 +64,8 @@ public class GameScene extends Scene {
 			}
 		}
 
+		window.create(new VideoMode((int)tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int)(tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize) + 60),"Game");
+
         /* Create instance of battery */
 		battery = new Battery(window.getScreenHeight(), window.getScreenHeight(), 6);
 
@@ -91,6 +94,7 @@ public class GameScene extends Scene {
 		txtTime = new Text("Time: \t1:23", scoreFont);
 		txtTime.setPosition(window.getScreenWidth() - 180, window.getScreenHeight() - 40);
 	}
+
 	public GameScene(String sceneTitle, Window window, int blocks, Tile.BlockType[][] level) throws Exception {
 		super(sceneTitle, window);
 
@@ -322,12 +326,6 @@ public class GameScene extends Scene {
 
 		//Draw time text
 		window.draw(txtTime);
-
-        /*batteryRectangleShape r = new RectangleShape(new Vector2f(500,0));
-        r.setFillColor(Color.YELLOW);
-        r.setSize(new Vector2f(10,10));
-        r.setPosition(50,690);*/
-		//window.drawGraphics(r);
 	}
 
 

@@ -30,7 +30,7 @@ public class Tile extends RectangleShape{
      * @throws IOException
      */
 
-    public Tile(String filePath, int originX, int originY, int sizeX, int sizeY, BlockType type, Texture[] imageCache) throws IOException{
+    public Tile(String filePath, int originX, int originY, int sizeX, int sizeY, BlockType type, Texture[] imageCache){
         this.currentX = originX;
         this.currentY = originY;
         this.position = new Vector2f(originX,originY);
