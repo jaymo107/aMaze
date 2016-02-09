@@ -6,7 +6,7 @@ import org.jsfml.system.Clock;
 
 public class FogOfWar {
 
-	public static final int MAX_SIZE = 15;
+	public static final int MAX_SIZE = 8;
 	public static final int CHUNK_SIZE = 1;
 
 	private final int CHARGE_SIZE = CHUNK_SIZE * 10;
@@ -35,6 +35,7 @@ public class FogOfWar {
 
 	public void increase(){
 		size += CHARGE_SIZE;
+		if (size >= MAX_SIZE) size = MAX_SIZE;
 	}
 
 	public int getSize(){
