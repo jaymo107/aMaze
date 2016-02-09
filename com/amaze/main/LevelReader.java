@@ -1,6 +1,9 @@
 package com.amaze.main;
 
+import org.jsfml.graphics.Texture;
+
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 /*
@@ -27,8 +30,13 @@ public class LevelReader {
         return Tile.BlockType.WALL;
     }
 
-    public Tile.BlockType[][] getLevel() {return level;}
-    public int getSizeOfMaze() {return sizeOfMaze;}
+    public Tile.BlockType[][] getLevel() {
+        return level;
+    }
+
+    public int getSizeOfMaze() {
+        return sizeOfMaze;
+    }
 
     public void loadMap(String levelNumber) throws IOException {
 
@@ -60,8 +68,7 @@ public class LevelReader {
 
         while ((i = reader.read()) != -1) // Reads all of the text file
         {
-            if (Character.toString(((char) i)).equals(","))
-            {
+            if (Character.toString(((char) i)).equals(",")) {
                 level[y][x] = stringToBlockType(stringBuilder.toString());
                 stringBuilder.setLength(0); // empty StringBuilder
 
@@ -72,11 +79,40 @@ public class LevelReader {
                     x++;
                     // goes to next row in the 2D Array
                 }
-            }
-            else if (!(Character.toString(((char) i)).equals("\n"))) {
+            } else if (!(Character.toString(((char) i)).equals("\n"))) {
                 stringBuilder.append((char) i);
             }
         }
         System.out.println(Arrays.deepToString(level));// <- Uncomment to see 2D array
     }
+
+    public void loadNewTileMap(Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
+        GameScene.blockSize = blockSize;
+
+        int blockX = level.length;
+        int blockY = level.length;
+        Tile[][] tileMap = new Tile[blocks][blocks];
+
+        /* Cache textures before we start using them in order to increase performance */
+        Texture tileTexture[] = new Texture[7];
+        for (int i = 0; i < tileTexture.length; i++) {
+            tileTexture[i] = new Texture();
+        }
+
+        tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
+        tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
+        tileTexture[2].loadFromFile(Paths.get("res/images/door.png"));
+        tileTexture[3].loadFromFile(Paths.get("res/images/start.png"));
+        tileTexture[4].loadFromFile(Paths.get("res/images/finish.png"));
+        tileTexture[5].loadFromFile(Paths.get("res/images/void.png"));
+        tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
+
+        /* Create new instances of tiles */
+        for (int j = 0; j < blocks; j++) {
+            for (int i = 0; i < blocks; i++) {
+                tileMap[i][j] = new Tile("", blockSize * i, blockSize * j, GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
+            }
+        }
+    }
 }
+

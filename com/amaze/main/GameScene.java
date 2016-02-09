@@ -4,6 +4,8 @@ import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
+import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -28,6 +30,9 @@ public class GameScene extends Scene {
 	private Text txtTime;
 	private int playerX;
 	private int playerY;
+	private Vector2i startTile;
+	private Vector2i endTile;
+
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -41,6 +46,8 @@ public class GameScene extends Scene {
 
 	public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
 		super(sceneTitle, window);
+
+        Tile currentlyLoaded;
 
 		GameScene.blockSize = blockSize;
 
@@ -64,6 +71,8 @@ public class GameScene extends Scene {
 			}
 		}
 
+		window.create(new VideoMode((int)tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int)(tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize) + 60),"Game");
+
         /* Create instance of battery */
 		battery = new Battery(window.getScreenHeight(), window.getScreenHeight(), 6);
 
@@ -84,13 +93,52 @@ public class GameScene extends Scene {
 		}
 
         /* Create fog of war */
-		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow(), battery);
+		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow(), battery, this);
 
 		txtScore = new Text("Score: \t100", scoreFont);
 		txtScore.setPosition(15, window.getScreenHeight() - 40);
 
 		txtTime = new Text("Time: \t1:23", scoreFont);
 		txtTime.setPosition(window.getScreenWidth() - 180, window.getScreenHeight() - 40);
+
+        /* Change avatar location */
+        for(int i = 0;i < blocks; i++){
+            for(int j = 0; j < blocks; j++){
+                currentlyLoaded = tileMap[i][j];
+
+                if (currentlyLoaded.getTileType() == Tile.BlockType.START) {
+                    player.setPosition(currentlyLoaded.getPosition());
+					startTile = new Vector2i(Math.round(player.getPosition().x/blockSize), Math.round(player.getPosition().y/blockSize));
+                }
+				if (currentlyLoaded.getTileType() == Tile.BlockType.FINISH) {
+					endTile = new Vector2i(Math.round(currentlyLoaded.getPosition().x/blockSize), Math.round(currentlyLoaded.getPosition().y/blockSize));
+				}
+            }
+        }
+	}
+
+	public GameScene(String sceneTitle, Window window, int blocks, Tile.BlockType[][] level) throws Exception {
+		super(sceneTitle, window);
+
+		blockX = level.length;
+		blockY = level.length;
+
+		tileMap = new Tile[blocks][blocks];
+
+        /* Cache textures before we start using them in order to increase performance */
+		Texture tileTexture[] = new Texture[7];
+		for (int i = 0; i < tileTexture.length; i++) {
+			tileTexture[i] = new Texture();
+			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
+		}
+
+        /* Create new instances of tiles */
+		for (int j = 0; j < blocks; j++) {
+			for (int i = 0; i < blocks; i++) {
+				tileMap[i][j] = new Tile("", translateX(i), translateY(j), GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
+			}
+		}
+
 	}
 
 	/**
@@ -317,12 +365,6 @@ public class GameScene extends Scene {
 
 		//Draw time text
 		window.draw(txtTime);
-
-        /*batteryRectangleShape r = new RectangleShape(new Vector2f(500,0));
-        r.setFillColor(Color.YELLOW);
-        r.setSize(new Vector2f(10,10));
-        r.setPosition(50,690);*/
-		//window.drawGraphics(r);
 	}
 
 
@@ -362,6 +404,14 @@ public class GameScene extends Scene {
 				tileMap[i][j] = new Tile("", translateX(i), translateY(j), GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
 			}
 		}
+	}
+
+	public Vector2i getStartTilePos() {
+		return startTile;
+	}
+
+	public Vector2i getEndTilePos() {
+		return endTile;
 	}
 
 }
