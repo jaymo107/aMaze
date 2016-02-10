@@ -7,6 +7,7 @@ import org.jsfml.system.Vector2i;
 
 import com.amaze.main.GameScene;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
@@ -27,11 +28,17 @@ public class Avatar extends RectangleShape {
      * @throws Exception If fails to load texture
      */
 
-    public Avatar(int startX, int startY, int blockSize) throws Exception {
+    public Avatar(int startX, int startY, int blockSize) {
         level = 0;
         score = 0;
         Texture t = new Texture();
-        t.loadFromFile(Paths.get("res/face.png"));
+
+        try{
+            t.loadFromFile(Paths.get("res/face.png"));
+        }catch (IOException e){
+            System.out.println("Error loading avatar image");
+        }
+
         this.setSize(new Vector2f((float)(blockSize / 1.2),(float)(blockSize / 1.2)));
         this.setPosition(startX,startY);
         this.setTexture(t);

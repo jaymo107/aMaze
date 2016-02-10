@@ -121,30 +121,6 @@ public class GameScene extends Scene {
         }
 	}
 
-	public GameScene(String sceneTitle, Window window, int blocks, Tile.BlockType[][] level) throws Exception {
-		super(sceneTitle, window);
-
-		blockX = level.length;
-		blockY = level.length;
-
-		tileMap = new Tile[blocks][blocks];
-
-        /* Cache textures before we start using them in order to increase performance */
-		Texture tileTexture[] = new Texture[7];
-		for (int i = 0; i < tileTexture.length; i++) {
-			tileTexture[i] = new Texture();
-			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
-		}
-
-        /* Create new instances of tiles */
-		for (int j = 0; j < blocks; j++) {
-			for (int i = 0; i < blocks; i++) {
-				tileMap[i][j] = new Tile("", translateX(i), translateY(j), GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
-			}
-		}
-
-	}
-
 	/**
 	 * (
 	 * Translates X to raw pixels
@@ -212,6 +188,7 @@ public class GameScene extends Scene {
 				switch (event.asKeyEvent().key) {
 					case UP:
 						if(getPlayerY() <= 0) {
+							up = false;
 							break;
 						} else {
 							up = true;
@@ -221,6 +198,7 @@ public class GameScene extends Scene {
 						break;
 					case DOWN:
 						if(getPlayerY() > translateY(blockY-1)) {
+							down = false;
 							break;
 						} else {
 //							player.move(0, stepDepth);
@@ -230,6 +208,7 @@ public class GameScene extends Scene {
 						break;
 					case LEFT:
 						if(getPlayerX() <= 0) {
+							left = false;
 							break;
 						} else {
 							left = true;
@@ -239,6 +218,7 @@ public class GameScene extends Scene {
 						break;
 					case RIGHT:
 						if(getPlayerX() > translateX(blockX-1)) {
+							right = false;
 							break;
 						} else {
 							right = true;
@@ -251,7 +231,8 @@ public class GameScene extends Scene {
 						exitScene(this);
 						break;
 				}
-
+		}else if(event.type == Event.Type.CLOSED){
+			systemExit();
 		}
 
 
@@ -379,16 +360,16 @@ public class GameScene extends Scene {
 
 		/* Check if the key has been pressed */
 		if (up) {
-			player.move(0, -5);
+			player.move(0, -1);
 			detectionHandler(detectCollision(), "DOWN");
 		}else if(down){
-			player.move(0, 5);
+			player.move(0, 1);
 			detectionHandler(detectCollision(), "UP");
 		}else if(left){
-			player.move(-5, 0);
+			player.move(-1, 0);
 			detectionHandler(detectCollision(), "RIGHT");
 		}else if(right){
-			player.move(5, 0);
+			player.move(1, 0);
 			detectionHandler(detectCollision(), "LEFT");
 		}
 
