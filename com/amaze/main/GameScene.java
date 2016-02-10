@@ -29,10 +29,10 @@ public class GameScene extends Scene {
 	private Vector2i startTile;
 	private Vector2i endTile;
 
-	boolean up = false;
-	boolean down = false;
-	boolean left = false;
-	boolean right = false;
+	private boolean up = false;
+	private boolean down = false;
+	private boolean left = false;
+	private boolean right = false;
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -184,43 +184,38 @@ public class GameScene extends Scene {
 	 * @param event - user event.
 	 */
 	public void executeEvent(Event event) {
-
 		/* Sets flag to true when key pressed*/
-		if(event.type == Event.Type.KEY_PRESSED) {
-
-			switch (event.asKeyEvent().key) {
-						case UP:
-							up = true;
-							break;
-						case DOWN:
-							down = true;
-							break;
-						case LEFT:
-							left = true;
-							break;
-						case RIGHT:
-							right = true;
-						break;
+		switch (event.type) {
+			case KEY_PRESSED:
+				switch (event.asKeyEvent().key) {
+					case UP:up = true;break;
+					case DOWN:down = true;break;
+					case LEFT:left = true;break;
+					case RIGHT:right = true;break;
 					case ESCAPE:
 						music.stop();
 						exitScene(this);
 						break;
 				}
-		}else if(event.type == Event.Type.CLOSED){
-			systemExit();
+				break;
+
+			case CLOSED:systemExit();break;
 		}
 
 		/* Sets boolean if the key has been released */
-		if(event.type == Event.Type.KEY_RELEASED){
-			if(event.asKeyEvent().key == event.asKeyEvent().key.UP){
-				up = false;
-			}else if(event.asKeyEvent().key == event.asKeyEvent().key.DOWN){
-				down = false;
-			}else if(event.asKeyEvent().key == event.asKeyEvent().key.LEFT){
-				left = false;
-			}else if(event.asKeyEvent().key == event.asKeyEvent().key.RIGHT){
-				right = false;
-			}
+		switch (event.type) {
+			case KEY_RELEASED:
+				switch (event.asKeyEvent().key) {
+					case UP:up = false;break;
+					case DOWN:down = false;break;
+					case LEFT:left = false;break;
+					case RIGHT:right = false;break;
+					case ESCAPE:
+						music.stop();
+						exitScene(this);
+						break;
+				}
+				break;
 		}
 	}
 
