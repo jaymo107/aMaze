@@ -233,7 +233,7 @@ public class GameScene extends Scene {
 		int playerY = Math.round(getPlayerY() / blockSize);
 
 		//Debugging - enable to display Player X & Y
-		System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
+		//System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
 
 		//Return the block the player is behind
 		return tileMap[playerX][playerY].getTileType();
