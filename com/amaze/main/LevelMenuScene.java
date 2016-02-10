@@ -74,7 +74,7 @@ public class LevelMenuScene extends Scene {
                 results.add(file.getName());
             }
         }
-        //System.out.println(results);
+        System.out.println(results);
     }
 
     /**
@@ -83,10 +83,10 @@ public class LevelMenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyUp() {
-        if(userLevelNumber < results.size() - 1) {
+        if(userLevelNumber < results.size()) {
             userLevelNumber++;
         } else {
-            userLevelNumber = results.size() - 1;
+            userLevelNumber = results.size();
         }
         userLevel.setString("Level " + userLevelNumber);
         changeBackground(userLevelNumber);
@@ -130,6 +130,9 @@ public class LevelMenuScene extends Scene {
 
     public void executeEvent(Event event) {
         switch(event.type) {
+            case CLOSED:
+                systemExit();
+                break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
                     case UP: arrowKeyUp(); break;

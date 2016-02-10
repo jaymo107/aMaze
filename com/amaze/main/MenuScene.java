@@ -17,6 +17,8 @@ public class MenuScene extends Scene {
     private Title title;
     private Background background;
     private Music music;
+    private Button musicButton;
+    private boolean state = true;
 
 	/**
      * Constructs buttons to be displayed on the main window.
@@ -26,14 +28,32 @@ public class MenuScene extends Scene {
      */
 
     public MenuScene(String sceneTitle, Window window) throws IOException {
+
         super(sceneTitle, window);
 
-        background = new Background(window.getScreenWidth(), window.getScreenHeight());
-        title = new Title(800, 300, (window.getScreenWidth() / 2) - 400, (window.getScreenHeight() / (NUMBER_OF_ITEMS + 1)) - 200);
+        float titleHeight = window.getScreenHeight() / 3;
+        float titleWidth  = window.getScreenWidth();
+        float titleXCord  = window.getScreenWidth() / 2 - (titleWidth / 2);
+        float titleYCord  = window.getScreenHeight() / 4  - (titleHeight / 1.5F);
 
-        buttons[0] = new PlayButton((window.getScreenWidth() / 2) - 200, (window.getScreenHeight() / NUMBER_OF_ITEMS), 400, 125,  window, this);
-        buttons[1] = new MapMakerButton((window.getScreenWidth() / 2) - 200, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 1.6F, 400, 125,  window, this);
-        buttons[2] = new ExitButton((window.getScreenWidth() / 2) - 200, (window.getScreenHeight() / NUMBER_OF_ITEMS) * 2.2F, 400,125,  window, this);
+        float itemHeight = window.getScreenHeight() / 6;
+        float itemWidth  = window.getScreenWidth() / 1.75F;
+        float itemXCoord = window.getScreenWidth() / 2 - (itemWidth / 2);
+        float itemYCoord = window.getScreenHeight() / NUMBER_OF_ITEMS;
+
+        float musicButtonHeight = window.getScreenHeight() / 12;
+        float musicButtonWidth = window.getScreenHeight() / 12;
+        float musicButtonXCord = window.getScreenWidth() / 1.15F;
+        float musicButtonYCord = window.getScreenHeight() / 1.15F;
+
+        background = new Background(window.getScreenWidth(), window.getScreenHeight());
+
+        title = new Title                (titleXCord, titleYCord,        titleWidth, titleHeight);
+        buttons[0] = new PlayButton      (itemXCoord, itemYCoord,        itemWidth, itemHeight,  window, this);
+        buttons[1] = new MapMakerButton  (itemXCoord, itemYCoord * 1.6F, itemWidth, itemHeight,  window, this);
+        buttons[2] = new ExitButton      (itemXCoord, itemYCoord * 2.2F, itemWidth, itemHeight,  window, this);
+
+        musicButton = new MusicButton(musicButtonXCord, musicButtonYCord, musicButtonWidth, musicButtonHeight, window, this);
 
         music = new Music();
         try {
@@ -42,7 +62,7 @@ public class MenuScene extends Scene {
             System.out.println("There was a problem loading the background music.");
         }
 
-        //music.play();
+        music.play();
         buttons[0].setSelected(true);
     }
 
@@ -105,6 +125,9 @@ public class MenuScene extends Scene {
                 switch (event.asKeyEvent().key) {
                     case UP: arrowKeyUp(); break;
                     case DOWN: arrowKeyDown(); break;
+                    case M:
+                        state = !state;
+                        musicPlaying(state); break;
                     case RETURN: enterPressed(); break;
                 }
                 break;
@@ -121,7 +144,19 @@ public class MenuScene extends Scene {
 		for(Button b: getButtons()) {
             window.draw(b);
         }
+        window.draw(musicButton);
 
         window.draw(title);
+    }
+    public void musicPlaying(boolean state) {
+
+        if(!state) {
+            music.pause();
+            musicButton.setSelected(true);
+        }
+        else {
+            musicButton.setSelected(false);
+            music.play();
+        }
     }
 }
