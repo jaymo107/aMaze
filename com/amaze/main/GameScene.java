@@ -34,6 +34,10 @@ public class GameScene extends Scene {
 	private boolean left = false;
 	private boolean right = false;
 
+	private int charges = 0;
+
+	private int score;
+
 	/**
 	 * This constructor creates an instance of a GameScene.
 	 * Within this class all the game logic should be handled.
@@ -152,6 +156,9 @@ public class GameScene extends Scene {
 		Clock clock = new Clock();
 		Clock timer = new Clock();
 
+		Clock gameClock = new Clock();
+		Clock voidClock = new Clock();
+
 		int minute = 0;
 
 		while (isRunning()) try {
@@ -162,6 +169,9 @@ public class GameScene extends Scene {
 
 			int second = (int) timer.getElapsedTime().asSeconds();
 			txtTime.setString("Time: \t" + minute + ":" + ((second < 10) ? "0" + second : second));
+
+			updateScore(gameClock, voidClock);
+			txtScore.setString("Score: \t" + ((score >= 0) ? "0" : score));
 
 			if (second >= 60) {
 				timer.restart();
@@ -261,6 +271,7 @@ public class GameScene extends Scene {
 				//battery.changeChargeLevel(battery.getChargeLevel() + 1);
 				//battery.increaseChargeLevel(1);
 				fog.increase();
+				charges++;
 				break;
 			case FLOOR:
 				break;
@@ -380,6 +391,13 @@ public class GameScene extends Scene {
 		if (blockSize > 0) {
 			GameScene.blockSize = blockSize;
 		}
+	}
+
+	public void updateScore(Clock gameClock, Clock voidClock) {
+		long gameTime = gameClock.getElapsedTime().asMilliseconds();
+		long voidTime = voidClock.getElapsedTime().asMilliseconds();
+
+		score = (int) ((1000/gameTime) + (100/voidTime) + (100/charges));
 	}
 
 }
