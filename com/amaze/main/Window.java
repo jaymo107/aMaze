@@ -55,22 +55,14 @@ public class Window extends RenderWindow{
      *                grid to place objects into a maze
      */
 
-    public Window(int resolutionX, int resolutionY) throws IOException {
+    public Window(int resolutionX, int resolutionY){
         //Instantiate
         this.screenWidth = resolutionX;
         this.screenHeight = resolutionY;
 
         // Creating a new window
         this.create(new VideoMode(screenWidth, screenHeight), "aMaze", WindowStyle.DEFAULT);
-        this.setFramerateLimit(60);
-
-        //Load Sounds
-        SoundBuffer soundBuffer = new SoundBuffer();
-        soundBuffer.loadFromFile(Paths.get("res/beep.wav"));
-
-        //Create a sound and set its buffer
-        sound = new Sound();
-        sound.setBuffer(soundBuffer);
+        this.setFramerateLimit(30);
     }
 
     /**
