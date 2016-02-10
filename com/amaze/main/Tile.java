@@ -1,21 +1,11 @@
 package com.amaze.main;
 
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.Image;
-import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.RectangleShape;
+import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
-
-import com.amaze.levelmaker.Tile.BlockType;
-
-import org.jsfml.system.*;
+import org.jsfml.system.Vector2i;
 
 import java.io.IOException;
-import java.net.URI;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import org.jsfml.*;
 
 /**
  * Represents a Tile and displays depending on type
@@ -27,11 +17,9 @@ public class Tile extends RectangleShape{
     private Vector2f position;
     private Vector2f tileSize;
     private BlockType blockType;
-    private Texture tileTexture;
 
     public enum BlockType {
-        WALL, FLOOR, DOOR, START,
-        FINISH,VOID,CHARGE
+        WALL, FLOOR, DOOR, START, FINISH, VOID, CHARGE
     }
 
     /**
@@ -42,12 +30,12 @@ public class Tile extends RectangleShape{
      * @throws IOException
      */
 
-    public Tile(String filePath, int originX, int originY, int sizeX, int sizeY, BlockType type, Texture[] imageCache) throws IOException{
+    public Tile(String filePath, int originX, int originY, int sizeX, int sizeY, BlockType type, Texture[] imageCache){
         this.currentX = originX;
         this.currentY = originY;
         this.position = new Vector2f(originX,originY);
         this.tileSize = new Vector2f(sizeX,sizeY);
-        tileTexture = new Texture();
+        Texture tileTexture = new Texture();
         tileTexture.setSmooth(true);
 
         //Set image according to type
@@ -111,14 +99,6 @@ public class Tile extends RectangleShape{
 
     public BlockType getTileType() {
         return blockType;
-    }
-
-
-    public void setBlockType(BlockType floor, Texture[] tileTexture) {
-      // TODO Auto-generated method stub
-      this.blockType = floor;
-      tileTexture[1].setSmooth(true);
-      this.tileTexture = tileTexture[1];
     }
 
 }

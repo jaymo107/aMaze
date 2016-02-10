@@ -1,79 +1,84 @@
 package com.amaze.main;
 
+import com.amaze.entities.Avatar;
 import org.jsfml.graphics.Image;
 import org.jsfml.system.Clock;
-import org.jsfml.system.Vector2f;
-
-import com.amaze.entities.Avatar;
+import org.jsfml.system.Vector2i;
 
 public class FogOfWar {
-  
-  public static final int MAX_SIZE = 20;
-  private final int CHUNK_SIZE = 1;
-  private final int CHARGE_SIZE = CHUNK_SIZE * 5;
-  private Image fog;
-  private int size;
-  private Window window;
-  private long elapsedTime;
-  /**
-   * The amount of time before it drains
-   */
-  private int drainTime = 2000;
-  
-  /**
-   * Set the initial size
-   */
-  public FogOfWar(int size, Window window){
-    this.size = size;
-    this.window = window;
-    fog = new Image();
-    elapsedTime = 0;
-  }
-  
-  public void increase(){
-     this.size += CHARGE_SIZE;
-  }
-  
-  public int getSize(){
-    return this.size;
-  }
-  
-  private void drain(){
-    this.size -= this.CHUNK_SIZE;
-    if(this.size <=1)
-      this.size = 1;
-    
-  }
- 
-  /**
-   * The function which will automatically drain the battery
-   */
-  public void update(Clock clock){
-    /**
-     * update the elapsed time
-     */
-    this.elapsedTime = clock.getElapsedTime().asMilliseconds();
-    
-    if(this.getSize() <= 0) return;
-    
-    //check if elapsed time is greater than the trigger
-    if(this.elapsedTime >= this.drainTime){
-      //set the elapsed time to 0 and reset the clock
-      this.elapsedTime = 0;
-      this.drain();
-      clock.restart();
-    }
-  }
-  
-  /*
-   * Based off the avatar, check the coordinate and return true if the tile can be rendered
-   */
-  public boolean getView(int x, int y, Avatar player){
-    System.out.println();
-    if(x > player.tilePosition().x - this.getSize() && x < player.tilePosition().x + this.getSize() && y < player.tilePosition().y + this.getSize() && y > player.tilePosition().y - this.getSize()) return true;
-    return false;
-  }
-  
-  
+
+	public static final int MAX_SIZE = 8;
+	public static final int CHUNK_SIZE = 1;
+
+	private final int CHARGE_SIZE = CHUNK_SIZE * 10;
+	private int size;
+	private long elapsedTime;
+
+	private Image fog;
+	private Window window;
+	private Battery battery;
+
+	/**
+	 * The amount of time before it drains
+	 */
+	private int drainTime = 3000;
+
+	private GameScene gameScene;
+
+	/**
+	 * Set the initial size
+	 */
+	public FogOfWar(int size, Window window, Battery battery, GameScene gameScene){
+		this.size = size;
+		this.window = window;
+		this.battery = battery;
+		fog = new Image();
+		elapsedTime = 0;
+		this.gameScene = gameScene;
+	}
+
+	public void increase(){
+		size += CHARGE_SIZE;
+		if (size >= MAX_SIZE) size = MAX_SIZE;
+	}
+
+	public int getSize(){
+		return size;
+	}
+
+	private void drain(){
+		size -= CHUNK_SIZE;
+		if (size <= 2) size = 2;
+	}
+
+	/**
+	 * The function which will automatically drain the battery
+	 */
+	public void update(Clock clock){
+		if (size <= 0) return;
+
+		//update the elapsed time
+		elapsedTime = clock.getElapsedTime().asMilliseconds();
+
+		//check if elapsed time is greater than the trigger
+		if (elapsedTime >= drainTime) {
+			//set the elapsed time to 0 and reset the clock
+			elapsedTime = 0;
+			drain();
+			clock.restart();
+		}
+	}
+
+	/**
+	 * Based off the avatar, check the coordinate and return true if the tile can be rendered
+	 */
+	public boolean getView(int x, int y, Avatar player) {
+		Vector2i startPos = gameScene.getStartTilePos();
+		Vector2i endPos = gameScene.getEndTilePos();
+	 
+		return (x == startPos.x && y == startPos.y || x == (endPos.x) && y == (endPos.y)) ||
+				x < player.getTilePosition().x + size && x > player.getTilePosition().x - size &&
+				y < player.getTilePosition().y + size && y > player.getTilePosition().y - size;
+	}
 
 }

@@ -1,5 +1,6 @@
 package com.amaze.main;
 
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.event.Event;
 
@@ -20,9 +21,22 @@ public abstract class Scene implements Displayable {
 
     /**
      * When invoked, this function displays current scene on the window.
-     * @param window - primary window on which scenes are displayed
      */
-    public abstract void display(RenderWindow window);
+    public void display() {
+		setRunning(true);
+		getWindow().setTitle(getSceneTitle());
+
+		while (isRunning()) try {
+			getWindow().clear(Color.BLACK);
+			drawGraphics(getWindow());
+			for (Event event : getWindow().pollEvents()) {
+				executeEvent(event);
+			}
+			getWindow().display();
+		} catch (Exception e) {
+			setRunning(false);
+		}
+	}
 
     /**
      * When invoked, this function is responsible for executing appropriate
@@ -31,6 +45,8 @@ public abstract class Scene implements Displayable {
      */
     public abstract void executeEvent(Event event);
 
+	public abstract void drawGraphics(RenderWindow window);
+
     public String getSceneTitle() {return sceneTitle;}
 
     public boolean isRunning() {return running;}
@@ -38,5 +54,16 @@ public abstract class Scene implements Displayable {
     public void setRunning(boolean bool) {this.running = bool;}
 
     public Window getWindow() { return window; }
+
+    public void systemExit() {
+        window.close();
+        System.exit(0);
+    }
+
+    public void exitScene(Scene currentScene) {
+        window.setScene(0);
+        window.getScene(0).display();
+        currentScene.setRunning(false);
+    }
 
 }

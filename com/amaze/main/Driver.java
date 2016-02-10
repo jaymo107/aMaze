@@ -1,7 +1,5 @@
 package com.amaze.main;
 
-import com.amaze.MapMaker.MapMakerScene;
-
 /**
  * This class is responsible for creating an instance of aMaze.
  */
@@ -29,8 +27,8 @@ class Driver{
         }
 
         // Create new window and set FPS limit to 60
-        Window window = new Window(WINDOW_SIZE, WINDOW_SIZE);
-        window.setFramerateLimit(60);
+        Window window = new Window(WINDOW_SIZE, WINDOW_SIZE + 60);
+        window.setFramerateLimit(120);
 
         //Create Menu Scene
         MenuScene menu = new MenuScene("Main Menu",window);
@@ -39,7 +37,7 @@ class Driver{
         //GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel());
         //MapMakerScene mapMaker = new MapMakerScene("Level Menu", window, 30, 30);
 
-        window.addScenes(menu);
+        window.addScene(menu);
 
 
         /**

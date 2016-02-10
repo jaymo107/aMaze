@@ -1,18 +1,11 @@
 package com.amaze.main;
-import org.jsfml.audio.Music;
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RectangleShape;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Texture;
-import org.jsfml.system.Clock;
-
-import org.jsfml.system.Vector2f;
-import org.jsfml.system.Vector2i;
-
-import org.jsfml.window.event.Event;
-
 import com.amaze.entities.Avatar;
-import com.amaze.levelmaker.Tile.BlockType;
+import org.jsfml.audio.Music;
+import org.jsfml.graphics.*;
+import org.jsfml.system.Clock;
+import org.jsfml.system.Vector2i;
+import org.jsfml.window.VideoMode;
+import org.jsfml.window.event.Event;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -22,329 +15,389 @@ import java.nio.file.Paths;
  */
 public class GameScene extends Scene {
 
-    public static int blockSize;              //Size of each block. W and H
-    public static int blockX;                 //Number of blocks in X direction
-    public static int blockY;                 //Number of blocks in Y direction
-    private Tile tileMap[][];           //Represents the maze
-    private Avatar player;              //Represents the player(avatar)
-    private Clock clock;
-    private Battery battery;            //
-    private Music music;                //Background music
-    private FogOfWar fog;
-    private Texture[] tileTexture;
-    
+	private static int blockSize;       //Size of each block. W and H
 
-    /**
-     * This constructor creates an instance of a GameScene.
-     * Within this class all the game logic should be handled.
-     * If needed, supplement with additional classes for OO.
-     *
-     * @param sceneTitle - sets title of the window.
-     *                   set to "aMaze" when creating
-     *                   an instance of the GameScene.
-     */
+	private int blockX;                 //Number of blocks in X direction
+	private int blockY;                 //Number of blocks in Y direction
+	private Tile[][] tileMap;           //Represents the maze
+	private Avatar player;              //Represents the player(avatar)
+	private Battery battery;            //
+	private Music music;                //Background music
+	private FogOfWar fog;
+	private Text txtScore;
+	private Text txtTime;
+	private Vector2i startTile;
+	private Vector2i endTile;
 
-    public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
-        super(sceneTitle, window);
+	private boolean up = false;
+	private boolean down = false;
+	private boolean left = false;
+	private boolean right = false;
 
-        this.blockSize = blockSize;
+	private int charges = 0;
 
-        blockX = level.length;
-        blockY = level.length;
+	private int score;
 
-        tileMap = new Tile[blocks][blocks];
-        player = new Avatar(0,0,blockSize);
+	/**
+	 * This constructor creates an instance of a GameScene.
+	 * Within this class all the game logic should be handled.
+	 * If needed, supplement with additional classes for OO.
+	 *
+	 * @param sceneTitle - sets title of the window.
+	 *                   set to "aMaze" when creating
+	 *                   an instance of the GameScene.
+	 */
+
+	public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
+		super(sceneTitle, window);
+
+        Tile currentlyLoaded;
+
+		GameScene.blockSize = blockSize;
+
+		blockX = level.length;
+		blockY = level.length;
+
+		tileMap = new Tile[blocks][blocks];
+		player = new Avatar(0, 0, blockSize);
 
         /* Cache textures before we start using them in order to increase performance */
-        this.tileTexture = new Texture[7];
-        for (int i = 0; i < tileTexture.length; i++) {
-            tileTexture[i] = new Texture();
-        }
-
-        tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
-        tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
-        tileTexture[2].loadFromFile(Paths.get("res/images/door.png"));
-        tileTexture[3].loadFromFile(Paths.get("res/images/blue.png"));
-        tileTexture[4].loadFromFile(Paths.get("res/images/blue.png"));
-        tileTexture[5].loadFromFile(Paths.get("res/images/void.png"));
-        tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
+		Texture tileTexture[] = new Texture[7];
+		for (int i = 0; i < tileTexture.length; i++) {
+			tileTexture[i] = new Texture();
+			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
+		}
 
         /* Create new instances of tiles */
-        for (int j = 0; j < blocks; j++) {
-            for (int i = 0; i < blocks; i++) {
-                tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j], tileTexture);
-            }
-        }
+		for (int j = 0; j < blocks; j++) {
+			for (int i = 0; i < blocks; i++) {
+				tileMap[i][j] = new Tile("", translateX(i), translateY(j), GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
+			}
+		}
+
+		window.create(new VideoMode((int)tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int)(tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize) + 60),"Game");
 
         /* Create instance of battery */
-        battery = new Battery(window.getScreenHeight(),window.getScreenHeight());
-        battery.changeChargeLevel(6);
+		battery = new Battery(window.getScreenHeight(), window.getScreenHeight(), 6);
 
         /* Load background music */
-        music = new Music();
-        try {
-            music.openFromFile(Paths.get("res/music/gs2.wav"));
-        } catch (IOException e) {
-            System.out.println("There was a problem loading the background music \n Error: " + e);
-        }
-         
-        fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow());
-        
-        
-    }
+		music = new Music();
+		try {
+			music.openFromFile(Paths.get("res/music/move.ogg"));
+		} catch (IOException e) {
+			System.out.println("There was a problem loading the background music \n Error: " + e);
+		}
 
-    /**(
-     * Translates X to raw pixels
-     * @param blockX Block number
-     * @return Raw pixel value
-     */
+		/* Load font and text*/
+		Font scoreFont = new Font();
+		try {
+			scoreFont.loadFromFile(Paths.get("res/fonts/Arial.ttf"));
+		} catch (IOException e) {
+			System.out.println("Could not load the font!");
+		}
 
-    public int translateX(int blockX){
-        return blockSize * blockX;
-    }
+        /* Create fog of war */
+		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow(), battery, this);
 
-    /**
-     * Translates Y to raw pixels
-     * @param blockY Block number
-     * @return Raw pixel value
-     */
+		txtScore = new Text("Score: \t100", scoreFont);
+		txtScore.setPosition(15, window.getScreenHeight() - 40);
 
-    public int translateY(int blockY){
-        return blockSize * blockY;
-    }
+		txtTime = new Text("Time: \t1:23", scoreFont);
+		txtTime.setPosition(window.getScreenWidth() - 180, window.getScreenHeight() - 40);
 
-    /**
-     * When called, this function displays all the graphics on the main window.
-     * @param window - reference to the main window.
-     */
-    public void display(RenderWindow window) {
-        setRunning(true);
-        window.setTitle(getSceneTitle());
-        music.play();
-        music.setLoop(true);
-        
-        clock = new Clock();
+        /* Change avatar location */
+        for(int i = 0;i < blocks; i++){
+            for(int j = 0; j < blocks; j++){
+                currentlyLoaded = tileMap[i][j];
 
-        while(this.isRunning()) try {
-            window.clear(Color.BLACK);
-            drawGraphics(window);
-            
-            fog.update(clock);
-            
-            for (Event event : window.pollEvents()) {
-                executeEvent(event);
-            }
-            window.display();
-
-        }catch (Exception e) {
-            setRunning(false);
-        }
-    }
-
-    /**
-     * When event is performed (e.g - user clicks on the button) Appropriate function
-     * should be called within this function to handle the event.
-     *
-     * @param event - user event.
-     */
-    public void executeEvent(Event event) {
-
-        int stepDepth = 5; //The distance the player is moved on keypress.
-        
-        
-        //check if the block is a carge
-        if(detectCollision().equals(Tile.BlockType.CHARGE)){
-          fog.increase();
-          try {
-            tileMap[player.tilePosition().x][player.tilePosition().y] =
-                new Tile(null, player.tilePosition().x, player.tilePosition().y, GameScene.blockSize, GameScene.blockSize, Tile.BlockType.FLOOR, this.tileTexture);
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
-        
-
-        switch(event.type) {
-            case CLOSED:
-                getWindow().close();
-                System.exit(0);
-                break;
-            case KEY_PRESSED:
-                switch (event.asKeyEvent().key) {
-                    case UP:
-                        player.move(0,-stepDepth);
-                        detectionHandler(detectCollision(), "DOWN");
-                        break;
-                    case DOWN:
-                        player.move(0,stepDepth);
-                        detectionHandler(detectCollision(), "UP");
-                        break;
-                    case LEFT:
-                        player.move(-stepDepth,0);
-                        detectionHandler(detectCollision(), "RIGHT");
-                        break;
-                    case RIGHT:
-                        player.move(stepDepth,0);
-                        detectionHandler(detectCollision(), "LEFT");
-                        break;
-                    case ESCAPE:
-                        getWindow().setScene(0);
-                        getWindow().getScene(0).display(getWindow());
-                        break;
+                if (currentlyLoaded.getTileType() == Tile.BlockType.START) {
+                    player.setPosition(currentlyLoaded.getPosition());
+					startTile = new Vector2i(Math.round(player.getPosition().x/blockSize), Math.round(player.getPosition().y/blockSize));
                 }
-                break;
-        }
-    }
-
-    /**
-     * Function to detect if the player has moved onto a tile.
-     */
-    public Tile.BlockType detectCollision() {
-
-        //Find the block location from the pixel X&Y
-        int playerX = Math.round(getPlayerX() / blockSize);
-        int playerY = Math.round(getPlayerY() / blockSize);
-
-        //Return the block the player is behind
-        return tileMap[playerX][playerY].getTileType();
-    }
-
-    /**
-     * Function to see what type of block you have collided with and act accordingly.
-     *
-     * @param reboundDir The direction the avatar should be rebounded.
-     * @param type The type of block that has been detected.
-     */
-    public void detectionHandler(Tile.BlockType type, String reboundDir) {
-
-        switch(type) {
-            case WALL:
-                reboundPlayer(reboundDir);
-            case DOOR:
-                //TODO Insert the door handling code here.
-            case START:
-                break;
-            case FINISH:
-                //TODO Insert the finish handling code here.
-            case VOID:
-                //TODO Insert the void handling code here.
-            case CHARGE:
-                //TODO Insert the charge handling code here.
-            case FLOOR:
-                break;
-            default:
-                System.out.println("Please select a defined BlockType.");
-        }
-    }
-
-    /**
-     * Function to rebound the player the amount of steps defined, given a direction.
-     *
-     * @param dir The direction the avatar should be rebounded.
-     */
-    public void reboundPlayer(String dir) {
-
-        int reboundStep = 7; //Number of steps to rebound the player.
-        
-        
-
-        switch(dir) {
-            case "UP":player.move(0,-reboundStep); break;
-            case "DOWN":player.move(0,reboundStep); break;
-            case "LEFT":player.move(-reboundStep,0); break;
-            case "RIGHT":player.move(reboundStep,0); break;
-            default:
-                System.out.println("Please select a direction defined.");
-                break;
-        }
-    }
-
-    /**
-     * Function to return the X pixels of the player.
-     */
-    public float getPlayerX() {
-        Vector2f res = player.getPosition();
-        return res.x;
-    }
-
-    /**
-     * Function to return the Y pixels of the player.
-     */
-    public float getPlayerY() {
-        Vector2f res = player.getPosition();
-        return res.y;
-    }
-
-    /**
-     * This function is responsible for drawing graphics on the main window
-     *
-     * @param window - reference to the main window.
-     */
-
-
-    public void drawGraphics(RenderWindow window) throws Exception{
-
-        for (int j = 0; j < blockY; j++) {
-            for (int i = 0; i < blockX; i++) {
-              
-              if(fog.getView(i, j, player))
-                window.draw(tileMap[i][j]);
-              
-                
+				if (currentlyLoaded.getTileType() == Tile.BlockType.FINISH) {
+					endTile = new Vector2i(Math.round(currentlyLoaded.getPosition().x/blockSize), Math.round(currentlyLoaded.getPosition().y/blockSize));
+				}
             }
         }
+	}
 
-        //Draw the player
-        window.draw(player);
+	/**
+	 * (
+	 * Translates X to raw pixels
+	 *
+	 * @param blockX Block number
+	 * @return Raw pixel value
+	 */
 
-        //Draw the battery
-        window.draw(battery);
+	public int translateX(int blockX) {
+		return blockSize * blockX;
+	}
 
-        /*batteryRectangleShape r = new RectangleShape(new Vector2f(500,0));
-        r.setFillColor(Color.YELLOW);
-        r.setSize(new Vector2f(10,10));
-        r.setPosition(50,690);*/
-        //window.draw(r);
-    }
+	/**
+	 * Translates Y to raw pixels
+	 *
+	 * @param blockY Block number
+	 * @return Raw pixel value
+	 */
+
+	public int translateY(int blockY) {
+		return blockSize * blockY;
+	}
+
+	/**
+	 * When called, this function displays all the graphics on the main window.
+	 */
+	public void display() {
+		setRunning(true);
+		getWindow().setTitle(getSceneTitle());
+
+		music.play();
+		music.setLoop(true);
+		Clock clock = new Clock();
+		Clock timer = new Clock();
+
+		Clock gameClock = new Clock();
+		Clock voidClock = new Clock();
+
+		int minute = 0;
+
+		while (isRunning()) try {
+			getWindow().clear(Color.BLACK);
+			drawGraphics(getWindow());
+
+			fog.update(clock);
+
+			int second = (int) timer.getElapsedTime().asSeconds();
+			txtTime.setString("Time: \t" + minute + ":" + ((second < 10) ? "0" + second : second));
+
+			updateScore(gameClock, voidClock);
+			txtScore.setString("Score: \t" + ((score >= 0) ? "0" : score));
+
+			if (second >= 60) {
+				timer.restart();
+				minute++;
+			}
+
+			for (Event event : getWindow().pollEvents()) {
+				executeEvent(event);
+			}
+			getWindow().display();
+		} catch (Exception e) {
+			setRunning(false);
+		}
+	}
+
+	/**
+	 * When event is performed (e.g - user clicks on the button) Appropriate function
+	 * should be called within this function to handle the event.
+	 *
+	 * @param event - user event.
+	 */
+	public void executeEvent(Event event) {
+		/* Sets flag to true when key pressed*/
+		switch (event.type) {
+			case KEY_PRESSED:
+				switch (event.asKeyEvent().key) {
+					case UP:up = true;break;
+					case DOWN:down = true;break;
+					case LEFT:left = true;break;
+					case RIGHT:right = true;break;
+					case ESCAPE:
+						music.stop();
+						exitScene(this);
+						break;
+				}
+				break;
+
+			case CLOSED:systemExit();break;
+		}
+
+		/* Sets boolean if the key has been released */
+		switch (event.type) {
+			case KEY_RELEASED:
+				switch (event.asKeyEvent().key) {
+					case UP:up = false;break;
+					case DOWN:down = false;break;
+					case LEFT:left = false;break;
+					case RIGHT:right = false;break;
+					case ESCAPE:
+						music.stop();
+						exitScene(this);
+						break;
+				}
+				break;
+		}
+	}
+
+	/**
+	 * Function to detect if the player has moved onto a tile.
+	 */
+	public Tile.BlockType detectCollision() {
+		//Find the block location from the pixel X&Y
+		int playerX = Math.round(getPlayerX() / blockSize);
+		int playerY = Math.round(getPlayerY() / blockSize);
+
+		//Debugging - enable to display Player X & Y
+		//System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
+
+		//Return the block the player is behind
+		return tileMap[playerX][playerY].getTileType();
+	}
+
+	/**
+	 * Function to see what type of block you have collided with and act accordingly.
+	 *
+	 * @param reboundDir The direction the avatar should be rebounded.
+	 * @param type       The type of block that has been detected.
+	 */
+	public void detectionHandler(Tile.BlockType type, String reboundDir) {
+		switch (type) {
+			case WALL:
+				reboundPlayer(reboundDir);
+				break;
+			case DOOR:
+				//TODO Insert the door handling code here.
+				break;
+			case START:
+				break;
+			case FINISH:
+				//TODO Insert the finish handling code here.
+				break;
+			case VOID:
+				//TODO Insert the void handling code here.
+				break;
+			case CHARGE:
+				//TODO Insert the charge handling code here.
+				//battery.changeChargeLevel(battery.getChargeLevel() + 1);
+				//battery.increaseChargeLevel(1);
+				fog.increase();
+				charges++;
+				break;
+			case FLOOR:
+				break;
+			default:
+				System.out.println("Please select a defined BlockType.");
+		}
+	}
+
+	/**
+	 * Function to rebound the player the amount of steps defined, given a direction.
+	 *
+	 * @param dir The direction the avatar should be rebounded.
+	 */
+	public void reboundPlayer(String dir) {
+		int reboundStep = 7; //Number of steps to rebound the player.
+
+		switch (dir) {
+			case "UP":
+				player.move(0, -reboundStep);
+				break;
+			case "DOWN":
+				player.move(0, reboundStep);
+				break;
+			case "LEFT":
+				player.move(-reboundStep, 0);
+				break;
+			case "RIGHT":
+				player.move(reboundStep, 0);
+				break;
+			default:
+				System.out.println("Please select a direction defined.");
+				break;
+		}
+	}
+
+	/**
+	 * Function to return the X pixels of the player.
+	 */
+	public float getPlayerX() {
+		return player.getPosition().x;
+	}
+
+	/**
+	 * Function to return the Y pixels of the player.
+	 */
 
 
-    /**
-     * Generates a new map
-     * @param window
-     * @param blocks
-     * @param blockSize
-     * @param level
-     * @throws Exception
-     */
-    public void loadNewTileMap(Window window, int blocks, int blockSize,Tile.BlockType[][] level) throws Exception{
-        this.blockSize = blockSize;
+	public float getPlayerY() {
+		return player.getPosition().y;
+	}
 
-        blockX = level.length;
-        blockY = level.length;
-        tileMap = new Tile[blocks][blocks];
+	/**
+	 * This function is responsible for drawing graphics on the main window
+	 *
+	 * @param window - reference to the main window.
+	 */
 
-        /* Cache textures before we start using them in order to increase performance */
-        Texture tileTexture[] = new Texture[7];
-        for (int i = 0; i < tileTexture.length; i++) {
-            tileTexture[i] = new Texture();
-        }
 
-        tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
-        tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
-        tileTexture[2].loadFromFile(Paths.get("res/images/door.png"));
-        tileTexture[3].loadFromFile(Paths.get("res/images/blue.png"));
-        tileTexture[4].loadFromFile(Paths.get("res/images/blue.png"));
-        tileTexture[5].loadFromFile(Paths.get("res/images/void.png"));
-        tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
+	public void drawGraphics(RenderWindow window) {
+		for (int j = 0; j < blockY; j++) {
+			for (int i = 0; i < blockX; i++) {
+				if (fog.getView(i, j, player)) {
+					window.draw(tileMap[i][j]);
+				}
+			}
+		}
 
-        /* Create new instances of tiles */
-        for (int j = 0; j < blocks; j++) {
-            for (int i = 0; i < blocks; i++) {
-                tileMap[i][j] = new Tile("",translateX(i),translateY(j),this.blockSize,this.blockSize,level[i][j], tileTexture);
-            }
-        }
-    }
+		/* Check if the key has been pressed with window edge detection*/
+		if (up) {
+			if(getPlayerY() >= 0) {
+				player.move(0, -1);
+				detectionHandler(detectCollision(), "DOWN");
+			}
+		}else if(down){
+			if(getPlayerY() <= translateY(blockY-1)){
+				player.move(0, 1);
+				detectionHandler(detectCollision(), "UP");
+			}
+		}else if(left){
+			if(getPlayerX() >= 0){
+				player.move(-1, 0);
+				detectionHandler(detectCollision(), "RIGHT");
+			}
+		}else if(right){
+			if(getPlayerX() < translateY(blockX - 1)){
+				player.move(1, 0);
+				detectionHandler(detectCollision(), "LEFT");
+			}
+		}
+
+		//Draw the player
+		window.draw(player);
+
+		//Draw the battery
+		window.draw(battery);
+
+		//Draw score text
+		window.draw(txtScore);
+
+		//Draw time text
+		window.draw(txtTime);
+	}
+
+	public Vector2i getStartTilePos() {
+		return startTile;
+	}
+
+	public Vector2i getEndTilePos() {
+		return endTile;
+	}
+
+	public static int getBlockSize() {
+		return blockSize;
+	}
+
+	public static void setBlockSize(int blockSize) {
+		if (blockSize > 0) {
+			GameScene.blockSize = blockSize;
+		}
+	}
+
+	public void updateScore(Clock gameClock, Clock voidClock) {
+		long gameTime = gameClock.getElapsedTime().asMilliseconds();
+		long voidTime = voidClock.getElapsedTime().asMilliseconds();
+
+		score = (int) ((1000/gameTime) + (100/voidTime) + (100/charges));
+	}
 
 }
-
-

@@ -6,9 +6,9 @@ import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.Mouse;
+import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
-import javax.swing.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,19 +27,18 @@ public class MapMakerScene extends Scene {
     private int blockSize;
 
     private Tile.BlockType[] allValues = Tile.BlockType.values();
-    private Window window;
-    private Boolean enterPressed = false;
 
-    private RectangleShape textBackground;
-    Text userLevel;
+	private RectangleShape textBackground;
+    private Text userLevel;
 
-    public MapMakerScene(String sceneTitle, Window window, int blocks, int blockSize) throws IOException {
+	private static Integer currentLevel = 15;
+
+    public MapMakerScene(String sceneTitle, Window window, int blocksX, int blocksY) throws IOException {
         super(sceneTitle, window);
-        this.window = window;
-        tiles = new Tile[blocks][blocks];
 
-        this.blocks = blocks;
-        this.blockSize = blockSize;
+        this.blocks = blocksX;
+        tiles = new Tile[blocks][blocks];
+        this.blockSize = window.getSize().x / blocksX;  //Work out how many blocks
 
         blockTextures = new Texture[7];
         for (int i = 0; i < blockTextures.length; i++) {
@@ -55,59 +54,30 @@ public class MapMakerScene extends Scene {
                 tiles[x][y].setSize(new Vector2f(blockSize, blockSize));
             }
         }
+
+        window.create(new VideoMode((int)tiles[blocks - 1][blocks - 1].getPosition().x + blockSize, (int)(tiles[blocks - 1][blocks - 1].getPosition().y + blockSize)),"Game");
         exportSuccessful();
-    }
-
-    public void display(RenderWindow window) {
-        setRunning(true);
-        window.setTitle(getSceneTitle());
-
-        while(this.isRunning()) try {
-            window.clear(Color.WHITE);
-            drawTile(window);
-
-            for (Event event : window.pollEvents()) {
-                executeEvent(event);
-            }
-            window.display();
-
-        }catch (Exception e) {
-            setRunning(false);
-        }
     }
 
     public void executeEvent(Event event) {
         switch(event.type) {
-            case CLOSED:
-                getWindow().close();
-                System.exit(0);
-                break;
+            case CLOSED: systemExit(); break;
             case MOUSE_BUTTON_PRESSED:
                 for (Tile[] rows: tiles) {
                     for (Tile tile: rows) {
-                        if (mouseIsOnTile(tile)) {
-                            changeTexture(tile);
-                        }
+                        if (isMouseOn(tile)) changeTexture(tile);
                     }
                 }
                 break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
-//                    case ESCAPE:
-//                        getWindow().setScene(0);
-//                        getWindow().getScene(0).display(getWindow());
-//                        this.setRunning(false);
-//                        break;
+                    case ESCAPE:exitScene(this); break;
                     case RETURN:
-                        enterPressed = true;
                         outputLevel();
-                            //window.clear();
-                            drawExportWindow(window);
-                            window.display();
-                            pause(2000);
-                            getWindow().setScene(0);
-                            getWindow().getScene(0).display(getWindow());
-                            this.setRunning(false);
+						drawExportWindow(getWindow());
+						getWindow().display();
+						pause(2000);
+						exitScene(this);
                         break;
                 }
         }
@@ -119,7 +89,7 @@ public class MapMakerScene extends Scene {
         tile.changeBlockType(allValues[nextImageIndex]);
     }
 
-    public void drawTile(RenderWindow window) {
+    public void drawGraphics(RenderWindow window) {
         for (Tile[] rows: tiles) {
             for (Tile tile: rows) {
                 window.draw(tile);
@@ -147,7 +117,7 @@ public class MapMakerScene extends Scene {
         return blockSize * blockY;
     }
 
-    public boolean mouseIsOnTile(Tile tile) {
+    public boolean isMouseOn(Tile tile) {
         Vector2i mousePos = Mouse.getPosition(getWindow());
         Vector2f tilePos = tile.getPosition();
 
@@ -160,7 +130,7 @@ public class MapMakerScene extends Scene {
 
     public void outputLevel() {
         try {
-            PrintWriter writer = new PrintWriter(new FileWriter("Levels2.txt", true));
+            PrintWriter writer = new PrintWriter(new FileWriter("res/Levels/" + (currentLevel++).toString() + ".txt", true));
 
             for (int y = 0; y < blocks; y++) {
                 for (int x = 0; x < blocks; x++) {
@@ -176,12 +146,11 @@ public class MapMakerScene extends Scene {
         }
     }
 
-    public void exportSuccessful()
-    {
+    public void exportSuccessful() {
         try {
-            Vector2f size = new Vector2f(window.getScreenWidth() / 1.2F, (window.getScreenHeight() / 5));
+            Vector2f size = new Vector2f(getWindow().getScreenWidth() / 1.2F, (getWindow().getScreenHeight() / 5));
             textBackground = new RectangleShape(size);
-            textBackground.setPosition(window.getScreenWidth() / 12F, (window.getScreenHeight() / 2.5F)-65);
+            textBackground.setPosition(getWindow().getScreenWidth() / 12F, (getWindow().getScreenHeight() / 2.5F)-65);
 
             Font maze = new Font();
             maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
@@ -194,25 +163,24 @@ public class MapMakerScene extends Scene {
             userLevel = new Text("Export Successful", maze, 75);
             userLevel.setColor(Color.BLACK);
             userLevel.setStyle(Text.BOLD);
-            userLevel.setOrigin((window.getScreenWidth() / 9.5F) * -1, (window.getScreenHeight() / 3F) * -1);
+            userLevel.setOrigin((getWindow().getScreenWidth() / 9.5F) * -1, (getWindow().getScreenHeight() / 3F) * -1);
         }
         catch (Exception e){
-
+			System.err.println("Export Failed");
         }
     }
 
     public void drawExportWindow(RenderWindow window) {
-
         window.draw(textBackground);
         window.draw(userLevel);
     }
 
-    public static void pause(int time)
-    {
+    private static void pause(int time) {
         try {
             Thread.sleep(time);
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
     }
+
 }

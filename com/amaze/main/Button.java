@@ -74,6 +74,6 @@ public abstract class Button extends RectangleShape {
 
     public void setIcon(Texture t) { setTexture(t); }
 
-    abstract void performAction();
+    public abstract void performAction();
 
 }

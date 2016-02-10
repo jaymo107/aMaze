@@ -18,8 +18,6 @@ public class Tile extends RectangleShape {
         this.blockTextures = blockTextures;
     }
 
-    public Tile() { super(); }
-
     public void changeBlockType(BlockType block) {
         int index = 0;
 

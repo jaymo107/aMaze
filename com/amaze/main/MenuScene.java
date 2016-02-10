@@ -1,6 +1,5 @@
 package com.amaze.main;
 import org.jsfml.audio.Music;
-import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.event.Event;
 
@@ -19,9 +18,7 @@ public class MenuScene extends Scene {
     private Background background;
     private Music music;
 
-    private boolean playing = false;
-
-    /**
+	/**
      * Constructs buttons to be displayed on the main window.
      *
      * @param sceneTitle - title of the Scene
@@ -45,6 +42,7 @@ public class MenuScene extends Scene {
             System.out.println("There was a problem loading the background music.");
         }
 
+        //music.play();
         buttons[0].setSelected(true);
     }
 
@@ -54,14 +52,15 @@ public class MenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyUp() {
-        if(currentButton == 0) {
-            buttons[currentButton].setSelected(true);
+        if (currentButton == 0) {
+            buttons[currentButton].setSelected(false);
+            buttons[NUMBER_OF_ITEMS - 1].setSelected(true);
+            currentButton = NUMBER_OF_ITEMS - 1;
         } else {
             buttons[currentButton].setSelected(false);
             buttons[--currentButton].setSelected(true);
         }
     }
-
     /**
      * This function is triggered when user presses arrow key down.
      * Every time this function is called, next item on the menu will be selected.
@@ -69,7 +68,9 @@ public class MenuScene extends Scene {
      */
     public void arrowKeyDown() {
         if(currentButton == NUMBER_OF_ITEMS - 1) {
-            buttons[currentButton].setSelected(true);
+            buttons[currentButton].setSelected(false);
+            buttons[0].setSelected(true);
+            currentButton = 0;
         } else {
             buttons[currentButton].setSelected(false);
             buttons[++currentButton].setSelected(true);
@@ -85,11 +86,6 @@ public class MenuScene extends Scene {
         for (Button b: buttons) {
             if (b.isSelected()) {
                 b.performAction();
-
-                if (b instanceof PlayButton) {
-                    //playing = true;
-                    //music.stop();
-                }
             }
         }
     }
@@ -104,47 +100,14 @@ public class MenuScene extends Scene {
      */
     public void executeEvent(Event event) {
         switch(event.type) {
-            case CLOSED:
-                getWindow().close();
-                System.exit(0);
-                break;
+            case CLOSED: systemExit();
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
                     case UP: arrowKeyUp(); break;
                     case DOWN: arrowKeyDown(); break;
-                    case RETURN:
-//                        getWindow().setScene(1);
-//                        getWindow().getScene(1).display(getWindow());
-                        enterPressed(); break;
+                    case RETURN: enterPressed(); break;
                 }
                 break;
-        }
-    }
-
-    /**
-     * Displays all the items associated with the Menu on the primary window.
-     * @param window - primary window on which scenes are displayed
-     */
-    public void display(RenderWindow window) {
-        setRunning(true);
-        window.setTitle(getSceneTitle());
-//        if (!playing) {
-//            music.play();
-//            music.setLoop(true);
-//        }
-
-        while(this.isRunning()) try {
-			window.clear(Color.WHITE);
-			drawMenuItems(window);
-
-			for (Event event : window.pollEvents()) {
-                //Different behaviour depending on
-                executeEvent(event);
-            }
-            window.display();
-
-        }catch (Exception e) {
-            setRunning(false);
         }
     }
 
@@ -152,13 +115,13 @@ public class MenuScene extends Scene {
      * Draws items associated with MenuScene in the main Window.
      * @param window - reference to the window.
      */
-    private void drawMenuItems(RenderWindow window) {
-
+    public void drawGraphics(RenderWindow window) {
         window.draw(background);
 
-        for(Button b: getButtons()) {
+		for(Button b: getButtons()) {
             window.draw(b);
         }
+
         window.draw(title);
     }
 
