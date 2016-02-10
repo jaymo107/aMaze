@@ -29,6 +29,7 @@ public class GridSelectionScene extends Scene {
     private int mapHeight = 5;
 
     public GridSelectionScene(String sceneTitle, Window window) throws IOException {
+
         super(sceneTitle, window);
         wnd = window;
         blocks = 0;
@@ -140,11 +141,6 @@ public class GridSelectionScene extends Scene {
 
         }
     }
-
-//    public String getUserLevelNumber() {
-//        return String.valueOf(userLevelNumber);
-//    }
-
     public void drawGraphics(RenderWindow window) {
         window.draw(background);
 
@@ -157,22 +153,4 @@ public class GridSelectionScene extends Scene {
         window.draw(textBackground);
         window.draw(userLevel);
     }
-//
-//    public void changeBackground(int levelNumber) {
-//        Tile.BlockType[][] tempTiles;   //Holds reference to newly loaded tile map of the types
-//        int blockSize;
-//
-//        /* Cache textures before we start using them in order to increase performance */
-//        Texture tileTexture[] = new Texture[7];
-//        for (int i = 0; i < tileTexture.length; i++) {
-//            tileTexture[i] = new Texture();
-//
-//            try {
-//                tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
-//            } catch (IOException e) {
-//                System.out.println("Error loading tile image for menu background");
-//            }
-//
-//        }
-//    }
 }
