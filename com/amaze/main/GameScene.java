@@ -29,6 +29,10 @@ public class GameScene extends Scene {
 	private Vector2i startTile;
 	private Vector2i endTile;
 
+	boolean up = false;
+	boolean down = false;
+	boolean left = false;
+	boolean right = false;
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -180,44 +184,43 @@ public class GameScene extends Scene {
 	 * @param event - user event.
 	 */
 	public void executeEvent(Event event) {
-		int stepDepth = 5; //The distance the player is moved on keypress.
 
-		switch (event.type) {
-			case CLOSED:
-				systemExit();
-				break;
-			case KEY_PRESSED:
-				switch (event.asKeyEvent().key) {
-					case UP:
-						if (getPlayerY() > 0) {
-							player.move(0, -stepDepth);
-							detectionHandler(detectCollision(), "DOWN");
-						}
-						break;
-					case DOWN:
-						if (getPlayerY() <= translateY(blockY-1)) {
-							player.move(0, stepDepth);
-							detectionHandler(detectCollision(), "UP");
-						}
-						break;
-					case LEFT:
-						if (getPlayerX() > 0) {
-							player.move(-stepDepth, 0);
-							detectionHandler(detectCollision(), "RIGHT");
-						}
-						break;
-					case RIGHT:
-						if (getPlayerX() <= translateX(blockX-1)) {
-							player.move(stepDepth, 0);
-							detectionHandler(detectCollision(), "LEFT");
-						}
+		/* Sets flag to true when key pressed*/
+		if(event.type == Event.Type.KEY_PRESSED) {
+
+			switch (event.asKeyEvent().key) {
+						case UP:
+							up = true;
+							break;
+						case DOWN:
+							down = true;
+							break;
+						case LEFT:
+							left = true;
+							break;
+						case RIGHT:
+							right = true;
 						break;
 					case ESCAPE:
 						music.stop();
 						exitScene(this);
 						break;
 				}
-				break;
+		}else if(event.type == Event.Type.CLOSED){
+			systemExit();
+		}
+
+		/* Sets boolean if the key has been released */
+		if(event.type == Event.Type.KEY_RELEASED){
+			if(event.asKeyEvent().key == event.asKeyEvent().key.UP){
+				up = false;
+			}else if(event.asKeyEvent().key == event.asKeyEvent().key.DOWN){
+				down = false;
+			}else if(event.asKeyEvent().key == event.asKeyEvent().key.LEFT){
+				left = false;
+			}else if(event.asKeyEvent().key == event.asKeyEvent().key.RIGHT){
+				right = false;
+			}
 		}
 	}
 
@@ -230,7 +233,7 @@ public class GameScene extends Scene {
 		int playerY = Math.round(getPlayerY() / blockSize);
 
 		//Debugging - enable to display Player X & Y
-		System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
+		//System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
 
 		//Return the block the player is behind
 		return tileMap[playerX][playerY].getTileType();
@@ -308,6 +311,8 @@ public class GameScene extends Scene {
 	/**
 	 * Function to return the Y pixels of the player.
 	 */
+
+
 	public float getPlayerY() {
 		return player.getPosition().y;
 	}
@@ -325,6 +330,29 @@ public class GameScene extends Scene {
 				if (fog.getView(i, j, player)) {
 					window.draw(tileMap[i][j]);
 				}
+			}
+		}
+
+		/* Check if the key has been pressed with window edge detection*/
+		if (up) {
+			if(getPlayerY() >= 0) {
+				player.move(0, -1);
+				detectionHandler(detectCollision(), "DOWN");
+			}
+		}else if(down){
+			if(getPlayerY() <= translateY(blockY-1)){
+				player.move(0, 1);
+				detectionHandler(detectCollision(), "UP");
+			}
+		}else if(left){
+			if(getPlayerX() >= 0){
+				player.move(-1, 0);
+				detectionHandler(detectCollision(), "RIGHT");
+			}
+		}else if(right){
+			if(getPlayerX() < translateY(blockX - 1)){
+				player.move(1, 0);
+				detectionHandler(detectCollision(), "LEFT");
 			}
 		}
 
