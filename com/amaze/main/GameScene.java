@@ -178,53 +178,21 @@ public class GameScene extends Scene {
 	 */
 	public void executeEvent(Event event) {
 
-		int stepDepth = 5; //The distance the player is moved on keypress.
-
+		/* Sets flag to true when key pressed*/
 		if(event.type == Event.Type.KEY_PRESSED) {
-//			case Event.Type.CLOSED:
-//				systemExit();
-//				break;
 
-				switch (event.asKeyEvent().key) {
-					case UP:
-						if(getPlayerY() <= 0) {
-							up = false;
-							break;
-						} else {
+			switch (event.asKeyEvent().key) {
+						case UP:
 							up = true;
-							//player.move(0, -stepDepth);
-							//detectionHandler(detectCollision(), "DOWN");
-						}
-						break;
-					case DOWN:
-						if(getPlayerY() > translateY(blockY-1)) {
-							down = false;
 							break;
-						} else {
-//							player.move(0, stepDepth);
-//							detectionHandler(detectCollision(), "UP");
+						case DOWN:
 							down = true;
-						}
-						break;
-					case LEFT:
-						if(getPlayerX() <= 0) {
-							left = false;
 							break;
-						} else {
+						case LEFT:
 							left = true;
-//							player.move(-stepDepth, 0);
-//							detectionHandler(detectCollision(), "RIGHT");
-						}
-						break;
-					case RIGHT:
-						if(getPlayerX() > translateX(blockX-1)) {
-							right = false;
 							break;
-						} else {
+						case RIGHT:
 							right = true;
-//							player.move(stepDepth, 0);
-//							detectionHandler(detectCollision(), "LEFT");
-						}
 						break;
 					case ESCAPE:
 						music.stop();
@@ -235,7 +203,7 @@ public class GameScene extends Scene {
 			systemExit();
 		}
 
-
+		/* Sets boolean if the key has been released */
 		if(event.type == Event.Type.KEY_RELEASED){
 			if(event.asKeyEvent().key == event.asKeyEvent().key.UP){
 				up = false;
@@ -337,6 +305,8 @@ public class GameScene extends Scene {
 	/**
 	 * Function to return the Y pixels of the player.
 	 */
+
+
 	public float getPlayerY() {
 		Vector2f res = player.getPosition();
 		return res.y;
@@ -358,19 +328,27 @@ public class GameScene extends Scene {
 			}
 		}
 
-		/* Check if the key has been pressed */
+		/* Check if the key has been pressed with window edge detection*/
 		if (up) {
-			player.move(0, -1);
-			detectionHandler(detectCollision(), "DOWN");
+			if(getPlayerY() >= 0) {
+				player.move(0, -1);
+				detectionHandler(detectCollision(), "DOWN");
+			}
 		}else if(down){
-			player.move(0, 1);
-			detectionHandler(detectCollision(), "UP");
+			if(getPlayerY() <= translateY(blockY-1)){
+				player.move(0, 1);
+				detectionHandler(detectCollision(), "UP");
+			}
 		}else if(left){
-			player.move(-1, 0);
-			detectionHandler(detectCollision(), "RIGHT");
+			if(getPlayerX() >= 0){
+				player.move(-1, 0);
+				detectionHandler(detectCollision(), "RIGHT");
+			}
 		}else if(right){
-			player.move(1, 0);
-			detectionHandler(detectCollision(), "LEFT");
+			if(getPlayerX() < translateY(blockX - 1)){
+				player.move(1, 0);
+				detectionHandler(detectCollision(), "LEFT");
+			}
 		}
 
 		//Draw the player
