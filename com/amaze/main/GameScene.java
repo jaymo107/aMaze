@@ -3,7 +3,6 @@ import com.amaze.entities.Avatar;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
-import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
@@ -16,20 +15,17 @@ import java.nio.file.Paths;
  */
 public class GameScene extends Scene {
 
-	public static int blockSize;              //Size of each block. W and H
-	public static int blockX;                 //Number of blocks in X direction
-	public static int blockY;                 //Number of blocks in Y direction
+	private static int blockSize;       //Size of each block. W and H
 
+	private int blockX;                 //Number of blocks in X direction
+	private int blockY;                 //Number of blocks in Y direction
 	private Tile[][] tileMap;           //Represents the maze
 	private Avatar player;              //Represents the player(avatar)
-	private Clock clock;
 	private Battery battery;            //
 	private Music music;                //Background music
 	private FogOfWar fog;
 	private Text txtScore;
 	private Text txtTime;
-	private int playerX;
-	private int playerY;
 	private Vector2i startTile;
 	private Vector2i endTile;
 
@@ -153,13 +149,24 @@ public class GameScene extends Scene {
 
 		music.play();
 		music.setLoop(true);
-		clock = new Clock();
+		Clock clock = new Clock();
+		Clock timer = new Clock();
+
+		int minute = 0;
 
 		while (isRunning()) try {
 			getWindow().clear(Color.BLACK);
 			drawGraphics(getWindow());
 
 			fog.update(clock);
+
+			int second = (int) timer.getElapsedTime().asSeconds();
+			txtTime.setString("Time: \t" + minute + ":" + ((second < 10) ? "0" + second : second));
+
+			if (second >= 60) {
+				timer.restart();
+				minute++;
+			}
 
 			for (Event event : getWindow().pollEvents()) {
 				executeEvent(event);
@@ -222,11 +229,11 @@ public class GameScene extends Scene {
 	 */
 	public Tile.BlockType detectCollision() {
 		//Find the block location from the pixel X&Y
-		playerX = Math.round(getPlayerX() / blockSize);
-		playerY = Math.round(getPlayerY() / blockSize);
+		int playerX = Math.round(getPlayerX() / blockSize);
+		int playerY = Math.round(getPlayerY() / blockSize);
 
-		//Debugging - enable to display Player x & Y
-		//System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
+		//Debugging - enable to display Player X & Y
+		System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
 
 		//Return the block the player is behind
 		return tileMap[playerX][playerY].getTileType();
@@ -298,8 +305,7 @@ public class GameScene extends Scene {
 	 * Function to return the X pixels of the player.
 	 */
 	public float getPlayerX() {
-		Vector2f res = player.getPosition();
-		return res.x;
+		return player.getPosition().x;
 	}
 
 	/**
@@ -308,8 +314,7 @@ public class GameScene extends Scene {
 
 
 	public float getPlayerY() {
-		Vector2f res = player.getPosition();
-		return res.y;
+		return player.getPosition().y;
 	}
 
 	/**
@@ -364,51 +369,22 @@ public class GameScene extends Scene {
 		window.draw(txtTime);
 	}
 
-
-	/**
-	 * Generates a new map
-	 *
-	 * @param window
-	 * @param blocks
-	 * @param blockSize
-	 * @param level
-	 * @throws Exception
-	 */
-	public void loadNewTileMap(Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
-		GameScene.blockSize = blockSize;
-
-		blockX = level.length;
-		blockY = level.length;
-		tileMap = new Tile[blocks][blocks];
-
-        /* Cache textures before we start using them in order to increase performance */
-		Texture tileTexture[] = new Texture[7];
-		for (int i = 0; i < tileTexture.length; i++) {
-			tileTexture[i] = new Texture();
-		}
-
-		tileTexture[0].loadFromFile(Paths.get("res/images/wall.png"));
-		tileTexture[1].loadFromFile(Paths.get("res/images/floor.png"));
-		tileTexture[2].loadFromFile(Paths.get("res/images/door.png"));
-		tileTexture[3].loadFromFile(Paths.get("res/images/start.png"));
-		tileTexture[4].loadFromFile(Paths.get("res/images/finish.png"));
-		tileTexture[5].loadFromFile(Paths.get("res/images/void.png"));
-		tileTexture[6].loadFromFile(Paths.get("res/images/charge.png"));
-
-        /* Create new instances of tiles */
-		for (int j = 0; j < blocks; j++) {
-			for (int i = 0; i < blocks; i++) {
-				tileMap[i][j] = new Tile("", translateX(i), translateY(j), GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
-			}
-		}
-	}
-
 	public Vector2i getStartTilePos() {
 		return startTile;
 	}
 
 	public Vector2i getEndTilePos() {
 		return endTile;
+	}
+
+	public static int getBlockSize() {
+		return blockSize;
+	}
+
+	public static void setBlockSize(int blockSize) {
+		if (blockSize > 0) {
+			GameScene.blockSize = blockSize;
+		}
 	}
 
 }

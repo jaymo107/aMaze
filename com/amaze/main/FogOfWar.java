@@ -77,8 +77,8 @@ public class FogOfWar {
 		Vector2i endPos = gameScene.getEndTilePos();
 	 
 		return (x == startPos.x && y == startPos.y || x == (endPos.x) && y == (endPos.y)) ||
-				x < player.tilePosition().x + size && x > player.tilePosition().x - size &&
-				y < player.tilePosition().y + size && y > player.tilePosition().y - size;
+				x < player.getTilePosition().x + size && x > player.getTilePosition().x - size &&
+				y < player.getTilePosition().y + size && y > player.getTilePosition().y - size;
 	}
 
 }

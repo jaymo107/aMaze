@@ -1,7 +1,5 @@
 package com.amaze.main;
 
-import com.amaze.MapMaker.MapMakerScene;
-
 import java.io.IOException;
 import java.nio.file.Paths;
 
