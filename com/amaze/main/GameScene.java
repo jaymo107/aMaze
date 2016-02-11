@@ -38,6 +38,8 @@ public class GameScene extends Scene {
 
 	private int score;
 
+	private Texture[] tileTexture;
+
 	/**
 	 * This constructor creates an instance of a GameScene.
 	 * Within this class all the game logic should be handled.
@@ -62,7 +64,7 @@ public class GameScene extends Scene {
 		player = new Avatar(0, 0, blockSize);
 
         /* Cache textures before we start using them in order to increase performance */
-		Texture tileTexture[] = new Texture[7];
+		tileTexture = new Texture[7];
 		for (int i = 0; i < tileTexture.length; i++) {
 			tileTexture[i] = new Texture();
 			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
@@ -171,7 +173,7 @@ public class GameScene extends Scene {
 			txtTime.setString("Time: \t" + minute + ":" + ((second < 10) ? "0" + second : second));
 
 			updateScore(gameClock, voidClock);
-			txtScore.setString("Score: \t" + ((score >= 0) ? "0" : score));
+			txtScore.setString("Score: \t" + score);
 
 			if (second >= 60) {
 				timer.restart();
@@ -232,7 +234,7 @@ public class GameScene extends Scene {
 	/**
 	 * Function to detect if the player has moved onto a tile.
 	 */
-	public Tile.BlockType detectCollision() {
+	public Tile detectCollision() {
 		//Find the block location from the pixel X&Y
 		int playerX = Math.round(getPlayerX() / blockSize);
 		int playerY = Math.round(getPlayerY() / blockSize);
@@ -241,17 +243,17 @@ public class GameScene extends Scene {
 		//System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
 
 		//Return the block the player is behind
-		return tileMap[playerX][playerY].getTileType();
+		return tileMap[playerX][playerY];
 	}
 
 	/**
 	 * Function to see what type of block you have collided with and act accordingly.
 	 *
 	 * @param reboundDir The direction the avatar should be rebounded.
-	 * @param type       The type of block that has been detected.
+	 * @param tile       The tile that has been detected.
 	 */
-	public void detectionHandler(Tile.BlockType type, String reboundDir) {
-		switch (type) {
+	public void detectionHandler(Tile tile, String reboundDir) {
+		switch (tile.getTileType()) {
 			case WALL:
 				reboundPlayer(reboundDir);
 				break;
@@ -272,6 +274,8 @@ public class GameScene extends Scene {
 				//battery.increaseChargeLevel(1);
 				fog.increase();
 				charges++;
+				tile.setTexture(tileTexture[1]);
+				tile.setTileType(Tile.BlockType.FLOOR);
 				break;
 			case FLOOR:
 				break;
@@ -394,10 +398,21 @@ public class GameScene extends Scene {
 	}
 
 	public void updateScore(Clock gameClock, Clock voidClock) {
-		long gameTime = gameClock.getElapsedTime().asMilliseconds();
-		long voidTime = voidClock.getElapsedTime().asMilliseconds();
+		float gameTime = gameClock.getElapsedTime().asSeconds();
+		float voidTime = voidClock.getElapsedTime().asSeconds();
 
-		score = (int) ((1000/gameTime) + (100/voidTime) + (100/charges));
+		if (gameTime == 0 || voidTime == 0) return;
+
+		System.out.println("gT: " + gameTime);
+		System.out.println("vT: " + voidTime);
+		System.out.println("cS: " + charges);
+		System.out.println();
+
+		if (charges == 0) {
+			score = (int) ((1000 / gameTime) + (100 / voidTime));
+		} else {
+			score = (int) ((1000 / gameTime) + (100 / voidTime)) + (100/charges);
+		}
 	}
 
 }
