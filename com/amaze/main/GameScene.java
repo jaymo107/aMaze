@@ -344,26 +344,21 @@ public class GameScene extends Scene {
 		}
 
 		/* Check if the key has been pressed with window edge detection*/
-		if (up) {
-			if(getPlayerY() >= 0) {
-				player.move(0, -1);
-				detectionHandler(detectCollision(), "DOWN");
-			}
-		}else if(down){
-			if(getPlayerY() <= translateY(blockY-1)){
-				player.move(0, 1);
-				detectionHandler(detectCollision(), "UP");
-			}
-		}else if(left){
-			if(getPlayerX() >= 0){
-				player.move(-1, 0);
-				detectionHandler(detectCollision(), "RIGHT");
-			}
-		}else if(right){
-			if(getPlayerX() < translateY(blockX - 1)){
-				player.move(1, 0);
-				detectionHandler(detectCollision(), "LEFT");
-			}
+		if (up && getPlayerY() >= 0) {
+			player.move(0, -1);
+			detectionHandler(detectCollision(), "DOWN");
+		}
+		else if(down && getPlayerY() <= translateY(blockY-1)) {
+			player.move(0, 1);
+			detectionHandler(detectCollision(), "UP");
+		}
+		else if(left && getPlayerX() >= 0) {
+			player.move(-1, 0);
+			detectionHandler(detectCollision(), "RIGHT");
+		}
+		else if(right && getPlayerX() < translateY(blockX - 1)){
+			player.move(1, 0);
+			detectionHandler(detectCollision(), "LEFT");
 		}
 
 		//Draw the player
@@ -402,11 +397,6 @@ public class GameScene extends Scene {
 		float voidTime = voidClock.getElapsedTime().asSeconds();
 
 		if (gameTime == 0 || voidTime == 0) return;
-
-		System.out.println("gT: " + gameTime);
-		System.out.println("vT: " + voidTime);
-		System.out.println("cS: " + charges);
-		System.out.println();
 
 		if (charges == 0) {
 			score = (int) ((1000 / gameTime) + (100 / voidTime));
