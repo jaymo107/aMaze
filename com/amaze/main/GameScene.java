@@ -3,6 +3,7 @@ import com.amaze.entities.Avatar;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
+import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
@@ -39,6 +40,9 @@ public class GameScene extends Scene {
 	private int score;
 
 	private Texture[] tileTexture;
+
+	private RectangleShape textBackground;
+	private Text message;
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -254,20 +258,19 @@ public class GameScene extends Scene {
 	 */
 	public void detectionHandler(Tile tile, String reboundDir) {
 		switch (tile.getTileType()) {
-			case WALL: reboundPlayer(reboundDir);
-				break;
-			case DOOR: closeDoor(tile);
-				break;
-			case START:
-				break;
+			case WALL: reboundPlayer(reboundDir); break;
+			case DOOR: closeDoor(tile); break;
+			case START: break;
 			case FINISH:
-				//TODO Insert the finish handling code here.
+				drawFinishWindow(getWindow());
+				getWindow().display();
+				pause(3000);
+				exitScene(this);
 				break;
 			case VOID:
 				//TODO Insert the void handling code here.
 				break;
 			case CHARGE:
-				//TODO Insert the charge handling code here.
 				battery.increaseChargeLevel(Battery.MAX - battery.getChargeLevel());
 				battery.changeChargeLevel(battery.getChargeLevel() + (Battery.MAX - battery.getChargeLevel()));
 				fog.increase();
@@ -275,8 +278,7 @@ public class GameScene extends Scene {
 				tile.setTileType(Tile.BlockType.FLOOR);
 				tile.setTexture(tileTexture[1]);
 				break;
-			case FLOOR:
-				break;
+			case FLOOR: break;
 			default: System.out.println("Please select a defined BlockType.");
 		}
 	}
@@ -414,6 +416,29 @@ public class GameScene extends Scene {
 		};
 
 		new Thread(r).start();
+	}
+
+	public void drawFinishWindow(RenderWindow window) {
+		try {
+			Vector2f size = new Vector2f(getWindow().getScreenWidth() / 1.2F, (getWindow().getScreenHeight() / 4));
+			textBackground = new RectangleShape(size);
+			textBackground.setPosition(getWindow().getScreenWidth() / 12F, (getWindow().getScreenHeight() / 2.5F)-65);
+
+			Font textFont = new Font();
+			textFont.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
+
+			message = new Text("Congratulations\n\t\tYou won", textFont, 70);
+			message.setColor(Color.BLACK);
+			message.setStyle(Text.BOLD);
+			message.setOrigin((getWindow().getScreenWidth() / 9.5F) * -1, (getWindow().getScreenHeight() / 3F) * -1);
+
+		} catch (IOException e) {
+			System.err.println("There was a problem loading the finish window.");
+		}
+
+
+		window.draw(textBackground);
+		window.draw(message);
 	}
 
 }

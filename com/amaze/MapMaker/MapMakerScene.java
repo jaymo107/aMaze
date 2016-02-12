@@ -175,12 +175,4 @@ public class MapMakerScene extends Scene {
         window.draw(userLevel);
     }
 
-    private static void pause(int time) {
-        try {
-            Thread.sleep(time);
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-    }
-
 }
