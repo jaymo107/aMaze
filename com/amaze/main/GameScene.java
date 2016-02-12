@@ -99,7 +99,7 @@ public class GameScene extends Scene {
 		}
 
         /* Create fog of war */
-		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow(), battery, this);
+		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, battery, this);
 
 		txtScore = new Text("Score: \t100", scoreFont);
 		txtScore.setPosition(15, window.getScreenHeight() - 40);
@@ -254,11 +254,9 @@ public class GameScene extends Scene {
 	 */
 	public void detectionHandler(Tile tile, String reboundDir) {
 		switch (tile.getTileType()) {
-			case WALL:
-				reboundPlayer(reboundDir);
+			case WALL: reboundPlayer(reboundDir);
 				break;
-			case DOOR:
-				//TODO Insert the door handling code here.
+			case DOOR: closeDoor(tile);
 				break;
 			case START:
 				break;
@@ -270,17 +268,16 @@ public class GameScene extends Scene {
 				break;
 			case CHARGE:
 				//TODO Insert the charge handling code here.
-				//battery.changeChargeLevel(battery.getChargeLevel() + 1);
-				//battery.increaseChargeLevel(1);
+				battery.increaseChargeLevel(Battery.MAX - battery.getChargeLevel());
+				battery.changeChargeLevel(battery.getChargeLevel() + (Battery.MAX - battery.getChargeLevel()));
 				fog.increase();
 				charges++;
-				tile.setTexture(tileTexture[1]);
 				tile.setTileType(Tile.BlockType.FLOOR);
+				tile.setTexture(tileTexture[1]);
 				break;
 			case FLOOR:
 				break;
-			default:
-				System.out.println("Please select a defined BlockType.");
+			default: System.out.println("Please select a defined BlockType.");
 		}
 	}
 
@@ -403,6 +400,20 @@ public class GameScene extends Scene {
 		} else {
 			score = (int) ((1000 / gameTime) + (100 / voidTime)) + (100/charges);
 		}
+	}
+
+	public void closeDoor(Tile door) {
+		Runnable r = () -> {
+			try {
+				Thread.sleep(500);
+				door.setTexture(tileTexture[0]);
+				door.setTileType(Tile.BlockType.WALL);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		};
+
+		new Thread(r).start();
 	}
 
 }
