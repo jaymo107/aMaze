@@ -126,6 +126,7 @@ public class LevelMenuScene extends Scene {
 
 		getWindow().getScene(getWindow().getArrayList().indexOf(game)).display();
         this.setRunning(false);
+        System.out.println("he");
     }
 
     public void executeEvent(Event event) {
