@@ -62,7 +62,7 @@ public class MenuScene extends Scene {
             System.out.println("There was a problem loading the background music.");
         }
 
-        //music.play();
+        music.play();
         buttons[0].setSelected(true);
     }
 
