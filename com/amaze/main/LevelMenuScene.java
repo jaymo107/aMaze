@@ -21,7 +21,6 @@ public class LevelMenuScene extends Scene {
     Window wnd;
     Tile[][] tileMap;                           //Used for displaying map in background
     private int blocks;
-    private int fontSize = 170;
 
     static final int MAX_LEVEL = 20;
     static final int MIN_LEVEL = 1;
@@ -56,6 +55,7 @@ public class LevelMenuScene extends Scene {
         textBackground.setTexture(backgroundImage);
 
         //Create text
+        int fontSize = window.getScreenWidth() / 4;
         userLevel = new Text("Level 1", maze, fontSize);
         userLevel.setColor(Color.BLACK);
         userLevel.setStyle(Text.BOLD);
