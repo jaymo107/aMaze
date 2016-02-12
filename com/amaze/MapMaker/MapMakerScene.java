@@ -31,10 +31,14 @@ public class MapMakerScene extends Scene {
 	private RectangleShape textBackground;
     private Text userLevel;
 
+    private Window window;
+
 	private static Integer currentLevel = 15;
 
     public MapMakerScene(String sceneTitle, Window window, int blocksX, int blocksY) throws IOException {
         super(sceneTitle, window);
+
+        this.window = window;
 
         this.blocks = blocksX;
         tiles = new Tile[blocks][blocks];
@@ -148,9 +152,18 @@ public class MapMakerScene extends Scene {
 
     public void exportSuccessful() {
         try {
-            Vector2f size = new Vector2f(getWindow().getScreenWidth() / 1.2F, (getWindow().getScreenHeight() / 5));
+
+            float textBackgroundHeight = window.getScreenHeight() / 5;
+            float textBackgroundWidth  = window.getScreenWidth() / 1.25F;
+            float textBackgroundXCord  = window.getScreenWidth() / 2 - (textBackgroundWidth / 2);
+            float textBackgroundYCord  = window.getScreenHeight() / 2  - (textBackgroundHeight / 1.5F);
+
+            float textXCord = window.getScreenWidth() / -9F;
+            float textYCord = window.getScreenHeight() / -2.5F;
+
+            Vector2f size = new Vector2f(textBackgroundWidth, textBackgroundHeight);
             textBackground = new RectangleShape(size);
-            textBackground.setPosition(getWindow().getScreenWidth() / 12F, (getWindow().getScreenHeight() / 2.5F)-65);
+            textBackground.setPosition(textBackgroundXCord, textBackgroundYCord);
 
             Font maze = new Font();
             maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
@@ -160,10 +173,11 @@ public class MapMakerScene extends Scene {
             textBackground.setTexture(backgroundImage);
 
             //Create text
-            userLevel = new Text("Export Successful", maze, 75);
+            int fontSize = window.getScreenWidth() / 11;
+            userLevel = new Text("Export Successful", maze, fontSize);
             userLevel.setColor(Color.BLACK);
             userLevel.setStyle(Text.BOLD);
-            userLevel.setOrigin((getWindow().getScreenWidth() / 9.5F) * -1, (getWindow().getScreenHeight() / 3F) * -1);
+            userLevel.setOrigin(textXCord, textYCord);
         }
         catch (Exception e){
 			System.err.println("Export Failed");
