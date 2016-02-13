@@ -120,7 +120,10 @@ public class MenuScene extends Scene {
      */
     public void executeEvent(Event event) {
         switch(event.type) {
-            case CLOSED: systemExit();
+            case CLOSED:
+                music.stop();
+                systemExit();
+                break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
                     case UP: arrowKeyUp(); break;

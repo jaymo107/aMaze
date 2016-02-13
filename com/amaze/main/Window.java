@@ -19,8 +19,6 @@ public class Window extends RenderWindow{
     private int screenWidth;
     private int screenHeight;
 
-    Sound sound;                                        //Sound to be played
-
     ArrayList<Displayable> scenes = new ArrayList<>();  //Holds all the scenes. This ArrayList is populated from the Main function.
 
     /*******************************************************************************************************

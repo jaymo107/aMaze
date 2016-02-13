@@ -282,7 +282,10 @@ public class GameScene extends Scene {
 
 				}
 				break;
-			case CLOSED:systemExit();break;
+			case CLOSED:
+				music.stop();
+				systemExit();
+				break;
 		}
 	}
 
