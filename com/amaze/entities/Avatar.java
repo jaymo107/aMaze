@@ -33,6 +33,8 @@ public class Avatar extends RectangleShape {
     public Avatar(int startX, int startY, int blockSize) {
         level = 0;
         score = 0;
+        numberOfChargesPickedUp = 0;
+        timeSpentInVoid = 0;
         Texture t = new Texture();
 
         try{
@@ -88,8 +90,9 @@ public class Avatar extends RectangleShape {
         return numberOfChargesPickedUp;
     }
 
-    public void setNumberOfChargesPickedUp(int numberOfChargesPickedUp) {
-        this.numberOfChargesPickedUp = numberOfChargesPickedUp;
+    public void increaseChargesCount() {
+        System.out.println("Picked up charge");
+        numberOfChargesPickedUp = numberOfChargesPickedUp + 1;
     }
 
     /* Charge Options */

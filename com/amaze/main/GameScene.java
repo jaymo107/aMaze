@@ -265,12 +265,17 @@ public class GameScene extends Scene {
 				endGame();
 				break;
 			case VOID:
-				//TODO Insert the void handling code here.
+				/* Todo
+					- Start a timer to calculate how long the user has been in the void
+					- Store that time in avatar class
+				 */
+
 				break;
 			case CHARGE:
 				//TODO Insert the charge handling code here.
 				//battery.changeChargeLevel(battery.getChargeLevel() + 1);
 				//battery.increaseChargeLevel(1);
+				player.increaseChargesCount();
 				fog.increase();
 				break;
 			case FLOOR:
@@ -411,26 +416,27 @@ public class GameScene extends Scene {
 		String time = minute + ":" + ((second < 10) ? "0" + second : second);
 
 		/* Count Charges */
-		for(int i = 0; i < blockX; i++){
-			for(int j = 0; j < blockY; j++){
-				Tile temp = tileMap[i][j];
-
-				if (temp.getTileType() == Tile.BlockType.CHARGE){
-					numberOfCharges++;
-				}
-			}
-		}
+//		for(int i = 0; i < blockX; i++){
+//			for(int j = 0; j < blockY; j++){
+//				Tile temp = tileMap[i][j];
+//
+//				if (temp.getTileType() == Tile.BlockType.CHARGE){
+//					numberOfCharges++;
+//				}
+//			}
+//		}
 
 		/* Count Voids */
-		for(int i = 0; i < blockX; i++){
-			for(int j = 0; j < blockY; j++){
-				Tile temp = tileMap[i][j];
+//		for(int i = 0; i < blockX; i++){
+//			for(int j = 0; j < blockY; j++){
+//				Tile temp = tileMap[i][j];
+//
+//				if (temp.getTileType() == Tile.BlockType.VOID){
+//					numberOfVoids++;
+//				}
+//			}
+//		}
 
-				if (temp.getTileType() == Tile.BlockType.VOID){
-					numberOfVoids++;
-				}
-			}
-		}
 
 		System.out.println("Your score was " + Integer.toString(player.getScore()) + " in " + time + " with "
 				+ Integer.toString(numberOfCharges) + " charges and " + Integer.toString(numberOfVoids) + " number of voids");
