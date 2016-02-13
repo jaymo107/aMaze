@@ -14,19 +14,41 @@ public class LevelReader {
     private Tile.BlockType[][] level;//Change this for larger maps
     private int sizeOfMaze;
 
+    private int voidAmount = 0;
+    private int chargeAmount = 0;
+    private int wallAmount = 0;
+    private int floorAmount = 0;
+    private int doorAmount = 0;
+
 
 	/**
-	 * Converts string to BlockType form. If the string is invalid, type PATH will be returned
+	 * Converts string to BlockType form. If the string is invalid, type PATH will be returned, also counts
+     * the amount of each type of tile excluding START and FINISH
 	 */
     public Tile.BlockType stringToBlockType(String blockType) {
 
         if (blockType.equals("START")) return Tile.BlockType.START;
         if (blockType.equals("FINISH")) return Tile.BlockType.FINISH;
-        if (blockType.equals("DOOR")) return Tile.BlockType.DOOR;
-        if (blockType.equals("WALL")) return Tile.BlockType.WALL;
-        if (blockType.equals("VOID")) return Tile.BlockType.VOID;
-        if (blockType.equals("CHARGE")) return Tile.BlockType.CHARGE;
-        if (blockType.equals("FLOOR")) return Tile.BlockType.FLOOR;
+        if (blockType.equals("DOOR")) {
+            doorAmount++;
+            return Tile.BlockType.DOOR;
+        }
+        if (blockType.equals("WALL")) {
+            wallAmount++;
+            return Tile.BlockType.WALL;
+        }
+        if (blockType.equals("VOID")) {
+            voidAmount++;
+            return Tile.BlockType.VOID;
+        }
+        if (blockType.equals("CHARGE")) {
+            chargeAmount++;
+            return Tile.BlockType.CHARGE;
+        }
+        if (blockType.equals("FLOOR")) {
+            floorAmount++;
+            return Tile.BlockType.FLOOR;
+        }
 
         return Tile.BlockType.WALL;
     }
@@ -87,26 +109,25 @@ public class LevelReader {
         //System.out.println(Arrays.deepToString(level));// <- Uncomment to see 2D array
     }
 
-    public void loadNewTileMap(Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
-        GameScene.setBlockSize(blockSize);
-
-		Tile[][] tileMap = new Tile[blocks][blocks];
-
-        /* Cache textures before we start using them in order to increase performance */
-        Texture tileTexture[] = new Texture[7];
-        for (int i = 0; i < tileTexture.length; i++) {
-            tileTexture[i] = new Texture();
-			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
-        }
-
-        /* Create new instances of tiles */
-        for (int j = 0; j < blocks; j++) {
-            for (int i = 0; i < blocks; i++) {
-                tileMap[i][j] = new Tile("", blockSize * i, blockSize * j, GameScene.getBlockSize(), GameScene.getBlockSize(), level[i][j], tileTexture);
-            }
-        }
+    public int getDoorAmount() {
+        return doorAmount;
     }
 
+    public int getVoidAmount() {
+        return voidAmount;
+    }
+
+    public int getChargeAmount() {
+        return chargeAmount;
+    }
+
+    public int getWallAmount() {
+        return wallAmount;
+    }
+
+    public int getFloorAmount() {
+        return floorAmount;
+    }
 
 }
 

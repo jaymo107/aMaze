@@ -26,7 +26,8 @@ public class Avatar extends RectangleShape {
     private Vector2i oldTile;
 
     /**
-     * Basically does some initial housekeeping.
+     * Produces and avatar for the game and picks the texture of the avatar randomly
+     * from the res/avatars.
      * @param startX Start Pixel X location
      * @param startY Start Pixel Y location
      * @throws Exception If fails to load texture
@@ -54,13 +55,8 @@ public class Avatar extends RectangleShape {
         try{
             t.loadFromFile(Paths.get("res/avatars/" + randomImagePath));
         }catch (IOException e){
-            System.out.println("Error loading avatar image");
+            System.out.println("There is either no avatar in the folder or a hidden file that needs to be deleted");
         }
-
-        this.setSize(new Vector2f((float)(blockSize / 1.2),(float)(blockSize / 1.2)));
-        this.setPosition(startX,startY);
-        this.setTexture(t);
-        this.oldTile = new Vector2i(0,0); 
     }
 
     /**
@@ -85,7 +81,6 @@ public class Avatar extends RectangleShape {
 		}
 		return false;
     }
-
 
     public int getLevel(){
         return level;
