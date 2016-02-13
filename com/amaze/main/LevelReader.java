@@ -84,7 +84,7 @@ public class LevelReader {
                 stringBuilder.append((char) i);
             }
         }
-        System.out.println(Arrays.deepToString(level));// <- Uncomment to see 2D array
+        //System.out.println(Arrays.deepToString(level));// <- Uncomment to see 2D array
     }
 
     public void loadNewTileMap(Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {

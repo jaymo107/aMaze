@@ -29,6 +29,7 @@ public class GridSelectionScene extends Scene {
     private int mapHeight = 5;
 
     public GridSelectionScene(String sceneTitle, Window window) throws IOException {
+
         super(sceneTitle, window);
         wnd = window;
         blocks = 0;
@@ -44,20 +45,30 @@ public class GridSelectionScene extends Scene {
             System.out.println("Could not load the font!");
         }
 
+        float textBackgroundHeight = window.getScreenHeight() / 5;
+        float textBackgroundWidth  = window.getScreenWidth() / 1.25F;
+        float textBackgroundXCord  = window.getScreenWidth() / 2 - (textBackgroundWidth / 2);
+        float textBackgroundYCord  = window.getScreenHeight() / 2  - (textBackgroundHeight / 1.5F);
+
+        float textXCord = window.getScreenWidth() / -7.5F;
+        float textYCord = window.getScreenHeight() / -3.4F;
+
+        int fontSize = window.getScreenWidth() / 4;
+
         //Vector2f position = new Vector2f(xCord, yCord);
-        Vector2f size = new Vector2f(window.getScreenWidth() / 1.2F, window.getScreenHeight() / 5);
+        Vector2f size = new Vector2f(textBackgroundWidth, textBackgroundHeight);
         textBackground = new RectangleShape(size);
-        textBackground.setPosition(window.getScreenWidth() / 12F, window.getScreenHeight() / 2.5F);
+        textBackground.setPosition(textBackgroundXCord, textBackgroundYCord);
 
 
         backgroundImage.loadFromFile(Paths.get("res/menuGraphics/Wall.png"));
         textBackground.setTexture(backgroundImage);
 
         //Create text
-        userLevel = new Text("5 X 5", maze, 170);
+        userLevel = new Text("5 X 5", maze, fontSize);
         userLevel.setColor(Color.BLACK);
         userLevel.setStyle(Text.BOLD);
-        userLevel.setOrigin((window.getScreenWidth() / 9.5F) * -1, (window.getScreenHeight() / 3F) * -1);
+        userLevel.setOrigin(textXCord, textYCord);
 
         System.out.println(window.getScreenHeight());
         System.out.println(window.getScreenWidth());
@@ -140,11 +151,6 @@ public class GridSelectionScene extends Scene {
 
         }
     }
-
-//    public String getUserLevelNumber() {
-//        return String.valueOf(userLevelNumber);
-//    }
-
     public void drawGraphics(RenderWindow window) {
         window.draw(background);
 
@@ -157,22 +163,4 @@ public class GridSelectionScene extends Scene {
         window.draw(textBackground);
         window.draw(userLevel);
     }
-//
-//    public void changeBackground(int levelNumber) {
-//        Tile.BlockType[][] tempTiles;   //Holds reference to newly loaded tile map of the types
-//        int blockSize;
-//
-//        /* Cache textures before we start using them in order to increase performance */
-//        Texture tileTexture[] = new Texture[7];
-//        for (int i = 0; i < tileTexture.length; i++) {
-//            tileTexture[i] = new Texture();
-//
-//            try {
-//                tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
-//            } catch (IOException e) {
-//                System.out.println("Error loading tile image for menu background");
-//            }
-//
-//        }
-//    }
 }

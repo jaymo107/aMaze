@@ -43,7 +43,7 @@ public abstract class Scene implements Displayable {
      * set of steps depending on the event.
      * @param event - input based event (e.g arrow key up)
      */
-    public abstract void executeEvent(Event event);
+    public  abstract void executeEvent(Event event);
 
 	public abstract void drawGraphics(RenderWindow window);
 
