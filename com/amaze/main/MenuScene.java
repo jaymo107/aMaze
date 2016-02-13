@@ -128,7 +128,9 @@ public class MenuScene extends Scene {
                     case M:
                         state = !state;
                         musicPlaying(state); break;
-                    case RETURN: enterPressed(); break;
+                    case RETURN:
+                        music.stop();
+                        enterPressed(); break;
                 }
                 break;
         }

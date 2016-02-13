@@ -5,11 +5,18 @@ import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
+import org.jsfml.window.Joystick;
+import org.jsfml.window.Joystick.Axis;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+
+import org.jsfml.window.event.JoystickMoveEvent;
+import org.lwjgl.input.*;
+
+import static org.jsfml.window.Joystick.Axis.*;
 
 /**
  * This class will Game and all the elements associated with it.
@@ -239,9 +246,18 @@ public class GameScene extends Scene {
 				}
 				break;
 
-			case CLOSED:systemExit();break;
-		}
+			case JOYSTICK_BUTTON_PRESSED:
 
+				switch (event.asJoystickButtonEvent().button) {
+
+					case 0: left = true; break;
+					case 1: down = true; break;
+					case 2: right = true; break;
+					case 3: up = true; break;
+				}
+				break;
+
+		}
 		/* Sets boolean if the key has been released */
 		switch (event.type) {
 			case KEY_RELEASED:
@@ -256,6 +272,17 @@ public class GameScene extends Scene {
 						break;
 				}
 				break;
+			case JOYSTICK_BUTTON_RELEASED:
+				switch (event.asJoystickButtonEvent().button) {
+
+					case 0: left = false; break;
+					case 1: down = false; break;
+					case 2: right = false; break;
+					case 3: up = false; break;
+
+				}
+				break;
+			case CLOSED:systemExit();break;
 		}
 	}
 
