@@ -21,13 +21,15 @@ public class GameScene extends Scene {
 	private int blockY;                 //Number of blocks in Y direction
 	private Tile[][] tileMap;           //Represents the maze
 	private Avatar player;              //Represents the player(avatar)
-	private Battery battery;            //
+	private Battery battery;            //Represents battery
 	private Music music;                //Background music
-	private FogOfWar fog;
+	private FogOfWar fog;				//Handles fog
 	private Text txtScore;
 	private Text txtTime;
 	private Vector2i startTile;
 	private Vector2i endTile;
+	private Clock clock;
+	private Clock timer;
 
 	boolean up = false;
 	boolean down = false;
@@ -47,7 +49,7 @@ public class GameScene extends Scene {
 	public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
 		super(sceneTitle, window);
 
-        Tile currentlyLoaded;
+		Tile currentlyLoaded;
 
 		GameScene.blockSize = blockSize;
 
@@ -95,6 +97,7 @@ public class GameScene extends Scene {
         /* Create fog of war */
 		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow(), battery, this);
 
+		/* Load HUD */
 		txtScore = new Text("Score: \t100", scoreFont);
 		txtScore.setPosition(15, window.getScreenHeight() - 40);
 
@@ -102,19 +105,19 @@ public class GameScene extends Scene {
 		txtTime.setPosition(window.getScreenWidth() - 180, window.getScreenHeight() - 40);
 
         /* Change avatar location */
-        for(int i = 0;i < blocks; i++){
-            for(int j = 0; j < blocks; j++){
-                currentlyLoaded = tileMap[i][j];
+		for(int i = 0;i < blocks; i++){
+			for(int j = 0; j < blocks; j++){
+				currentlyLoaded = tileMap[i][j];
 
-                if (currentlyLoaded.getTileType() == Tile.BlockType.START) {
-                    player.setPosition(currentlyLoaded.getPosition());
+				if (currentlyLoaded.getTileType() == Tile.BlockType.START) {
+					player.setPosition(currentlyLoaded.getPosition());
 					startTile = new Vector2i(Math.round(player.getPosition().x/blockSize), Math.round(player.getPosition().y/blockSize));
-                }
+				}
 				if (currentlyLoaded.getTileType() == Tile.BlockType.FINISH) {
 					endTile = new Vector2i(Math.round(currentlyLoaded.getPosition().x/blockSize), Math.round(currentlyLoaded.getPosition().y/blockSize));
 				}
-            }
-        }
+			}
+		}
 	}
 
 	/**
@@ -143,14 +146,16 @@ public class GameScene extends Scene {
 	/**
 	 * When called, this function displays all the graphics on the main window.
 	 */
+
 	public void display() {
 		setRunning(true);
 		getWindow().setTitle(getSceneTitle());
 
 		music.play();
 		music.setLoop(true);
-		Clock clock = new Clock();
-		Clock timer = new Clock();
+
+		clock = new Clock();
+		timer = new Clock();
 
 		int minute = 0;
 
@@ -183,29 +188,30 @@ public class GameScene extends Scene {
 	 *
 	 * @param event - user event.
 	 */
+
 	public void executeEvent(Event event) {
 
 		/* Sets flag to true when key pressed*/
 		if(event.type == Event.Type.KEY_PRESSED) {
 
 			switch (event.asKeyEvent().key) {
-						case UP:
-							up = true;
-							break;
-						case DOWN:
-							down = true;
-							break;
-						case LEFT:
-							left = true;
-							break;
-						case RIGHT:
-							right = true;
-						break;
-					case ESCAPE:
-						music.stop();
-						exitScene(this);
-						break;
-				}
+				case UP:
+					up = true;
+					break;
+				case DOWN:
+					down = true;
+					break;
+				case LEFT:
+					left = true;
+					break;
+				case RIGHT:
+					right = true;
+					break;
+				case ESCAPE:
+					music.stop();
+					exitScene(this);
+					break;
+			}
 		}else if(event.type == Event.Type.CLOSED){
 			systemExit();
 		}
@@ -248,7 +254,7 @@ public class GameScene extends Scene {
 	public void detectionHandler(Tile.BlockType type, String reboundDir) {
 		switch (type) {
 			case WALL:
-				reboundPlayer(reboundDir);
+				//reboundPlayer(reboundDir);
 				break;
 			case DOOR:
 				//TODO Insert the door handling code here.
@@ -256,7 +262,7 @@ public class GameScene extends Scene {
 			case START:
 				break;
 			case FINISH:
-				//TODO Insert the finish handling code here.
+				endGame();
 				break;
 			case VOID:
 				//TODO Insert the void handling code here.
@@ -387,4 +393,79 @@ public class GameScene extends Scene {
 		}
 	}
 
+	/**
+	 *  Called when player reaches finish tile. Will return a specified type
+	 *  1: Score
+	 *  2: Time
+	 *  3: Charges left on map
+	 *  4: Voids left on map
+	 */
+
+	private void endGame(){
+		int numberOfCharges = 0;
+		int numberOfVoids = 0;
+		int minute = 0;
+		int second = (int) timer.getElapsedTime().asSeconds();
+
+
+		String time = minute + ":" + ((second < 10) ? "0" + second : second);
+
+		/* Count Charges */
+		for(int i = 0; i < blockX; i++){
+			for(int j = 0; j < blockY; j++){
+				Tile temp = tileMap[i][j];
+
+				if (temp.getTileType() == Tile.BlockType.CHARGE){
+					numberOfCharges++;
+				}
+			}
+		}
+
+		/* Count Voids */
+		for(int i = 0; i < blockX; i++){
+			for(int j = 0; j < blockY; j++){
+				Tile temp = tileMap[i][j];
+
+				if (temp.getTileType() == Tile.BlockType.VOID){
+					numberOfVoids++;
+				}
+			}
+		}
+
+		System.out.println("Your score was " + Integer.toString(player.getScore()) + " in " + time + " with "
+				+ Integer.toString(numberOfCharges) + " charges and " + Integer.toString(numberOfVoids) + " number of voids");
+
+		//To be used when argument will be used. Will be implemented once Pasha finished scene transition.
+//		switch (argument){
+//			case 1:return Integer.toString(player.getScore());
+//			case 2:return timer.getElapsedTime().toString();
+//			case 3:
+//				for(int i = 0; i < blockX; i++){
+//					for(int j = 0; j < blockY; j++){
+//						Tile temp = tileMap[i][j];
+//
+//						if (temp.getTileType() == Tile.BlockType.CHARGE){
+//							numberOfCharges++;
+//						}
+//					}
+//				}
+//				break;
+//
+//			case 4:
+//				for(int i = 0; i < blockX; i++){
+//					for(int j = 0; j < blockY; j++){
+//						Tile temp = tileMap[i][j];
+//
+//						if (temp.getTileType() == Tile.BlockType.VOID){
+//							numberOfVoids++;
+//						}
+//					}
+//				}
+//				break;
+//
+//			default:return null;
+//		}
+
+
+	}
 }
