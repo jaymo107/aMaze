@@ -23,6 +23,19 @@ public class MusicButton extends Button {
         this.setTexture(getDefaultIcon());
 
     }
+    public MusicButton(float xCord, float yCord, float width, float height, Window window) throws IOException {
+
+        super(xCord, yCord, width, height, window);
+
+        this.window = window;
+
+        getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOn.png"));
+        getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/musicOff.png"));
+
+        this.setTexture(getDefaultIcon());
+
+
+    }
     public void performAction() {
 
         System.out.println("Music Button Pressed");

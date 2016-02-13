@@ -29,6 +29,8 @@ public class GameScene extends Scene {
 	private Text txtTime;
 	private Vector2i startTile;
 	private Vector2i endTile;
+	private Window window;
+	private boolean state = true;
 
 	private boolean up = false;
 	private boolean down = false;
@@ -37,12 +39,13 @@ public class GameScene extends Scene {
 
 	private int charges = 0;
 
-	private int score;
+	private int score = 1200;
 
 	private Texture[] tileTexture;
 
 	private RectangleShape textBackground;
 	private Text message;
+	private MusicButton musicButton;
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -56,6 +59,8 @@ public class GameScene extends Scene {
 
 	public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
 		super(sceneTitle, window);
+
+		this.window = window;
 
         Tile currentlyLoaded;
 
@@ -83,8 +88,10 @@ public class GameScene extends Scene {
 
 		window.create(new VideoMode((int)tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int)(tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize) + 60),"Game");
 
-        /* Create instance of battery */
-		battery = new Battery(window.getScreenHeight(), window.getScreenHeight(), 6);
+		float batteryXCord = window.getScreenWidth();
+		float batteryYCord = window.getScreenHeight();
+		/* Create instance of battery */
+		battery = new Battery(batteryXCord, batteryYCord, 6, window);
 
         /* Load background music */
 		music = new Music();
@@ -105,11 +112,25 @@ public class GameScene extends Scene {
         /* Create fog of war */
 		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, battery, this);
 
-		txtScore = new Text("Score: \t100", scoreFont);
-		txtScore.setPosition(15, window.getScreenHeight() - 40);
+		int txtScoreFont = window.getScreenWidth()/25;
+		float txtScoreXCord = window.getScreenWidth() - window.getScreenWidth() / 1.02F;
+		float txtScoreYCord = window.getScreenHeight() -40;
 
-		txtTime = new Text("Time: \t1:23", scoreFont);
-		txtTime.setPosition(window.getScreenWidth() - 180, window.getScreenHeight() - 40);
+		txtScore = new Text("Score: \t100", scoreFont, txtScoreFont);
+		txtScore.setPosition(txtScoreXCord, txtScoreYCord);
+
+		int txtTimeFont = window.getScreenWidth()/25;
+		float txtTimeXCord = window.getScreenWidth() - window.getScreenWidth() / 4;
+		float txtTimeYCord = (window.getScreenHeight() - window.getScreenHeight() / 16);
+		txtTime = new Text("Time: \t1:23", scoreFont, txtTimeFont);
+		txtTime.setPosition(txtTimeXCord, txtTimeYCord);
+
+		float musicButtonHeight = window.getScreenHeight() / 14;
+		float musicButtonWidth = window.getScreenHeight() / 12;
+		float musicButtonXCord = window.getScreenWidth() / 3F;
+		float musicButtonYCord = window.getScreenHeight() / 1.08F;
+
+		musicButton = new MusicButton(musicButtonXCord,musicButtonYCord,musicButtonWidth,musicButtonHeight, window);
 
         /* Change avatar location */
         for(int i = 0;i < blocks; i++){
@@ -212,6 +233,9 @@ public class GameScene extends Scene {
 						music.stop();
 						exitScene(this);
 						break;
+					case M:
+						state = !state;
+						musicPlaying(state); break;
 				}
 				break;
 
@@ -367,6 +391,8 @@ public class GameScene extends Scene {
 		//Draw the battery
 		window.draw(battery);
 
+		window.draw(musicButton);
+
 		//Draw score text
 		window.draw(txtScore);
 
@@ -400,6 +426,9 @@ public class GameScene extends Scene {
 
 		if (charges == 0) {
 			score = (int) ((1000 / gameTime) + (100 / voidTime));
+			if(score >=1200) {
+				score = 1200;
+			}
 		} else {
 			score = (int) ((1000 / gameTime) + (100 / voidTime)) + (100/charges);
 		}
@@ -408,7 +437,7 @@ public class GameScene extends Scene {
 	public void closeDoor(Tile door) {
 		Runnable r = () -> {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(1000);
 				door.setTexture(tileTexture[0]);
 				door.setTileType(Tile.BlockType.WALL);
 			} catch (InterruptedException e) {
@@ -423,7 +452,7 @@ public class GameScene extends Scene {
 		try {
 			Vector2f size = new Vector2f(getWindow().getScreenWidth() / 1.2F, (getWindow().getScreenHeight() / 4));
 			textBackground = new RectangleShape(size);
-			textBackground.setPosition(getWindow().getScreenWidth() / 12F, (getWindow().getScreenHeight() / 2.5F)-65);
+			textBackground.setPosition(getWindow().getScreenWidth() / 12F, (getWindow().getScreenHeight() / 2.5F) - 65);
 
 			Font textFont = new Font();
 			textFont.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
@@ -440,5 +469,15 @@ public class GameScene extends Scene {
 		window.draw(textBackground);
 		window.draw(message);
 	}
+	public void musicPlaying(boolean state) {
 
+		if(!state) {
+			music.pause();
+			musicButton.setSelected(true);
+		}
+		else {
+			musicButton.setSelected(false);
+			music.play();
+		}
+	}
 }

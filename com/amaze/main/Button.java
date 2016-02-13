@@ -40,6 +40,18 @@ public abstract class Button extends RectangleShape {
 
         selected = false;
     }
+    public Button(float xCord, float yCord, float width, float height, Window window) throws IOException {
+
+        this.window = window;
+
+        Vector2f position = new Vector2f(xCord, yCord);
+        Vector2f size = new Vector2f(width, height);
+
+        this.setSize(size);
+        this.setPosition(position);
+
+        selected = false;
+    }
 
     /**
      * Confirms if current button is selected.
