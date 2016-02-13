@@ -265,6 +265,7 @@ public class GameScene extends Scene {
 				drawFinishWindow(getWindow());
 				getWindow().display();
 				pause(3000);
+				music.stop();
 				exitScene(this);
 				break;
 			case VOID:
@@ -334,10 +335,10 @@ public class GameScene extends Scene {
 
 
 	public void drawGraphics(RenderWindow window) {
-		for (int j = 0; j < blockY; j++) {
-			for (int i = 0; i < blockX; i++) {
-				if (fog.getView(i, j, player)) {
-					window.draw(tileMap[i][j]);
+		for (int y = 0; y < blockY; y++) {
+			for (int x = 0; x < blockX; x++) {
+				if (fog.getView(x, y, player)) {
+					window.draw(tileMap[x][y]);
 				}
 			}
 		}
@@ -347,15 +348,15 @@ public class GameScene extends Scene {
 			player.move(0, -1);
 			detectionHandler(detectCollision(), "DOWN");
 		}
-		else if(down && getPlayerY() <= translateY(blockY-1)) {
+		else if (down && getPlayerY() <= translateY(blockY-1)) {
 			player.move(0, 1);
 			detectionHandler(detectCollision(), "UP");
 		}
-		else if(left && getPlayerX() >= 0) {
+		else if (left && getPlayerX() >= 0) {
 			player.move(-1, 0);
 			detectionHandler(detectCollision(), "RIGHT");
 		}
-		else if(right && getPlayerX() < translateY(blockX - 1)){
+		else if (right && getPlayerX() < translateY(blockX - 1)) {
 			player.move(1, 0);
 			detectionHandler(detectCollision(), "LEFT");
 		}
@@ -435,7 +436,6 @@ public class GameScene extends Scene {
 		} catch (IOException e) {
 			System.err.println("There was a problem loading the finish window.");
 		}
-
 
 		window.draw(textBackground);
 		window.draw(message);
