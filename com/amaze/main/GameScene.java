@@ -254,7 +254,7 @@ public class GameScene extends Scene {
 	public void detectionHandler(Tile.BlockType type, String reboundDir) {
 		switch (type) {
 			case WALL:
-				//reboundPlayer(reboundDir);
+				reboundPlayer(reboundDir);
 				break;
 			case DOOR:
 				//TODO Insert the door handling code here.
