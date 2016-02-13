@@ -435,37 +435,5 @@ public class GameScene extends Scene {
 		System.out.println("Your score was " + Integer.toString(player.getScore()) + " in " + time + " with "
 				+ Integer.toString(numberOfCharges) + " charges and " + Integer.toString(numberOfVoids) + " number of voids");
 
-		//To be used when argument will be used. Will be implemented once Pasha finished scene transition.
-//		switch (argument){
-//			case 1:return Integer.toString(player.getScore());
-//			case 2:return timer.getElapsedTime().toString();
-//			case 3:
-//				for(int i = 0; i < blockX; i++){
-//					for(int j = 0; j < blockY; j++){
-//						Tile temp = tileMap[i][j];
-//
-//						if (temp.getTileType() == Tile.BlockType.CHARGE){
-//							numberOfCharges++;
-//						}
-//					}
-//				}
-//				break;
-//
-//			case 4:
-//				for(int i = 0; i < blockX; i++){
-//					for(int j = 0; j < blockY; j++){
-//						Tile temp = tileMap[i][j];
-//
-//						if (temp.getTileType() == Tile.BlockType.VOID){
-//							numberOfVoids++;
-//						}
-//					}
-//				}
-//				break;
-//
-//			default:return null;
-//		}
-
-
 	}
 }

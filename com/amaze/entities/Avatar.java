@@ -17,9 +17,11 @@ public class Avatar extends RectangleShape {
 
     private int currentX;
     private int currentY;
-    private int level;          // Level that player is on
-    private int score;          // Holds player score
+    private int level;                  // Level that player is on
+    private int score;                  // Holds player score
     private Vector2i oldTile;
+    private int numberOfChargesPickedUp;
+    private int timeSpentInVoid;
 
     /**
      * Basically does some initial housekeeping.
@@ -79,5 +81,24 @@ public class Avatar extends RectangleShape {
 
     public void setScore(int score){
         this.score = score;
+    }
+
+    /* Void Options */
+    public int getNumberOfChargesPickedUp() {
+        return numberOfChargesPickedUp;
+    }
+
+    public void setNumberOfChargesPickedUp(int numberOfChargesPickedUp) {
+        this.numberOfChargesPickedUp = numberOfChargesPickedUp;
+    }
+
+    /* Charge Options */
+    public void setTimeSpentInVoid(int timeSpentInVoid) {
+        this.timeSpentInVoid = timeSpentInVoid;
+    }
+
+    public int getTimeSpentInVoid() {
+
+        return timeSpentInVoid;
     }
 }
