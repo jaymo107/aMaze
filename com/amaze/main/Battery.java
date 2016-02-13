@@ -11,6 +11,9 @@ import java.nio.file.Paths;
  * Represents a battery
  */
 public class Battery extends RectangleShape {
+
+    public static final int MAX = 6;
+
     private int chargeLevel; //Ranges from 0 to 6
     private Texture texture;
 
@@ -32,10 +35,10 @@ public class Battery extends RectangleShape {
     /**
      * Changes charge level based on input number
      * Changes the image shown too
-     * @param level
+     * @param level the level of the battery
      */
 
-    private void changeChargeLevel(int level){
+    public void changeChargeLevel(int level) {
         try{
 			texture.loadFromFile(Paths.get("res/images/battery/" + Integer.toString(level) + ".png"));
             this.setTexture(texture);
@@ -44,27 +47,31 @@ public class Battery extends RectangleShape {
         }
     }
 
-    public int getChargeLevel(){
+    public int getChargeLevel() {
         return chargeLevel;
     }
 
     /**
      * Increase battery charge level by a specified amount
-     * @param level
+     * @param level the level the battery will increase
      */
 
-    public void increaseChargeLevel(int level){
-        this.chargeLevel = (this.chargeLevel + level) % 6;
-        changeChargeLevel(this.chargeLevel);
+    public void increaseChargeLevel(int level) {
+        if (chargeLevel >= MAX) return;
+
+        chargeLevel += level;
+        changeChargeLevel(chargeLevel);
     }
 
     /**
      * Decrease battery charge level by a specified amount
-     * @param level
+     * @param level the level the battery will decrease
      */
 
-    public void decreaseChargeLevel(int level){
-        this.chargeLevel = this.chargeLevel - level;
-        changeChargeLevel(this.chargeLevel);
+    public void decreaseChargeLevel(int level) {
+        if (chargeLevel <= 1) return;
+
+        chargeLevel -= level;
+        changeChargeLevel(chargeLevel);
     }
 }
