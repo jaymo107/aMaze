@@ -3,6 +3,7 @@ import com.amaze.entities.Avatar;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
+import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
@@ -29,10 +30,19 @@ public class GameScene extends Scene {
 	private Vector2i startTile;
 	private Vector2i endTile;
 
-	boolean up = false;
-	boolean down = false;
-	boolean left = false;
-	boolean right = false;
+	private boolean up = false;
+	private boolean down = false;
+	private boolean left = false;
+	private boolean right = false;
+
+	private int charges = 0;
+
+	private int score;
+
+	private Texture[] tileTexture;
+
+	private RectangleShape textBackground;
+	private Text message;
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -58,7 +68,7 @@ public class GameScene extends Scene {
 		player = new Avatar(0, 0, blockSize);
 
         /* Cache textures before we start using them in order to increase performance */
-		Texture tileTexture[] = new Texture[7];
+		tileTexture = new Texture[7];
 		for (int i = 0; i < tileTexture.length; i++) {
 			tileTexture[i] = new Texture();
 			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
@@ -93,7 +103,7 @@ public class GameScene extends Scene {
 		}
 
         /* Create fog of war */
-		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, this.getWindow(), battery, this);
+		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, battery, this);
 
 		txtScore = new Text("Score: \t100", scoreFont);
 		txtScore.setPosition(15, window.getScreenHeight() - 40);
@@ -152,6 +162,9 @@ public class GameScene extends Scene {
 		Clock clock = new Clock();
 		Clock timer = new Clock();
 
+		Clock gameClock = new Clock();
+		Clock voidClock = new Clock();
+
 		int minute = 0;
 
 		while (isRunning()) try {
@@ -162,6 +175,9 @@ public class GameScene extends Scene {
 
 			int second = (int) timer.getElapsedTime().asSeconds();
 			txtTime.setString("Time: \t" + minute + ":" + ((second < 10) ? "0" + second : second));
+
+			updateScore(gameClock, voidClock);
+			txtScore.setString("Score: \t" + score);
 
 			if (second >= 60) {
 				timer.restart();
@@ -184,50 +200,45 @@ public class GameScene extends Scene {
 	 * @param event - user event.
 	 */
 	public void executeEvent(Event event) {
-
 		/* Sets flag to true when key pressed*/
-		if(event.type == Event.Type.KEY_PRESSED) {
-
-			switch (event.asKeyEvent().key) {
-						case UP:
-							up = true;
-							break;
-						case DOWN:
-							down = true;
-							break;
-						case LEFT:
-							left = true;
-							break;
-						case RIGHT:
-							right = true;
-						break;
+		switch (event.type) {
+			case KEY_PRESSED:
+				switch (event.asKeyEvent().key) {
+					case UP:up = true;break;
+					case DOWN:down = true;break;
+					case LEFT:left = true;break;
+					case RIGHT:right = true;break;
 					case ESCAPE:
 						music.stop();
 						exitScene(this);
 						break;
 				}
-		}else if(event.type == Event.Type.CLOSED){
-			systemExit();
+				break;
+
+			case CLOSED:systemExit();break;
 		}
 
 		/* Sets boolean if the key has been released */
-		if(event.type == Event.Type.KEY_RELEASED){
-			if(event.asKeyEvent().key == event.asKeyEvent().key.UP){
-				up = false;
-			}else if(event.asKeyEvent().key == event.asKeyEvent().key.DOWN){
-				down = false;
-			}else if(event.asKeyEvent().key == event.asKeyEvent().key.LEFT){
-				left = false;
-			}else if(event.asKeyEvent().key == event.asKeyEvent().key.RIGHT){
-				right = false;
-			}
+		switch (event.type) {
+			case KEY_RELEASED:
+				switch (event.asKeyEvent().key) {
+					case UP:up = false;break;
+					case DOWN:down = false;break;
+					case LEFT:left = false;break;
+					case RIGHT:right = false;break;
+					case ESCAPE:
+						music.stop();
+						exitScene(this);
+						break;
+				}
+				break;
 		}
 	}
 
 	/**
 	 * Function to detect if the player has moved onto a tile.
 	 */
-	public Tile.BlockType detectCollision() {
+	public Tile detectCollision() {
 		//Find the block location from the pixel X&Y
 		int playerX = Math.round(getPlayerX() / blockSize);
 		int playerY = Math.round(getPlayerY() / blockSize);
@@ -236,41 +247,40 @@ public class GameScene extends Scene {
 		//System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
 
 		//Return the block the player is behind
-		return tileMap[playerX][playerY].getTileType();
+		return tileMap[playerX][playerY];
 	}
 
 	/**
 	 * Function to see what type of block you have collided with and act accordingly.
 	 *
 	 * @param reboundDir The direction the avatar should be rebounded.
-	 * @param type       The type of block that has been detected.
+	 * @param tile       The tile that has been detected.
 	 */
-	public void detectionHandler(Tile.BlockType type, String reboundDir) {
-		switch (type) {
-			case WALL:
-				reboundPlayer(reboundDir);
-				break;
-			case DOOR:
-				//TODO Insert the door handling code here.
-				break;
-			case START:
-				break;
+	public void detectionHandler(Tile tile, String reboundDir) {
+		switch (tile.getTileType()) {
+			case WALL: reboundPlayer(reboundDir); break;
+			case DOOR: closeDoor(tile); break;
+			case START: break;
 			case FINISH:
-				//TODO Insert the finish handling code here.
+				drawFinishWindow(getWindow());
+				getWindow().display();
+				pause(3000);
+				music.stop();
+				exitScene(this);
 				break;
 			case VOID:
 				//TODO Insert the void handling code here.
 				break;
 			case CHARGE:
-				//TODO Insert the charge handling code here.
-				//battery.changeChargeLevel(battery.getChargeLevel() + 1);
-				//battery.increaseChargeLevel(1);
+				battery.increaseChargeLevel(Battery.MAX - battery.getChargeLevel());
+				battery.changeChargeLevel(battery.getChargeLevel() + (Battery.MAX - battery.getChargeLevel()));
 				fog.increase();
+				charges++;
+				tile.setTileType(Tile.BlockType.FLOOR);
+				tile.setTexture(tileTexture[1]);
 				break;
-			case FLOOR:
-				break;
-			default:
-				System.out.println("Please select a defined BlockType.");
+			case FLOOR: break;
+			default: System.out.println("Please select a defined BlockType.");
 		}
 	}
 
@@ -325,35 +335,30 @@ public class GameScene extends Scene {
 
 
 	public void drawGraphics(RenderWindow window) {
-		for (int j = 0; j < blockY; j++) {
-			for (int i = 0; i < blockX; i++) {
-				if (fog.getView(i, j, player)) {
-					window.draw(tileMap[i][j]);
+		for (int y = 0; y < blockY; y++) {
+			for (int x = 0; x < blockX; x++) {
+				if (fog.getView(x, y, player)) {
+					window.draw(tileMap[x][y]);
 				}
 			}
 		}
 
 		/* Check if the key has been pressed with window edge detection*/
-		if (up) {
-			if(getPlayerY() >= 0) {
-				player.move(0, -1);
-				detectionHandler(detectCollision(), "DOWN");
-			}
-		}else if(down){
-			if(getPlayerY() <= translateY(blockY-1)){
-				player.move(0, 1);
-				detectionHandler(detectCollision(), "UP");
-			}
-		}else if(left){
-			if(getPlayerX() >= 0){
-				player.move(-1, 0);
-				detectionHandler(detectCollision(), "RIGHT");
-			}
-		}else if(right){
-			if(getPlayerX() < translateY(blockX - 1)){
-				player.move(1, 0);
-				detectionHandler(detectCollision(), "LEFT");
-			}
+		if (up && getPlayerY() >= 0) {
+			player.move(0, -1);
+			detectionHandler(detectCollision(), "DOWN");
+		}
+		else if (down && getPlayerY() <= translateY(blockY-1)) {
+			player.move(0, 1);
+			detectionHandler(detectCollision(), "UP");
+		}
+		else if (left && getPlayerX() >= 0) {
+			player.move(-1, 0);
+			detectionHandler(detectCollision(), "RIGHT");
+		}
+		else if (right && getPlayerX() < translateY(blockX - 1)) {
+			player.move(1, 0);
+			detectionHandler(detectCollision(), "LEFT");
 		}
 
 		//Draw the player
@@ -385,6 +390,55 @@ public class GameScene extends Scene {
 		if (blockSize > 0) {
 			GameScene.blockSize = blockSize;
 		}
+	}
+
+	public void updateScore(Clock gameClock, Clock voidClock) {
+		float gameTime = gameClock.getElapsedTime().asSeconds();
+		float voidTime = voidClock.getElapsedTime().asSeconds();
+
+		if (gameTime == 0 || voidTime == 0) return;
+
+		if (charges == 0) {
+			score = (int) ((1000 / gameTime) + (100 / voidTime));
+		} else {
+			score = (int) ((1000 / gameTime) + (100 / voidTime)) + (100/charges);
+		}
+	}
+
+	public void closeDoor(Tile door) {
+		Runnable r = () -> {
+			try {
+				Thread.sleep(500);
+				door.setTexture(tileTexture[0]);
+				door.setTileType(Tile.BlockType.WALL);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		};
+
+		new Thread(r).start();
+	}
+
+	public void drawFinishWindow(RenderWindow window) {
+		try {
+			Vector2f size = new Vector2f(getWindow().getScreenWidth() / 1.2F, (getWindow().getScreenHeight() / 4));
+			textBackground = new RectangleShape(size);
+			textBackground.setPosition(getWindow().getScreenWidth() / 12F, (getWindow().getScreenHeight() / 2.5F)-65);
+
+			Font textFont = new Font();
+			textFont.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
+
+			message = new Text("Congratulations\n\t\tYou won", textFont, 70);
+			message.setColor(Color.BLACK);
+			message.setStyle(Text.BOLD);
+			message.setOrigin((getWindow().getScreenWidth() / 9.5F) * -1, (getWindow().getScreenHeight() / 3F) * -1);
+
+		} catch (IOException e) {
+			System.err.println("There was a problem loading the finish window.");
+		}
+
+		window.draw(textBackground);
+		window.draw(message);
 	}
 
 }

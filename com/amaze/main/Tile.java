@@ -27,7 +27,6 @@ public class Tile extends RectangleShape{
      * @param filePath Path to image
      * @param originX Start X pos
      * @param originY Start Y pos
-     * @throws IOException
      */
 
     public Tile(String filePath, int originX, int originY, int sizeX, int sizeY, BlockType type, Texture[] imageCache){
@@ -99,6 +98,10 @@ public class Tile extends RectangleShape{
 
     public BlockType getTileType() {
         return blockType;
+    }
+
+    public void setTileType(Tile.BlockType blockType) {
+        this.blockType = blockType;
     }
 
 }

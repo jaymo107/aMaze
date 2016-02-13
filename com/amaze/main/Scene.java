@@ -66,4 +66,12 @@ public abstract class Scene implements Displayable {
         currentScene.setRunning(false);
     }
 
+	public static void pause(int time) {
+		try {
+			Thread.sleep(time);
+		} catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+	}
+
 }
