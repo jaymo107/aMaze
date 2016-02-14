@@ -578,20 +578,31 @@ public class GameScene extends Scene {
 			case TEXT_ENTERED:
 				if (event.asTextEvent().unicode >= 32 && event.asTextEvent().unicode <= 126) {
 
-					userName += (char) event.asTextEvent().unicode;
+					if(userName.length() > 12) { break; }
+					else {
+
+						userName += (char) event.asTextEvent().unicode;
+						break;
+					}
 				}
 				if (event.asTextEvent().unicode == 8) {
 
-					userName = userName.substring(0, userName.length() - 1);
+					if(userName.length() > 12) { break; }
+					else {
+
+						userName = userName.substring(0, userName.length() - 1);
+						break;
+					}
 				}
 		}
 		switch (event.type){
 			case KEY_PRESSED:
 				switch (event.asKeyEvent().key) {
 
-						case RETURN:
+					case RETURN:
 						getWindow().setScene(getWindow().getArrayList().indexOf(0));
 						listeningForUserName = false;
+						break;
 
 			}
 		}
