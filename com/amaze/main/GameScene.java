@@ -588,6 +588,8 @@ public class GameScene extends Scene {
 				if (event.asTextEvent().unicode == 8) {
 
 					if(userName.length() > 12) { break; }
+					if(userName.length() == 0) { userName = ""; }
+
 					else {
 
 						userName = userName.substring(0, userName.length() - 1);
