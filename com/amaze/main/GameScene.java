@@ -343,6 +343,7 @@ public class GameScene extends Scene {
 			case DOOR: closeDoor(tile); break;
 			case START: break;
 			case FINISH:
+				musicPlaying(false);
 				listeningForUserName = true;
 
 				while(listeningForUserName) {
@@ -359,9 +360,7 @@ public class GameScene extends Scene {
 				}
 				exportToDB();
 				getWindow().setScene(0);
-				musicPlaying(false);
 				this.setRunning(false);
-				//getWindow().setScene(0);
 
 			case VOID:
 				//TODO Insert the void handling code here.
@@ -578,7 +577,7 @@ public class GameScene extends Scene {
 			case TEXT_ENTERED:
 				if (event.asTextEvent().unicode >= 32 && event.asTextEvent().unicode <= 126) {
 
-					if(userName.length() > 12) { break; }
+					if(userName.length() >= 12) { break; }
 					else {
 
 						userName += (char) event.asTextEvent().unicode;
@@ -587,7 +586,6 @@ public class GameScene extends Scene {
 				}
 				if (event.asTextEvent().unicode == 8) {
 
-					if(userName.length() > 12) { break; }
 					if(userName.length() == 0) { userName = ""; }
 
 					else {
