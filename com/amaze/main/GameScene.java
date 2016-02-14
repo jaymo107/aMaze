@@ -38,6 +38,7 @@ public class GameScene extends Scene {
 	private Vector2i endTile;
 	private Window window;
 	private boolean state = true;
+	private String userName = "";
 
 	private boolean up = false;
 	private boolean down = false;
@@ -52,7 +53,15 @@ public class GameScene extends Scene {
 
 	private RectangleShape textBackground;
 	private Text message;
+	private Text message2;
 	private MusicButton musicButton;
+
+	private int fontSizeUserInput;
+	private float textXCordUserInput;
+	private float textYCordUserInput;
+
+	private Font textFontUserInput;
+	private boolean listeningForUserName;
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -153,6 +162,17 @@ public class GameScene extends Scene {
 				}
             }
         }
+
+		fontSizeUserInput = getWindow().getScreenWidth() / 14;
+		textXCordUserInput = getWindow().getScreenWidth() / -4.5F;
+		textYCordUserInput = getWindow().getScreenHeight() / -3.5F;
+
+		textFontUserInput = new Font();
+		try {
+			textFontUserInput.loadFromFile(Paths.get("res/fonts/Arial.ttf"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -316,12 +336,25 @@ public class GameScene extends Scene {
 			case DOOR: closeDoor(tile); break;
 			case START: break;
 			case FINISH:
-				drawFinishWindow(getWindow());
-				getWindow().display();
-				pause(3000);
-				music.stop();
-				exitScene(this);
-				break;
+				listeningForUserName = true;
+
+				while(listeningForUserName) {
+					drawFinishWindow(getWindow());
+					drawUserName(getWindow());
+					getWindow().display();
+
+					for (Event event : getWindow().pollEvents()) {
+
+						listenForInput(event);
+					}
+					getWindow().clear();
+
+				}
+				getWindow().setScene(0);
+				musicPlaying(false);
+				this.setRunning(false);
+				//getWindow().setScene(0);
+
 			case VOID:
 				//TODO Insert the void handling code here.
 				break;
@@ -479,26 +512,84 @@ public class GameScene extends Scene {
 	}
 
 	public void drawFinishWindow(RenderWindow window) {
+
 		try {
-			Vector2f size = new Vector2f(getWindow().getScreenWidth() / 1.2F, (getWindow().getScreenHeight() / 4));
+
+			float textBackgroundHeight = getWindow().getScreenHeight() / 5;
+			float textBackgroundWidth  = getWindow().getScreenWidth() / 1.25F;
+			float textBackgroundXCord  = getWindow().getScreenWidth() / 2 - (textBackgroundWidth / 2);
+			float textBackgroundYCord  = getWindow().getScreenHeight() / 2  - (textBackgroundHeight / 1.5F);
+
+			Vector2f size = new Vector2f(textBackgroundWidth, textBackgroundHeight);
 			textBackground = new RectangleShape(size);
-			textBackground.setPosition(getWindow().getScreenWidth() / 12F, (getWindow().getScreenHeight() / 2.5F) - 65);
+
+			Texture backgroundImage = new Texture();
+			backgroundImage.loadFromFile(Paths.get("res/menuGraphics/Wall.png"));
+			textBackground.setTexture(backgroundImage);
+
+			textBackground.setPosition(textBackgroundXCord, textBackgroundYCord);
 
 			Font textFont = new Font();
 			textFont.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
 
-			message = new Text("Congratulations\n\t\tYou won", textFont, 70);
+			float textXCord = getWindow().getScreenWidth() / -4.5F;
+			float textYCord = getWindow().getScreenHeight() / -2.8F;
+
+			int fontSize = getWindow().getScreenWidth() / 14;
+
+			message = new Text("Level Completed!", textFont, fontSize);
 			message.setColor(Color.BLACK);
 			message.setStyle(Text.BOLD);
-			message.setOrigin((getWindow().getScreenWidth() / 9.5F) * -1, (getWindow().getScreenHeight() / 3F) * -1);
+			message.setOrigin(textXCord, textYCord);
+
+			message2 = new Text("Enter your username: \n", textFont, fontSize);
+			message2.setColor(Color.BLACK);
+			message2.setStyle(Text.BOLD);
+			message2.setOrigin(textXCord + 35, textYCord - 40);
 
 		} catch (IOException e) {
 			System.err.println("There was a problem loading the finish window.");
+
 		}
 
 		window.draw(textBackground);
 		window.draw(message);
+		window.draw(message2);
 	}
+	public void drawUserName(RenderWindow window) {
+
+		Text un = new Text(userName, textFontUserInput, fontSizeUserInput);
+		un.setColor(Color.BLACK);
+		un.setStyle(Text.BOLD);
+		un.setOrigin(textXCordUserInput + 35, textYCordUserInput - 130);
+		window.draw(un);
+	}
+	public void listenForInput(Event event) {
+
+		switch (event.type) {
+			case TEXT_ENTERED:
+				if (event.asTextEvent().unicode >= 32 && event.asTextEvent().unicode <= 126) {
+
+					userName += (char) event.asTextEvent().unicode;
+				}
+				if (event.asTextEvent().unicode == 8) {
+
+					userName = userName.substring(0, userName.length() - 1);
+				}
+		}
+		switch (event.type){
+			case KEY_PRESSED:
+				switch (event.asKeyEvent().key) {
+
+						case RETURN:
+						System.out.println("Username is: " +userName);
+						getWindow().setScene(getWindow().getArrayList().indexOf(0));
+						listeningForUserName = false;
+
+			}
+		}
+	}
+
 	public void musicPlaying(boolean state) {
 
 		if(!state) {
