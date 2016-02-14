@@ -11,6 +11,7 @@ import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
+import java.io.SyncFailedException;
 import java.nio.file.Paths;
 
 import org.jsfml.window.event.JoystickMoveEvent;
@@ -63,6 +64,9 @@ public class GameScene extends Scene {
 	private Font textFontUserInput;
 	private boolean listeningForUserName;
 
+	private int currentLevel;
+	private float completionTime;
+
 	/**
 	 * This constructor creates an instance of a GameScene.
 	 * Within this class all the game logic should be handled.
@@ -73,10 +77,11 @@ public class GameScene extends Scene {
 	 *                   an instance of the GameScene.
 	 */
 
-	public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
+	public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level, int currentLevel) throws Exception {
 		super(sceneTitle, window);
 
 		this.window = window;
+		this.currentLevel = currentLevel;
 
         Tile currentlyLoaded;
 
@@ -232,6 +237,8 @@ public class GameScene extends Scene {
 				minute++;
 			}
 
+			completionTime = second + (60 * minute);
+
 			for (Event event : getWindow().pollEvents()) {
 				executeEvent(event);
 			}
@@ -350,6 +357,7 @@ public class GameScene extends Scene {
 					getWindow().clear();
 
 				}
+				exportToDB();
 				getWindow().setScene(0);
 				musicPlaying(false);
 				this.setRunning(false);
@@ -582,12 +590,18 @@ public class GameScene extends Scene {
 				switch (event.asKeyEvent().key) {
 
 						case RETURN:
-						System.out.println("Username is: " +userName);
 						getWindow().setScene(getWindow().getArrayList().indexOf(0));
 						listeningForUserName = false;
 
 			}
 		}
+	}
+	public void exportToDB() {
+
+		System.out.println("Username: "+userName);
+		System.out.println("Score: " +score);
+		System.out.println("Level: " +currentLevel);
+		System.out.println("Level Completion Time: " + completionTime + "s");
 	}
 
 	public void musicPlaying(boolean state) {
