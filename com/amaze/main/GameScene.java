@@ -5,11 +5,19 @@ import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
+import org.jsfml.window.Joystick;
+import org.jsfml.window.Joystick.Axis;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
+import java.io.SyncFailedException;
 import java.nio.file.Paths;
+
+import org.jsfml.window.event.JoystickMoveEvent;
+import org.lwjgl.input.*;
+
+import static org.jsfml.window.Joystick.Axis.*;
 
 /**
  * This class will Game and all the elements associated with it.
@@ -29,6 +37,9 @@ public class GameScene extends Scene {
 	private Text txtTime;
 	private Vector2i startTile;
 	private Vector2i endTile;
+	private Window window;
+	private boolean state = true;
+	private String userName = "";
 
 	private boolean up = false;
 	private boolean down = false;
@@ -37,12 +48,24 @@ public class GameScene extends Scene {
 
 	private int charges = 0;
 
-	private int score;
+	private int score = 1200;
 
 	private Texture[] tileTexture;
 
 	private RectangleShape textBackground;
 	private Text message;
+	private Text message2;
+	private MusicButton musicButton;
+
+	private int fontSizeUserInput;
+	private float textXCordUserInput;
+	private float textYCordUserInput;
+
+	private Font textFontUserInput;
+	private boolean listeningForUserName;
+
+	private int currentLevel;
+	private float completionTime;
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -54,8 +77,11 @@ public class GameScene extends Scene {
 	 *                   an instance of the GameScene.
 	 */
 
-	public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level) throws Exception {
+	public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level, int currentLevel) throws Exception {
 		super(sceneTitle, window);
+
+		this.window = window;
+		this.currentLevel = currentLevel;
 
         Tile currentlyLoaded;
 
@@ -83,8 +109,10 @@ public class GameScene extends Scene {
 
 		window.create(new VideoMode((int)tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int)(tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize) + 60),"Game");
 
-        /* Create instance of battery */
-		battery = new Battery(window.getScreenHeight(), window.getScreenHeight(), 6);
+		float batteryXCord = window.getScreenWidth();
+		float batteryYCord = window.getScreenHeight();
+		/* Create instance of battery */
+		battery = new Battery(batteryXCord, batteryYCord, 6, window);
 
         /* Load background music */
 		music = new Music();
@@ -105,11 +133,25 @@ public class GameScene extends Scene {
         /* Create fog of war */
 		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, battery, this);
 
-		txtScore = new Text("Score: \t100", scoreFont);
-		txtScore.setPosition(15, window.getScreenHeight() - 40);
+		int txtScoreFont = window.getScreenWidth()/25;
+		float txtScoreXCord = window.getScreenWidth() - window.getScreenWidth() / 1.02F;
+		float txtScoreYCord = window.getScreenHeight() -40;
 
-		txtTime = new Text("Time: \t1:23", scoreFont);
-		txtTime.setPosition(window.getScreenWidth() - 180, window.getScreenHeight() - 40);
+		txtScore = new Text("Score: \t100", scoreFont, txtScoreFont);
+		txtScore.setPosition(txtScoreXCord, txtScoreYCord);
+
+		int txtTimeFont = window.getScreenWidth()/25;
+		float txtTimeXCord = window.getScreenWidth() - window.getScreenWidth() / 4;
+		float txtTimeYCord = (window.getScreenHeight() - window.getScreenHeight() / 16);
+		txtTime = new Text("Time: \t1:23", scoreFont, txtTimeFont);
+		txtTime.setPosition(txtTimeXCord, txtTimeYCord);
+
+		float musicButtonHeight = window.getScreenHeight() / 14;
+		float musicButtonWidth = window.getScreenHeight() / 12;
+		float musicButtonXCord = window.getScreenWidth() / 3F;
+		float musicButtonYCord = window.getScreenHeight() / 1.08F;
+
+		musicButton = new MusicButton(musicButtonXCord,musicButtonYCord,musicButtonWidth,musicButtonHeight, window);
 
         /* Change avatar location */
         for(int i = 0;i < blocks; i++){
@@ -125,6 +167,17 @@ public class GameScene extends Scene {
 				}
             }
         }
+
+		fontSizeUserInput = getWindow().getScreenWidth() / 14;
+		textXCordUserInput = getWindow().getScreenWidth() / -4.5F;
+		textYCordUserInput = getWindow().getScreenHeight() / -3.5F;
+
+		textFontUserInput = new Font();
+		try {
+			textFontUserInput.loadFromFile(Paths.get("res/fonts/Arial.ttf"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -184,6 +237,8 @@ public class GameScene extends Scene {
 				minute++;
 			}
 
+			completionTime = second + (60 * minute);
+
 			for (Event event : getWindow().pollEvents()) {
 				executeEvent(event);
 			}
@@ -212,12 +267,24 @@ public class GameScene extends Scene {
 						music.stop();
 						exitScene(this);
 						break;
+					case M:
+						state = !state;
+						musicPlaying(state); break;
 				}
 				break;
 
-			case CLOSED:systemExit();break;
-		}
+			case JOYSTICK_BUTTON_PRESSED:
 
+				switch (event.asJoystickButtonEvent().button) {
+
+					case 0: left = true; break;
+					case 1: down = true; break;
+					case 2: right = true; break;
+					case 3: up = true; break;
+				}
+				break;
+
+		}
 		/* Sets boolean if the key has been released */
 		switch (event.type) {
 			case KEY_RELEASED:
@@ -231,6 +298,20 @@ public class GameScene extends Scene {
 						exitScene(this);
 						break;
 				}
+				break;
+			case JOYSTICK_BUTTON_RELEASED:
+				switch (event.asJoystickButtonEvent().button) {
+
+					case 0: left = false; break;
+					case 1: down = false; break;
+					case 2: right = false; break;
+					case 3: up = false; break;
+
+				}
+				break;
+			case CLOSED:
+				music.stop();
+				systemExit();
 				break;
 		}
 	}
@@ -262,12 +343,25 @@ public class GameScene extends Scene {
 			case DOOR: closeDoor(tile); break;
 			case START: break;
 			case FINISH:
-				drawFinishWindow(getWindow());
-				getWindow().display();
-				pause(3000);
-				music.stop();
-				exitScene(this);
-				break;
+				musicPlaying(false);
+				listeningForUserName = true;
+
+				while(listeningForUserName) {
+					drawFinishWindow(getWindow());
+					drawUserName(getWindow());
+					getWindow().display();
+
+					for (Event event : getWindow().pollEvents()) {
+
+						listenForInput(event);
+					}
+					getWindow().clear();
+
+				}
+				exportToDB();
+				getWindow().setScene(0);
+				this.setRunning(false);
+
 			case VOID:
 				//TODO Insert the void handling code here.
 				break;
@@ -367,6 +461,8 @@ public class GameScene extends Scene {
 		//Draw the battery
 		window.draw(battery);
 
+		window.draw(musicButton);
+
 		//Draw score text
 		window.draw(txtScore);
 
@@ -400,6 +496,9 @@ public class GameScene extends Scene {
 
 		if (charges == 0) {
 			score = (int) ((1000 / gameTime) + (100 / voidTime));
+			if(score >=1200) {
+				score = 1200;
+			}
 		} else {
 			score = (int) ((1000 / gameTime) + (100 / voidTime)) + (100/charges);
 		}
@@ -408,7 +507,7 @@ public class GameScene extends Scene {
 	public void closeDoor(Tile door) {
 		Runnable r = () -> {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(1000);
 				door.setTexture(tileTexture[0]);
 				door.setTileType(Tile.BlockType.WALL);
 			} catch (InterruptedException e) {
@@ -420,25 +519,111 @@ public class GameScene extends Scene {
 	}
 
 	public void drawFinishWindow(RenderWindow window) {
+
 		try {
-			Vector2f size = new Vector2f(getWindow().getScreenWidth() / 1.2F, (getWindow().getScreenHeight() / 4));
+
+			float textBackgroundHeight = getWindow().getScreenHeight() / 5;
+			float textBackgroundWidth  = getWindow().getScreenWidth() / 1.25F;
+			float textBackgroundXCord  = getWindow().getScreenWidth() / 2 - (textBackgroundWidth / 2);
+			float textBackgroundYCord  = getWindow().getScreenHeight() / 2  - (textBackgroundHeight / 1.5F);
+
+			Vector2f size = new Vector2f(textBackgroundWidth, textBackgroundHeight);
 			textBackground = new RectangleShape(size);
-			textBackground.setPosition(getWindow().getScreenWidth() / 12F, (getWindow().getScreenHeight() / 2.5F)-65);
+
+			Texture backgroundImage = new Texture();
+			backgroundImage.loadFromFile(Paths.get("res/menuGraphics/Wall.png"));
+			textBackground.setTexture(backgroundImage);
+
+			textBackground.setPosition(textBackgroundXCord, textBackgroundYCord);
 
 			Font textFont = new Font();
 			textFont.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
 
-			message = new Text("Congratulations\n\t\tYou won", textFont, 70);
+			float textXCord = getWindow().getScreenWidth() / -4.5F;
+			float textYCord = getWindow().getScreenHeight() / -2.8F;
+
+			int fontSize = getWindow().getScreenWidth() / 14;
+
+			message = new Text("Level Completed!", textFont, fontSize);
 			message.setColor(Color.BLACK);
 			message.setStyle(Text.BOLD);
-			message.setOrigin((getWindow().getScreenWidth() / 9.5F) * -1, (getWindow().getScreenHeight() / 3F) * -1);
+			message.setOrigin(textXCord, textYCord);
+
+			message2 = new Text("Enter your username: \n", textFont, fontSize);
+			message2.setColor(Color.BLACK);
+			message2.setStyle(Text.BOLD);
+			message2.setOrigin(textXCord + 35, textYCord - 40);
 
 		} catch (IOException e) {
 			System.err.println("There was a problem loading the finish window.");
+
 		}
 
 		window.draw(textBackground);
 		window.draw(message);
+		window.draw(message2);
+	}
+	public void drawUserName(RenderWindow window) {
+
+		Text un = new Text(userName, textFontUserInput, fontSizeUserInput);
+		un.setColor(Color.BLACK);
+		un.setStyle(Text.BOLD);
+		un.setOrigin(textXCordUserInput + 35, textYCordUserInput - 130);
+		window.draw(un);
+	}
+	public void listenForInput(Event event) {
+
+		switch (event.type) {
+			case TEXT_ENTERED:
+				if (event.asTextEvent().unicode >= 32 && event.asTextEvent().unicode <= 126) {
+
+					if(userName.length() >= 12) { break; }
+					else {
+
+						userName += (char) event.asTextEvent().unicode;
+						break;
+					}
+				}
+				if (event.asTextEvent().unicode == 8) {
+
+					if(userName.length() == 0) { userName = ""; }
+
+					else {
+
+						userName = userName.substring(0, userName.length() - 1);
+						break;
+					}
+				}
+		}
+		switch (event.type){
+			case KEY_PRESSED:
+				switch (event.asKeyEvent().key) {
+
+					case RETURN:
+						getWindow().setScene(getWindow().getArrayList().indexOf(0));
+						listeningForUserName = false;
+						break;
+
+			}
+		}
+	}
+	public void exportToDB() {
+
+		System.out.println("Username: "+userName);
+		System.out.println("Score: " +score);
+		System.out.println("Level: " +currentLevel);
+		System.out.println("Level Completion Time: " + completionTime + "s");
 	}
 
+	public void musicPlaying(boolean state) {
+
+		if(!state) {
+			music.pause();
+			musicButton.setSelected(true);
+		}
+		else {
+			musicButton.setSelected(false);
+			music.play();
+		}
+	}
 }
