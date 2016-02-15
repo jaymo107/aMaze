@@ -21,6 +21,7 @@ public class LevelMenuScene extends Scene {
     Window wnd;
     Tile[][] tileMap;                           //Used for displaying map in background
     private int blocks;
+    private int currentLevel;
 
     static final int MAX_LEVEL = 20;
     static final int MIN_LEVEL = 1;
@@ -120,7 +121,7 @@ public class LevelMenuScene extends Scene {
 
         Driver.BLOCK_SIZE = Driver.WINDOW_SIZE / level.getSizeOfMaze();
 
-        GameScene game = new GameScene("Game", getWindow(), level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel());
+        GameScene game = new GameScene("Game", getWindow(), level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel(), userLevelNumber);
 
 		getWindow().addScene(game);
 
@@ -204,4 +205,5 @@ public class LevelMenuScene extends Scene {
 
         wnd.create(new VideoMode((int) tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int) tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize), "Level Menu");
     }
+    public int getCurrentLevel() { return userLevelNumber; }
 }
