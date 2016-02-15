@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class dbCon {
     //JDBC connection stuff
-    private static final String dbDriver = "com.mysql.jdbc.Driver";
+    private static final String dbDriver = "org.mariadb.jdbc.Driver";
     private static final String dbLoc = "jdbc:mysql://178.62.72.43:3306/aMazeDB";
     //Credentials for the database
     private static final String username = "phpuser";
