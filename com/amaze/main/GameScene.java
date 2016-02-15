@@ -59,10 +59,10 @@ public class GameScene extends Scene {
 	private float completionTime;
 
 	private Clock voidDetectionClock = new Clock();
-	private int totalTimeSpentInVoid = 0;
+	private double totalTimeSpentInVoid = 0;
 	private boolean voidClockToggled = false;
 
-	private int timeExposedToVoid = 0;
+	private double timeExposedToVoid = 0;
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -212,7 +212,6 @@ public class GameScene extends Scene {
 		Clock timer = new Clock();
 
 		Clock gameClock = new Clock();
-		Clock voidClock = new Clock();
 
 		int minute = 0;
 
@@ -225,8 +224,7 @@ public class GameScene extends Scene {
 				int second = (int) timer.getElapsedTime().asSeconds();
 				txtTime.setString("Time: \t" + minute + ":" + ((second < 10) ? "0" + second : second));
 
-
-				updateScore(gameClock, voidClock);
+				updateScore(gameClock);
 				txtScore.setString("Score: \t" + score);
 
 				if (second >= 60) {
@@ -341,7 +339,7 @@ public class GameScene extends Scene {
 			case DOOR: closeDoor(tile); break;
 			case START: break;
 			case FINISH:
-				System.out.println("Time spent in void " + totalTimeSpentInVoid + " seconds");
+				System.out.println("Time spent in void " + totalTimeSpentInVoid/1000 + " seconds");
 				musicPlaying(false);
 				listeningForUserName = true;
 
@@ -485,19 +483,17 @@ public class GameScene extends Scene {
 		}
 	}
 
-	public void updateScore(Clock gameClock, Clock voidClock) {
+	public void updateScore(Clock gameClock) {
 		float gameTime = gameClock.getElapsedTime().asSeconds();
-		float voidTime = voidClock.getElapsedTime().asSeconds();
 
-		if (gameTime == 0 || voidTime == 0) return;
+		if (gameTime == 0) return;
 
+		int score0 = (int) (1000 / gameTime + 100 / ((totalTimeSpentInVoid == 0) ? 1 : totalTimeSpentInVoid));
 		if (charges == 0) {
-			score = (int) ((1000 / gameTime) + (100 / (totalTimeSpentInVoid + 1)));
-			if(score >=1200) {
-				score = 1200;
-			}
+			score = score0;
+			if(score >= 1200) score = 1200;
 		} else {
-			score = (int) ((1000 / gameTime) + (100 / (1 + totalTimeSpentInVoid))) + (100/charges);
+			score = score0 + 100 / charges;
 		}
 	}
 
@@ -648,7 +644,7 @@ public class GameScene extends Scene {
 
 		Runnable r = () -> {
 			if (voidClockToggled) {
-				timeExposedToVoid = (int) voidDetectionClock.getElapsedTime().asSeconds();
+				timeExposedToVoid = voidDetectionClock.getElapsedTime().asMilliseconds();
 			} else {
 				voidDetectionClock.restart();
 				totalTimeSpentInVoid += timeExposedToVoid;
@@ -658,6 +654,8 @@ public class GameScene extends Scene {
 		new Thread(r).start();
 
 		if (voidCount == 0) voidClockToggled = false;
+		System.out.println("timeExposedToVoid = " + timeExposedToVoid);
+		System.out.println("totalTimeSpentInVoid = " + totalTimeSpentInVoid);
 	}
 
 }
