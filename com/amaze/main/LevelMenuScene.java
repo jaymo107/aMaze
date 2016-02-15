@@ -8,6 +8,7 @@ import org.jsfml.window.event.Event;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,8 @@ public class LevelMenuScene extends Scene {
     private Text charges;
     private Text walls;
     private Text doors;
+
+    RectangleShape edgeFrame = new RectangleShape();
 
     List<String> results = new ArrayList<String>();
 
@@ -203,7 +206,9 @@ public class LevelMenuScene extends Scene {
                 window.draw(tileMap[i][j]);
             }
         }
+
         window.draw(textBackground);
+        window.draw(edgeFrame);
         window.draw(userLevel);
         window.draw(walls);
         window.draw(charges);
@@ -251,7 +256,20 @@ public class LevelMenuScene extends Scene {
             }
         }
 
-        wnd.create(new VideoMode((int) tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int) tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize), "Level Menu");
+        //wnd.create(new VideoMode((int) tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int) tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize), "Level Menu");
+        edgeFrame.setSize(new Vector2f(wnd.getScreenWidth(), wnd.getScreenHeight()));
+        edgeFrame.setPosition(0,0);
+        Texture edgeFrameTexture = new Texture();
+
+        try{
+            edgeFrameTexture.loadFromFile(Paths.get("res/images/frame.png"));
+        }catch (IOException e){
+            System.out.println("Problem loading edge frame");
+        }
+
+        edgeFrameTexture.setSmooth(true);
+        edgeFrame.setTexture(edgeFrameTexture);
+
 
         numberOfWalls = backgroundLevelLoader.getWallAmount();
         numberOfCharges = backgroundLevelLoader.getChargeAmount();
