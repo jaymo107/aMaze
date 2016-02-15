@@ -67,6 +67,7 @@ public class Avatar extends RectangleShape {
         this.setPosition(startX,startY);
         this.setTexture(t);
         this.oldTile = new Vector2i(0,0);
+        System.out.println("");
     }
 
     /**
