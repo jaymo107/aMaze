@@ -83,6 +83,7 @@ public class LevelMenuScene extends Scene {
      * Every time this function is called, next item on the menu will be selected.
      * Corresponding boolean variable, as well as the color of the item will change.
      */
+
     public void arrowKeyUp() {
         if(userLevelNumber < results.size()) {
             userLevelNumber++;
