@@ -72,6 +72,9 @@ public class GameScene extends Scene {
 	private double timeSpentInVoid = 0;
 	private boolean voidClockToggle = true;
 
+	private Music chargesSound;
+	private Music voidsSound;
+
 	/**
 	 * This constructor creates an instance of a GameScene.
 	 * Within this class all the game logic should be handled.
@@ -121,8 +124,12 @@ public class GameScene extends Scene {
 
         /* Load background music */
 		music = new Music();
+		chargesSound = new Music();
+		voidsSound = new Music();
 		try {
 			music.openFromFile(Paths.get("res/music/move.ogg"));
+			chargesSound.openFromFile(Paths.get("res/music/Charge.wav"));
+			voidsSound.openFromFile(Paths.get("res/music/Void.wav"));
 		} catch (IOException e) {
 			System.out.println("There was a problem loading the background music \n Error: " + e);
 		}
@@ -376,6 +383,7 @@ public class GameScene extends Scene {
 				//TODO Insert the void handling code here.
 				break;
 			case CHARGE:
+				//chargeSound();
 				battery.increaseChargeLevel(Battery.MAX - battery.getChargeLevel());
 				battery.changeChargeLevel(battery.getChargeLevel() + (Battery.MAX - battery.getChargeLevel()));
 				fog.increase();
@@ -653,6 +661,7 @@ public class GameScene extends Scene {
 	}
 
 	public void voidDetection(){
+		//voidSound();
 		Vector2i playerPos = rawPlayertoBlockPos();
 		int voidCount = 0;
 		boolean voidAround = false;
@@ -674,5 +683,13 @@ public class GameScene extends Scene {
 			voidAround = false;
 		}
 	}
+//	public void chargeSound() {
+//
+//		chargesSound.play();
+//	}
+//	public void voidSound() {
+//
+//		voidsSound.play();
+//	}
 
 }

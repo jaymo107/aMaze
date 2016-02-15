@@ -17,6 +17,7 @@ public class MenuScene extends Scene {
     private Title title;
     private Background background;
     private Music music;
+    private Music click;
     private Button musicButton;
     private boolean state = true;
 
@@ -56,11 +57,14 @@ public class MenuScene extends Scene {
         musicButton = new MusicButton(musicButtonXCord, musicButtonYCord, musicButtonWidth, musicButtonHeight, window, this);
 
         music = new Music();
+        click = new Music();
         try {
             music.openFromFile(Paths.get("res/music/gs3.wav"));
+            click.openFromFile(Paths.get("res/music/Click.wav"));
         } catch (IOException e) {
             System.out.println("There was a problem loading the background music.");
         }
+
 
         music.play();
         buttons[0].setSelected(true);
@@ -72,6 +76,7 @@ public class MenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyUp() {
+        clicked();
         if (currentButton == 0) {
             buttons[currentButton].setSelected(false);
             buttons[NUMBER_OF_ITEMS - 1].setSelected(true);
@@ -87,6 +92,7 @@ public class MenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyDown() {
+        clicked();
         if(currentButton == NUMBER_OF_ITEMS - 1) {
             buttons[currentButton].setSelected(false);
             buttons[0].setSelected(true);
@@ -166,5 +172,9 @@ public class MenuScene extends Scene {
             musicButton.setSelected(false);
             music.play();
         }
+    }
+    public void clicked() {
+
+        click.play();
     }
 }
