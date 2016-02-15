@@ -488,11 +488,9 @@ public class GameScene extends Scene {
 		if(voidCount > 0){
 			voidAround = true;
 			timeSpentInVoid = timeSpentInVoid + vc.restart().asMicroseconds();
-			System.out.println(timeSpentInVoid);
 		}else{
 			voidAround = false;
 		}
-		//System.out.println("hello");
 	}
 
 }
