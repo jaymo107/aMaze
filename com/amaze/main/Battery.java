@@ -16,6 +16,7 @@ public class Battery extends RectangleShape {
 
     private int chargeLevel; //Ranges from 0 to 6
     private Texture texture;
+    private Window window;
 
     /**
      *
@@ -24,9 +25,17 @@ public class Battery extends RectangleShape {
      * @param defaultLevel Represents the level the battery will start at
      */
 
-    public Battery(int resX, int resY, int defaultLevel) throws IOException{
-        this.setPosition(resX - (resX / 2) - 50,resY - 60);
-        this.setSize(new Vector2f(100,80));
+    public Battery(float resX, float resY, int defaultLevel, Window window) throws IOException{
+
+        this.window = window;
+
+        float batteryXCord = resX - window.getScreenWidth() / 2.1F;
+        float batteryYCord = resY - window.getScreenHeight() / 10;
+        float batteryWidth = window.getScreenWidth() / 6F;
+        float batterHeight = window.getScreenHeight() / 8F;
+
+        this.setPosition(batteryXCord,batteryYCord);
+        this.setSize(new Vector2f(batteryWidth, batterHeight));
         this.chargeLevel = defaultLevel;
         this.texture = new Texture();
         changeChargeLevel(chargeLevel);

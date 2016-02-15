@@ -141,6 +141,7 @@ public class GridSelectionScene extends Scene {
                         exitScene(this);
                         break;
                     case RETURN:
+
                         try {
                             enterPressed();
                         } catch (Exception e) {

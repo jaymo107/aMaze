@@ -11,7 +11,7 @@ class Driver{
     private static boolean correctSize; //Used to check if we're using the correct resolution.
 
     public static void main(String[] args) throws Exception{
-        WINDOW_SIZE = 700;
+        WINDOW_SIZE = 600;
         correctSize = true;
 
         // Load Level and work out block size dynamically

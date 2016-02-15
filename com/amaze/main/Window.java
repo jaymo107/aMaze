@@ -2,6 +2,7 @@ package com.amaze.main;
 import org.jsfml.audio.Sound;
 import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.window.Joystick;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 
@@ -17,8 +18,6 @@ public class Window extends RenderWindow{
 
     private int screenWidth;
     private int screenHeight;
-
-    Sound sound;                                        //Sound to be played
 
     ArrayList<Displayable> scenes = new ArrayList<>();  //Holds all the scenes. This ArrayList is populated from the Main function.
 
