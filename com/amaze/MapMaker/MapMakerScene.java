@@ -26,12 +26,17 @@ public class MapMakerScene extends Scene {
     private int blocks;
     private int blockSize;
 
+    private int numberOfStart;
+    private int numberOfFinish;
+
     private Tile.BlockType[] allValues = Tile.BlockType.values();
 
 	private RectangleShape textBackground;
     private Text userLevel;
 
     private Window window;
+
+    Font maze = new Font();
 
 	private static Integer currentLevel = 15;
 
@@ -77,14 +82,38 @@ public class MapMakerScene extends Scene {
                 switch (event.asKeyEvent().key) {
                     case ESCAPE:exitScene(this); break;
                     case RETURN:
-                        outputLevel();
-						drawExportWindow(getWindow());
-						getWindow().display();
-						pause(2000);
-						exitScene(this);
+                        countNumbersOfStartEnd();
+
+                        if(numberOfStart != 1){
+                            System.out.println("You need one start block!");
+                            displayTitle("Must have one start and \n\t\t\tone finish",15);
+                        }else if(numberOfFinish != 1){
+                            System.out.println("You need one finish block!");
+                            displayTitle("\"Must have one start and \n\t\t\tone finish",15);
+                        }else{
+                            outputLevel();
+                            drawExportWindow(getWindow());
+                            getWindow().display();
+                            pause(2000);
+                            exitScene(this);
+                        }
                         break;
                 }
         }
+    }
+
+    public void displayTitle(String text, int fSize){
+        int fontSize = window.getScreenWidth() / fSize;
+
+        float textXCord = window.getScreenWidth() / -9F;
+        float textYCord = window.getScreenHeight() / -2.5F;
+        userLevel = new Text(text, maze, fontSize);
+        userLevel.setColor(Color.BLACK);
+        userLevel.setStyle(Text.BOLD);
+        userLevel.setOrigin(textXCord, textYCord);
+        drawExportWindow(getWindow());
+        getWindow().display();
+        pause(2000);
     }
 
     public void changeTexture(Tile tile) {
@@ -165,7 +194,6 @@ public class MapMakerScene extends Scene {
             textBackground = new RectangleShape(size);
             textBackground.setPosition(textBackgroundXCord, textBackgroundYCord);
 
-            Font maze = new Font();
             maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
 
             Texture backgroundImage = new Texture();
@@ -189,4 +217,20 @@ public class MapMakerScene extends Scene {
         window.draw(userLevel);
     }
 
+    public void countNumbersOfStartEnd(){
+        for(int i = 0; i < tiles.length; i++){
+            for(int j = 0; j < tiles.length; j++){
+                Tile temp = tiles[i][j];
+
+                switch(temp.getBlockType()){
+                    case FINISH:
+                        numberOfFinish++;
+                        break;
+                    case START:
+                        numberOfStart++;
+                        break;
+                }
+            }
+        }
+    }
 }
