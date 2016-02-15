@@ -3,6 +3,7 @@ import com.amaze.entities.Avatar;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
+import org.jsfml.system.Time;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
@@ -43,6 +44,11 @@ public class GameScene extends Scene {
 
 	private RectangleShape textBackground;
 	private Text message;
+
+	private Clock voidClock = new Clock();
+	private Clock vc;
+	private double timeSpentInVoid = 0;
+	private boolean voidClockToggle = true;
 
 	/**
 	 * This constructor creates an instance of a GameScene.
@@ -163,33 +169,39 @@ public class GameScene extends Scene {
 		Clock timer = new Clock();
 
 		Clock gameClock = new Clock();
-		Clock voidClock = new Clock();
 
 		int minute = 0;
 
-		while (isRunning()) try {
-			getWindow().clear(Color.BLACK);
-			drawGraphics(getWindow());
+		while (isRunning()){
+			try {
+				getWindow().clear(Color.BLACK);
+				drawGraphics(getWindow());
 
-			fog.update(clock);
+				fog.update(clock);
 
-			int second = (int) timer.getElapsedTime().asSeconds();
-			txtTime.setString("Time: \t" + minute + ":" + ((second < 10) ? "0" + second : second));
+				voidDetection();
 
-			updateScore(gameClock, voidClock);
-			txtScore.setString("Score: \t" + score);
+				int second = (int) timer.getElapsedTime().asSeconds();
+				txtTime.setString("Time: \t" + minute + ":" + ((second < 10) ? "0" + second : second));
 
-			if (second >= 60) {
-				timer.restart();
-				minute++;
+				updateScore(gameClock, voidClock);
+				txtScore.setString("Score: \t" + score);
+
+				if (second >= 60) {
+					timer.restart();
+					minute++;
+				}
+
+				for (Event event : getWindow().pollEvents()) {
+					executeEvent(event);
+				}
+				getWindow().display();
+			} catch (Exception e) {
+				music.stop();
+				System.out.println("There has been an issue drawing something, exiting to level menu\n\n");
+				e.printStackTrace();
+				setRunning(false);
 			}
-
-			for (Event event : getWindow().pollEvents()) {
-				executeEvent(event);
-			}
-			getWindow().display();
-		} catch (Exception e) {
-			setRunning(false);
 		}
 	}
 
@@ -262,6 +274,7 @@ public class GameScene extends Scene {
 			case DOOR: closeDoor(tile); break;
 			case START: break;
 			case FINISH:
+				System.out.println("Time spent in void " + Double.toString(timeSpentInVoid / 1000) + " seconds");
 				drawFinishWindow(getWindow());
 				getWindow().display();
 				pause(3000);
@@ -399,9 +412,9 @@ public class GameScene extends Scene {
 		if (gameTime == 0 || voidTime == 0) return;
 
 		if (charges == 0) {
-			score = (int) ((1000 / gameTime) + (100 / voidTime));
+			score = (int) ((1000 / gameTime) + (100 / (timeSpentInVoid + 1)));
 		} else {
-			score = (int) ((1000 / gameTime) + (100 / voidTime)) + (100/charges);
+			score = (int) ((1000 / gameTime) + (100 / (1 + timeSpentInVoid))) + (100/charges);
 		}
 	}
 
@@ -439,6 +452,47 @@ public class GameScene extends Scene {
 
 		window.draw(textBackground);
 		window.draw(message);
+	}
+
+	public Vector2i rawPlayertoBlockPos(){
+		int playerPosBlockX = (int)((getPlayerX() + 1) / blockSize);
+		int playerPosBlockY = (int)((getPlayerY() + 1) / blockSize);
+		Vector2i temp = new Vector2i(playerPosBlockX,playerPosBlockY);
+		return temp;
+	}
+
+	public boolean isVoid(int x, int y){
+		try{
+			return tileMap[x][y].getTileType() == Tile.BlockType.VOID;
+		}catch (ArrayIndexOutOfBoundsException e){
+			//System.out.println("Out of bounds :P");
+			return false;
+		}
+	}
+
+	public void voidDetection(){
+		Vector2i playerPos = rawPlayertoBlockPos();
+		int voidCount = 0;
+		boolean voidAround = false;
+		vc = new Clock();
+		vc.restart();
+
+		for(int i = playerPos.x - 1; i < playerPos.x + 1; i++){
+			for(int j = playerPos.y - 1; j < playerPos.y + 1; j++){
+				if(isVoid(i,j)){
+					voidCount++;
+				}
+			}
+		}
+
+		if(voidCount > 0){
+			voidAround = true;
+			timeSpentInVoid = timeSpentInVoid + vc.restart().asMicroseconds();
+			System.out.println(timeSpentInVoid);
+		}else{
+			voidAround = false;
+		}
+		//System.out.println("hello");
 	}
 
 }
