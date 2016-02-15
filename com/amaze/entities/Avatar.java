@@ -7,8 +7,12 @@ import org.jsfml.system.Vector2i;
 
 import com.amaze.main.GameScene;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Represents an avatar. There will only be one avatar in the maze. This will be the player.
@@ -24,7 +28,8 @@ public class Avatar extends RectangleShape {
     private int timeSpentInVoid;
 
     /**
-     * Basically does some initial housekeeping.
+     * Produces and avatar for the game and picks the texture of the avatar randomly
+     * from the res/avatars.
      * @param startX Start Pixel X location
      * @param startY Start Pixel Y location
      * @throws Exception If fails to load texture
@@ -37,16 +42,25 @@ public class Avatar extends RectangleShape {
         timeSpentInVoid = 0;
         Texture t = new Texture();
 
-        try{
-            t.loadFromFile(Paths.get("res/face.png"));
-        }catch (IOException e){
-            System.out.println("Error loading avatar image");
+        List<String> avatarFileNames = new ArrayList<String>();
+
+        File[] files = new File("res/avatars").listFiles();
+
+        for(File file: files) {
+
+            if (file.isFile()) {
+
+                avatarFileNames.add(file.getName());
+            }
         }
 
-        this.setSize(new Vector2f((float)(blockSize / 1.2),(float)(blockSize / 1.2)));
-        this.setPosition(startX,startY);
-        this.setTexture(t);
-        this.oldTile = new Vector2i(0,0); 
+        Random random = new Random();
+        String randomImagePath = avatarFileNames.get(random.nextInt(avatarFileNames.size() - 1 + 1) + 0);
+        try{
+            t.loadFromFile(Paths.get("res/avatars/" + randomImagePath));
+        }catch (IOException e){
+            System.out.println("There is either no avatar in the folder or a hidden file that needs to be deleted");
+        }
     }
 
     /**
@@ -71,7 +85,6 @@ public class Avatar extends RectangleShape {
 		}
 		return false;
     }
-
 
     public int getLevel(){
         return level;
