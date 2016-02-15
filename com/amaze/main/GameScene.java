@@ -636,7 +636,7 @@ public class GameScene extends Scene {
 	}
 
 	public void voidDetection(){
-		Vector2i playerPos = rawPlayertoBlockPos();
+		Vector2i playerPos = rawPlayerToBlockPos();
 		int voidCount = 0;
 
 		for (int i = -1; i <= 1; i++) {
