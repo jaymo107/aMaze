@@ -10,6 +10,7 @@ import org.jsfml.window.event.Event;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Random;
 
 /**
  * This class will Game and all the elements associated with it.
@@ -116,7 +117,8 @@ public class GameScene extends Scene {
 		chargesSound = new Music();
 		voidsSound = new Music();
 		try {
-			music.openFromFile(Paths.get("res/music/move.ogg"));
+		  String musicPaths[] = {"res/music/gs2.wav", "res/music/gs3.wav", "res/music/move.ogg"};
+			music.openFromFile(Paths.get(musicPaths[new Random().nextInt(musicPaths.length)]));
 			chargesSound.openFromFile(Paths.get("res/music/Charge.wav"));
 			voidsSound.openFromFile(Paths.get("res/music/Void.wav"));
 		} catch (IOException e) {
