@@ -18,8 +18,7 @@ public class GameScene extends Scene {
 
 	private static int blockSize;       //Size of each block. W and H
 
-	private int blockX;                 //Number of blocks in X direction
-	private int blockY;                 //Number of blocks in Y direction
+	private int blockCount;             //Number of blocks in a row
 	private Tile[][] tileMap;           //Represents the maze
 	private Avatar player;              //Represents the player(avatar)
 	private Battery battery;            //
@@ -56,7 +55,6 @@ public class GameScene extends Scene {
 	private boolean listeningForUserName;
 
 	private int currentLevel;
-	private float completionTime;
 
 	private Clock voidDetectionClock = new Clock();
 	private double totalTimeSpentInVoid = 0;
@@ -83,8 +81,7 @@ public class GameScene extends Scene {
 
 		GameScene.blockSize = blockSize;
 
-		blockX = level.length;
-		blockY = level.length;
+		blockCount = level.length;
 
 		tileMap = new Tile[blocks][blocks];
 		player = new Avatar(0, 0, blockSize);
@@ -357,7 +354,6 @@ public class GameScene extends Scene {
 				exportToDB();
 				getWindow().setScene(0);
 				this.setRunning(false);
-
 			case VOID: break;
 			case CHARGE:
 				battery.increaseChargeLevel(Battery.MAX - battery.getChargeLevel());
@@ -423,8 +419,8 @@ public class GameScene extends Scene {
 
 
 	public void drawGraphics(RenderWindow window) {
-		for (int y = 0; y < blockY; y++) {
-			for (int x = 0; x < blockX; x++) {
+		for (int y = 0; y < blockCount; y++) {
+			for (int x = 0; x < blockCount; x++) {
 				if (fog.getView(x, y, player)) {
 					window.draw(tileMap[x][y]);
 				}
@@ -436,7 +432,7 @@ public class GameScene extends Scene {
 			player.move(0, -1);
 			detectionHandler(detectCollision(), "DOWN");
 		}
-		else if (down && getPlayerY() <= translateY(blockY-1)) {
+		else if (down && getPlayerY() <= translateY(blockCount - 1)) {
 			player.move(0, 1);
 			detectionHandler(detectCollision(), "UP");
 		}
@@ -444,7 +440,7 @@ public class GameScene extends Scene {
 			player.move(-1, 0);
 			detectionHandler(detectCollision(), "RIGHT");
 		}
-		else if (right && getPlayerX() < translateY(blockX - 1)) {
+		else if (right && getPlayerX() < translateY(blockCount - 1)) {
 			player.move(1, 0);
 			detectionHandler(detectCollision(), "LEFT");
 		}
@@ -475,12 +471,6 @@ public class GameScene extends Scene {
 
 	public static int getBlockSize() {
 		return blockSize;
-	}
-
-	public static void setBlockSize(int blockSize) {
-		if (blockSize > 0) {
-			GameScene.blockSize = blockSize;
-		}
 	}
 
 	public void updateScore(Clock gameClock) {
@@ -652,10 +642,7 @@ public class GameScene extends Scene {
 			}
 		};
 		new Thread(r).start();
-
 		if (voidCount == 0) voidClockToggled = false;
-		System.out.println("timeExposedToVoid = " + timeExposedToVoid);
-		System.out.println("totalTimeSpentInVoid = " + totalTimeSpentInVoid);
 	}
 
 }
