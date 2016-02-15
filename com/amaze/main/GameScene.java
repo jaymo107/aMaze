@@ -16,7 +16,6 @@ import java.io.SyncFailedException;
 import java.nio.file.Paths;
 
 import org.jsfml.window.event.JoystickMoveEvent;
-//import org.lwjgl.input.*;
 
 import static org.jsfml.window.Joystick.Axis.*;
 
@@ -502,8 +501,6 @@ public class GameScene extends Scene {
 	public void updateScore(Clock gameClock, Clock voidClock) {
 		float gameTime = gameClock.getElapsedTime().asSeconds();
 		float voidTime = voidClock.getElapsedTime().asSeconds();
-
-		System.out.println(timeSpentInVoid);
 
 		if (gameTime == 0 || voidTime == 0) return;
 
