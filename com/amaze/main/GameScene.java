@@ -632,16 +632,14 @@ public class GameScene extends Scene {
 			}
 		}
 
-		Runnable r = () -> {
-			if (voidClockToggled) {
-				timeExposedToVoid = voidDetectionClock.getElapsedTime().asMilliseconds();
-			} else {
-				voidDetectionClock.restart();
-				totalTimeSpentInVoid += timeExposedToVoid;
-				timeExposedToVoid = 0;
-			}
-		};
-		new Thread(r).start();
+		if (voidClockToggled) {
+			timeExposedToVoid = voidDetectionClock.getElapsedTime().asMilliseconds();
+		} else {
+			voidDetectionClock.restart();
+			totalTimeSpentInVoid += timeExposedToVoid;
+			timeExposedToVoid = 0;
+		}
+
 		if (voidCount == 0) voidClockToggled = false;
 	}
 
