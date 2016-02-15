@@ -61,6 +61,11 @@ public class Avatar extends RectangleShape {
         }catch (IOException e){
             System.out.println("There is either no avatar in the folder or a hidden file that needs to be deleted");
         }
+
+        this.setSize(new Vector2f((float)(blockSize / 1.2),(float)(blockSize / 1.2)));
+        this.setPosition(startX,startY);
+        this.setTexture(t);
+        this.oldTile = new Vector2i(0,0);
     }
 
     /**
