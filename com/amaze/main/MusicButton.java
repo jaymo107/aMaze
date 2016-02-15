@@ -8,16 +8,11 @@ import java.nio.file.Paths;
  */
 public class MusicButton extends Button {
 
-    private Window window;
-
-
-    public MusicButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
+	public MusicButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
 
         super(xCord, yCord, width, height, window, menu);
 
-        this.window = window;
-
-        getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOn.png"));
+		getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOn.png"));
         getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/musicOff.png"));
 
         this.setTexture(getDefaultIcon());
@@ -27,9 +22,7 @@ public class MusicButton extends Button {
 
         super(xCord, yCord, width, height, window);
 
-        this.window = window;
-
-        getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOn.png"));
+		getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOn.png"));
         getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/musicOff.png"));
 
         this.setTexture(getDefaultIcon());

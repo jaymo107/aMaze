@@ -3,21 +3,13 @@ import com.amaze.entities.Avatar;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Clock;
-import org.jsfml.system.Time;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
-import org.jsfml.window.Joystick;
-import org.jsfml.window.Joystick.Axis;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
-import java.io.SyncFailedException;
 import java.nio.file.Paths;
-
-import org.jsfml.window.event.JoystickMoveEvent;
-
-import static org.jsfml.window.Joystick.Axis.*;
 
 /**
  * This class will Game and all the elements associated with it.
@@ -26,8 +18,7 @@ public class GameScene extends Scene {
 
 	private static int blockSize;       //Size of each block. W and H
 
-	private int blockX;                 //Number of blocks in X direction
-	private int blockY;                 //Number of blocks in Y direction
+	private int blockCount;             //Number of blocks in a row
 	private Tile[][] tileMap;           //Represents the maze
 	private Avatar player;              //Represents the player(avatar)
 	private Battery battery;            //
@@ -37,7 +28,6 @@ public class GameScene extends Scene {
 	private Text txtTime;
 	private Vector2i startTile;
 	private Vector2i endTile;
-	private Window window;
 	private boolean state = true;
 	private String userName = "";
 
@@ -65,12 +55,12 @@ public class GameScene extends Scene {
 	private boolean listeningForUserName;
 
 	private int currentLevel;
-	private float completionTime;
 
-	private Clock voidClock = new Clock();
-	private Clock vc;
-	private double timeSpentInVoid = 0;
-	private boolean voidClockToggle = true;
+	private Clock voidDetectionClock = new Clock();
+	private double totalTimeSpentInVoid = 0;
+	private boolean voidClockToggled = false;
+
+	private double timeExposedToVoid = 0;
 
 	private Music chargesSound;
 	private Music voidsSound;
@@ -88,15 +78,13 @@ public class GameScene extends Scene {
 	public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level, int currentLevel) throws Exception {
 		super(sceneTitle, window);
 
-		this.window = window;
 		this.currentLevel = currentLevel;
 
         Tile currentlyLoaded;
 
 		GameScene.blockSize = blockSize;
 
-		blockX = level.length;
-		blockY = level.length;
+		blockCount = level.length;
 
 		tileMap = new Tile[blocks][blocks];
 		player = new Avatar(0, 0, blockSize);
@@ -236,22 +224,18 @@ public class GameScene extends Scene {
 			try {
 				getWindow().clear(Color.BLACK);
 				drawGraphics(getWindow());
-
 				fog.update(clock);
-
-				voidDetection();
 
 				int second = (int) timer.getElapsedTime().asSeconds();
 				txtTime.setString("Time: \t" + minute + ":" + ((second < 10) ? "0" + second : second));
 
-				updateScore(gameClock, vc);
+				updateScore(gameClock);
 				txtScore.setString("Score: \t" + score);
 
 				if (second >= 60) {
 					timer.restart();
 					minute++;
 				}
-
 				for (Event event : getWindow().pollEvents()) {
 					executeEvent(event);
 				}
@@ -367,7 +351,7 @@ public class GameScene extends Scene {
 			case DOOR: closeDoor(tile); break;
 			case START: break;
 			case FINISH:
-				System.out.println("Time spent in void " + Double.toString(timeSpentInVoid / 1000) + " seconds");
+				System.out.println("Time spent in void " + totalTimeSpentInVoid/1000 + " seconds");
 				musicPlaying(false);
 				listeningForUserName = true;
 
@@ -377,7 +361,6 @@ public class GameScene extends Scene {
 					getWindow().display();
 
 					for (Event event : getWindow().pollEvents()) {
-
 						listenForInput(event);
 					}
 					getWindow().clear();
@@ -386,10 +369,7 @@ public class GameScene extends Scene {
 				exportToDB();
 				getWindow().setScene(0);
 				this.setRunning(false);
-
-			case VOID:
-				//TODO Insert the void handling code here.
-				break;
+			case VOID: break;
 			case CHARGE:
 				//chargeSound();
 				battery.increaseChargeLevel(Battery.MAX - battery.getChargeLevel());
@@ -399,7 +379,7 @@ public class GameScene extends Scene {
 				tile.setTileType(Tile.BlockType.FLOOR);
 				tile.setTexture(tileTexture[1]);
 				break;
-			case FLOOR: break;
+			case FLOOR: voidDetection(); break;
 			default: System.out.println("Please select a defined BlockType.");
 		}
 	}
@@ -455,8 +435,8 @@ public class GameScene extends Scene {
 
 
 	public void drawGraphics(RenderWindow window) {
-		for (int y = 0; y < blockY; y++) {
-			for (int x = 0; x < blockX; x++) {
+		for (int y = 0; y < blockCount; y++) {
+			for (int x = 0; x < blockCount; x++) {
 				if (fog.getView(x, y, player)) {
 					window.draw(tileMap[x][y]);
 				}
@@ -468,7 +448,7 @@ public class GameScene extends Scene {
 			player.move(0, -1);
 			detectionHandler(detectCollision(), "DOWN");
 		}
-		else if (down && getPlayerY() <= translateY(blockY-1)) {
+		else if (down && getPlayerY() <= translateY(blockCount - 1)) {
 			player.move(0, 1);
 			detectionHandler(detectCollision(), "UP");
 		}
@@ -476,7 +456,7 @@ public class GameScene extends Scene {
 			player.move(-1, 0);
 			detectionHandler(detectCollision(), "RIGHT");
 		}
-		else if (right && getPlayerX() < translateY(blockX - 1)) {
+		else if (right && getPlayerX() < translateY(blockCount - 1)) {
 			player.move(1, 0);
 			detectionHandler(detectCollision(), "LEFT");
 		}
@@ -487,6 +467,7 @@ public class GameScene extends Scene {
 		//Draw the battery
 		window.draw(battery);
 
+		//Draw music button
 		window.draw(musicButton);
 
 		//Draw score text
@@ -508,25 +489,17 @@ public class GameScene extends Scene {
 		return blockSize;
 	}
 
-	public static void setBlockSize(int blockSize) {
-		if (blockSize > 0) {
-			GameScene.blockSize = blockSize;
-		}
-	}
-
-	public void updateScore(Clock gameClock, Clock voidClock) {
+	public void updateScore(Clock gameClock) {
 		float gameTime = gameClock.getElapsedTime().asSeconds();
-		float voidTime = voidClock.getElapsedTime().asSeconds();
 
-		if (gameTime == 0 || voidTime == 0) return;
+		if (gameTime == 0) return;
 
+		int score0 = (int) (1000 / gameTime + 100 / ((totalTimeSpentInVoid == 0) ? 1 : totalTimeSpentInVoid));
 		if (charges == 0) {
-			score = (int) ((1000 / gameTime) + (100 / (timeSpentInVoid + 1)));
-			if(score >=1200) {
-				score = 1200;
-			}
+			score = score0;
+			if(score >= 1200) score = 1200;
 		} else {
-			score = (int) ((1000 / gameTime) + (100 / (1 + timeSpentInVoid))) + (100/charges);
+			score = score0 + 100 / charges;
 		}
 	}
 
@@ -615,7 +588,6 @@ public class GameScene extends Scene {
 					if(userName.length() == 0) { userName = ""; }
 
 					else {
-
 						userName = userName.substring(0, userName.length() - 1);
 						break;
 					}
@@ -634,61 +606,66 @@ public class GameScene extends Scene {
 		}
 	}
 	public void exportToDB() {
-
 		System.out.println("Username: "+userName);
 		System.out.println("Score: " +score);
 		System.out.println("Level: " +currentLevel);
-		System.out.println("Level Completion Time: " + completionTime + "s");
+		System.out.println("Level Completion Time: " + txtTime.getString().substring(7));
 	}
 
 	public void musicPlaying(boolean state) {
-
-		if(!state) {
+		if (!state) {
 			music.pause();
 			musicButton.setSelected(true);
-		}
-		else {
+		} else {
 			musicButton.setSelected(false);
 			music.play();
 		}
 	}
-	public Vector2i rawPlayertoBlockPos(){
+	public Vector2i rawPlayerToBlockPos(){
 		int playerPosBlockX = (int)((getPlayerX() + 1) / blockSize);
 		int playerPosBlockY = (int)((getPlayerY() + 1) / blockSize);
-		Vector2i temp = new Vector2i(playerPosBlockX,playerPosBlockY);
-		return temp;
+		return new Vector2i(playerPosBlockX, playerPosBlockY);
 	}
 
 	public boolean isVoid(int x, int y){
-		try{
+		try {
 			return tileMap[x][y].getTileType() == Tile.BlockType.VOID;
-		}catch (ArrayIndexOutOfBoundsException e){
-			//System.out.println("Out of bounds :P");
+		} catch (ArrayIndexOutOfBoundsException e) {
 			return false;
 		}
 	}
 
 	public void voidDetection(){
-		//voidSound();
 		Vector2i playerPos = rawPlayertoBlockPos();
 		int voidCount = 0;
-		boolean voidAround = false;
-		vc = new Clock();
-		vc.restart();
 
-		for(int i = playerPos.x - 1; i < playerPos.x + 1; i++){
-			for(int j = playerPos.y - 1; j < playerPos.y + 1; j++){
-				if(isVoid(i,j)){
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				if (isVoid(playerPos.x + i, playerPos.y + j)) {
 					voidCount++;
+					voidClockToggled = true;
+					Runnable r = () ->{
+						try {
+							battery.decreaseChargeLevel(1);
+							Thread.sleep(500);
+							fog.drain();
+						} catch (InterruptedException e) {
+							System.err.println("Something went wrong.");
+						}
+					};
+					new Thread(r).start();
 				}
 			}
 		}
 
-		if(voidCount > 0){
-			voidAround = true;
-			timeSpentInVoid = timeSpentInVoid + vc.restart().asMicroseconds();
-		}else{
-			voidAround = false;
+		if (voidCount == 0) voidClockToggled = false;
+
+		if (voidClockToggled) {
+			timeExposedToVoid = voidDetectionClock.getElapsedTime().asMilliseconds();
+		} else {
+			voidDetectionClock.restart();
+			totalTimeSpentInVoid += timeExposedToVoid;
+			timeExposedToVoid = 0;
 		}
 	}
 //	public void chargeSound() {

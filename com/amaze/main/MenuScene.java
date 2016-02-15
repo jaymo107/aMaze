@@ -175,12 +175,10 @@ public class MenuScene extends Scene {
         window.draw(title);
     }
     public void musicPlaying(boolean state) {
-
-        if(!state) {
+        if (!state) {
             music.pause();
             musicButton.setSelected(true);
-        }
-        else {
+        } else {
             musicButton.setSelected(false);
             music.play();
         }
