@@ -40,14 +40,14 @@ public class MapMakerScene extends Scene {
 
 	private static Integer currentLevel = 15;
 
-    public MapMakerScene(String sceneTitle, Window window, int blocksX, int blocksY) throws IOException {
+    public MapMakerScene(String sceneTitle, Window window, int blocks) throws IOException {
         super(sceneTitle, window);
 
         this.window = window;
 
-        this.blocks = blocksX;
-        tiles = new Tile[blocks][blocks];
-        this.blockSize = window.getSize().x / blocksX;  //Work out how many blocks
+        this.blocks = blocks;
+        tiles = new Tile[this.blocks][this.blocks];
+        this.blockSize = window.getSize().x / blocks;  //Work out how many blocks
 
         blockTextures = new Texture[7];
         for (int i = 0; i < blockTextures.length; i++) {
@@ -55,8 +55,8 @@ public class MapMakerScene extends Scene {
             blockTextures[i].loadFromFile(Paths.get("res/images/" + allValues[i].toString().toLowerCase() + ".png"));
             blockTextures[i].setSmooth(true);
         }
-        for (int y = 0; y < blocks; y++) {
-            for (int x = 0; x < blocks; x++) {
+        for (int y = 0; y < this.blocks; y++) {
+            for (int x = 0; x < this.blocks; x++) {
                 tiles[x][y] = new Tile(blockTextures, x, y);
                 tiles[x][y].setTexture(blockTextures[0]);
                 tiles[x][y].setPosition(new Vector2f(translateX(blockSize, x), translateY(blockSize, y)));
@@ -64,7 +64,7 @@ public class MapMakerScene extends Scene {
             }
         }
 
-        window.create(new VideoMode((int)tiles[blocks - 1][blocks - 1].getPosition().x + blockSize, (int)(tiles[blocks - 1][blocks - 1].getPosition().y + blockSize)),"Game");
+        window.create(new VideoMode((int)tiles[this.blocks - 1][this.blocks - 1].getPosition().x + blockSize, (int)(tiles[this.blocks - 1][this.blocks - 1].getPosition().y + blockSize)),"Game");
         exportSuccessful();
     }
 
@@ -218,19 +218,14 @@ public class MapMakerScene extends Scene {
     }
 
     public void countNumbersOfStartEnd(){
-        for(int i = 0; i < tiles.length; i++){
-            for(int j = 0; j < tiles.length; j++){
-                Tile temp = tiles[i][j];
-
-                switch(temp.getBlockType()){
-                    case FINISH:
-                        numberOfFinish++;
-                        break;
-                    case START:
-                        numberOfStart++;
-                        break;
-                }
-            }
-        }
+		for (Tile[] row : tiles) {
+			for (Tile tile: row) {
+				switch (tile.getBlockType()) {
+					case FINISH: numberOfFinish++; break;
+					case START: numberOfStart++; break;
+				}
+			}
+		}
     }
+
 }

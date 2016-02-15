@@ -1,13 +1,8 @@
 package com.amaze.main;
-import org.jsfml.audio.Sound;
-import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.window.Joystick;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -99,5 +94,6 @@ public class Window extends RenderWindow{
      */
     public void setScene(int i) { currentScene = i; }
 
-    public ArrayList getArrayList() { return scenes;}
+    public ArrayList getArrayList() { return scenes; }
+
 }

@@ -2,22 +2,17 @@ package com.amaze.main;
 
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
-import org.jsfml.system.Vector2i;
-import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
 public class LevelMenuScene extends Scene {
 
     private Text userLevel;
-    private Background background;
-    private RectangleShape textBackground;
+	private RectangleShape textBackground;
     private Texture backgroundImage = new Texture();
     private Window wnd;
     private Tile[][] tileMap;                           //Used for displaying map in background
@@ -36,7 +31,7 @@ public class LevelMenuScene extends Scene {
 
     RectangleShape edgeFrame = new RectangleShape();
 
-    List<String> results = new ArrayList<String>();
+    ArrayList<String> results = new ArrayList<>();
 
     int userLevelNumber = 1;
 
@@ -46,7 +41,7 @@ public class LevelMenuScene extends Scene {
         blocks = 0;
 
         //Create background
-        background = new Background(window.getScreenWidth(), window.getScreenHeight());
+		new Background(window.getScreenWidth(), window.getScreenHeight());
 
         //Create Font
         Font maze = new Font();
@@ -106,7 +101,7 @@ public class LevelMenuScene extends Scene {
         //Following set of codes adds all the files to the located in Levels folder to results arrayList
         File[] files = new File("res/Levels").listFiles();
 
-        for(File file: files) {
+        for(File file: files != null ? files : new File[0]) {
 
             if(file.isFile()) {
 
@@ -270,7 +265,7 @@ public class LevelMenuScene extends Scene {
 
         for (int j = 0; j < blocks; j++) {
             for (int i = 0; i < blocks; i++) {
-                tileMap[i][j] = new Tile("", blockSize * i, blockSize * j, blockSize, blockSize, tempTiles[i][j], tileTexture);
+                tileMap[i][j] = new Tile(blockSize * i, blockSize * j, blockSize, blockSize, tempTiles[i][j], tileTexture);
             }
         }
 

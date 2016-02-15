@@ -3,8 +3,6 @@ package com.amaze.main;
 import com.amaze.MapMaker.MapMakerScene;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
-import org.jsfml.system.Vector2i;
-import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -114,7 +112,7 @@ public class GridSelectionScene extends Scene {
     public void enterPressed() throws Exception {
 
         try {
-            MapMakerScene mapMaker = new MapMakerScene("Map Maker", getWindow(), mapWidth, mapHeight); // mapwidth is number of blocks X
+            MapMakerScene mapMaker = new MapMakerScene("Map Maker", getWindow(), mapWidth); // mapwidth is number of blocks X
             wnd.addScene(mapMaker);
             wnd.setScene(wnd.getArrayList().indexOf(mapMaker));
             this.setRunning(false);

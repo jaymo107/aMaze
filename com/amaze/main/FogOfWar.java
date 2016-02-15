@@ -6,7 +6,7 @@ import org.jsfml.system.Vector2i;
 
 public class FogOfWar {
 
-	public static final int MAX_SIZE = 8;
+	public static final int MAX_SIZE = 7;
 	public static final int CHUNK_SIZE = 1;
 
 	private int size;
@@ -18,15 +18,14 @@ public class FogOfWar {
 	 * Set the initial size
 	 */
 	public FogOfWar(int size, Battery battery, GameScene gameScene) {
-		this.size = size;
+		this.size = (size >= 2) ? size : 2;
 		this.battery = battery;
 		this.gameScene = gameScene;
-
 		elapsedTime = 0;
 	}
 
 	public void increase() {
-		size += CHUNK_SIZE * 10;
+		size += CHUNK_SIZE * 5;
 		if (size >= MAX_SIZE) size = MAX_SIZE;
 	}
 

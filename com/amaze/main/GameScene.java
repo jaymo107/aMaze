@@ -100,7 +100,7 @@ public class GameScene extends Scene {
         /* Create new instances of tiles */
 		for (int j = 0; j < blocks; j++) {
 			for (int i = 0; i < blocks; i++) {
-				tileMap[i][j] = new Tile("", translateX(i), translateY(j), GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
+				tileMap[i][j] = new Tile(translateX(i), translateY(j), GameScene.blockSize, GameScene.blockSize, level[i][j], tileTexture);
 			}
 		}
 
@@ -132,7 +132,7 @@ public class GameScene extends Scene {
 		}
 
         /* Create fog of war */
-		fog = new FogOfWar(FogOfWar.MAX_SIZE / 2, battery, this);
+		fog = new FogOfWar(blockCount / 4, battery, this);
 
 		int txtScoreFont = window.getScreenWidth()/25;
 		float txtScoreXCord = window.getScreenWidth() - window.getScreenWidth() / 1.02F;
@@ -224,6 +224,7 @@ public class GameScene extends Scene {
 			try {
 				getWindow().clear(Color.BLACK);
 				drawGraphics(getWindow());
+				movePlayer();
 				fog.update(clock);
 
 				int second = (int) timer.getElapsedTime().asSeconds();
@@ -442,7 +443,23 @@ public class GameScene extends Scene {
 				}
 			}
 		}
+		//Draw the player
+		window.draw(player);
 
+		//Draw the battery
+		window.draw(battery);
+
+		//Draw music button
+		window.draw(musicButton);
+
+		//Draw score text
+		window.draw(txtScore);
+
+		//Draw time text
+		window.draw(txtTime);
+	}
+
+	public void movePlayer() {
 		/* Check if the key has been pressed with window edge detection*/
 		if (up && getPlayerY() >= 0) {
 			player.move(0, -1);
@@ -460,21 +477,6 @@ public class GameScene extends Scene {
 			player.move(1, 0);
 			detectionHandler(detectCollision(), "LEFT");
 		}
-
-		//Draw the player
-		window.draw(player);
-
-		//Draw the battery
-		window.draw(battery);
-
-		//Draw music button
-		window.draw(musicButton);
-
-		//Draw score text
-		window.draw(txtScore);
-
-		//Draw time text
-		window.draw(txtTime);
 	}
 
 	public Vector2i getStartTilePos() {

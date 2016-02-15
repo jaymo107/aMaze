@@ -16,9 +16,8 @@ public class Battery extends RectangleShape {
 
     private int chargeLevel; //Ranges from 0 to 6
     private Texture texture;
-    private Window window;
 
-    /**
+	/**
      *
      * @param resX Size of window X
      * @param resY Size of window Y
@@ -26,10 +25,7 @@ public class Battery extends RectangleShape {
      */
 
     public Battery(float resX, float resY, int defaultLevel, Window window) throws IOException{
-
-        this.window = window;
-
-        float batteryXCord = resX - window.getScreenWidth() / 2.1F;
+		float batteryXCord = resX - window.getScreenWidth() / 2.1F;
         float batteryYCord = resY - window.getScreenHeight() / 10;
         float batteryWidth = window.getScreenWidth() / 6F;
         float batterHeight = window.getScreenHeight() / 8F;
@@ -83,4 +79,5 @@ public class Battery extends RectangleShape {
         chargeLevel -= level;
         changeChargeLevel(chargeLevel);
     }
+
 }
