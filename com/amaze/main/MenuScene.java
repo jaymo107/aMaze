@@ -59,10 +59,10 @@ public class MenuScene extends Scene {
         music = new Music();
         click = new Music();
         try {
-            music.openFromFile(Paths.get("res/music/gs3.wav"));
+            music.openFromFile(Paths.get("res/music/gs2.wav"));
             click.openFromFile(Paths.get("res/music/Click.wav"));
         } catch (IOException e) {
-            System.out.println("There was a problem loading the background music.");
+            System.out.println("There was a problem loading the background music or click music.");
         }
 
 

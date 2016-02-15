@@ -106,6 +106,7 @@ public class GameScene extends Scene {
 		for (int i = 0; i < tileTexture.length; i++) {
 			tileTexture[i] = new Texture();
 			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
+			tileTexture[i].setSmooth(true);
 		}
 
         /* Create new instances of tiles */
