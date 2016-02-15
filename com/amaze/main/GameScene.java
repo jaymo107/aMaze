@@ -16,7 +16,6 @@ import java.io.SyncFailedException;
 import java.nio.file.Paths;
 
 import org.jsfml.window.event.JoystickMoveEvent;
-import org.lwjgl.input.*;
 
 import static org.jsfml.window.Joystick.Axis.*;
 

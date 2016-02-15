@@ -54,6 +54,7 @@ public class Avatar extends RectangleShape {
         String randomImagePath = avatarFileNames.get(random.nextInt(avatarFileNames.size() - 1 + 1) + 0);
         try{
             t.loadFromFile(Paths.get("res/avatars/" + randomImagePath));
+            System.out.println(randomImagePath);
         }catch (IOException e){
             System.out.println("There is either no avatar in the folder or a hidden file that needs to be deleted");
         }

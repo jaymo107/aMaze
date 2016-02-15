@@ -135,8 +135,11 @@ public class MenuScene extends Scene {
                         music.stop();
                         enterPressed(); break;
                 }
-                break;
-        }
+//            case JOYSTICK_MOVED:
+//
+//                    System.out.println(event.asJoystickMoveEvent().joyAxis);
+//
+       }
     }
 
     /**
