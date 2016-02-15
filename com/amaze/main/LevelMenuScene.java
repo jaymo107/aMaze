@@ -8,23 +8,33 @@ import org.jsfml.window.event.Event;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LevelMenuScene extends Scene {
 
-    Text userLevel;
-    Background background;
-    RectangleShape textBackground;
-    Texture backgroundImage = new Texture();
-    Window wnd;
-    Tile[][] tileMap;                           //Used for displaying map in background
+    private Text userLevel;
+    private Background background;
+    private RectangleShape textBackground;
+    private Texture backgroundImage = new Texture();
+    private Window wnd;
+    private Tile[][] tileMap;                           //Used for displaying map in background
     private int blocks;
-    private int currentLevel;
-
-    static final int MAX_LEVEL = 20;
     static final int MIN_LEVEL = 1;
+
+    private int numberOfVoids;
+    private int numberOfCharges;
+    private int numberOfWalls;
+    private int numberOfDoors;
+
+    private Text voids;
+    private Text charges;
+    private Text walls;
+    private Text doors;
+
+    RectangleShape edgeFrame = new RectangleShape();
 
     List<String> results = new ArrayList<String>();
 
@@ -40,8 +50,10 @@ public class LevelMenuScene extends Scene {
 
         //Create Font
         Font maze = new Font();
+        Font arial = new Font();
         try {
             maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
+            arial.loadFromFile(Paths.get("res/fonts/Arial.ttf"));
         } catch (IOException e){
             System.out.println("Could not load the font!");
         }
@@ -63,6 +75,32 @@ public class LevelMenuScene extends Scene {
         userLevel.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + fontSize);
 
         changeBackground(userLevelNumber);
+
+        walls = new Text("Number Of Walls: ", arial, 30);
+        walls.setString("Number of Walls: " +numberOfWalls);
+        walls.setColor(Color.BLACK);
+        walls.setStyle(Text.BOLD);
+        walls.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + fontSize);
+
+        charges = new Text("Number Of Charges: ", arial, 30);
+        charges.setString("Number of Charges: " +numberOfCharges);
+        charges.setColor(Color.BLACK);
+        charges.setStyle(Text.BOLD);
+        charges.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + 1.2F*fontSize);
+
+        voids = new Text("Number Of Voids: ", arial, 30);
+        voids.setString("Number of Voids: " +numberOfVoids);
+        voids.setColor(Color.BLACK);
+        voids.setStyle(Text.BOLD);
+        voids.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + 1.5F*fontSize);
+
+        doors = new Text("Number Of Doors: ", arial, 30);
+        doors.setString("Number of Doors: " +numberOfDoors);
+        doors.setColor(Color.BLACK);
+        doors.setStyle(Text.BOLD);
+        doors.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + 1.8F*fontSize);
+
+
 
 
         //Following set of codes adds all the files to the located in Levels folder to results arrayList
@@ -92,6 +130,10 @@ public class LevelMenuScene extends Scene {
         }
         userLevel.setString("Level " + userLevelNumber);
         changeBackground(userLevelNumber);
+        walls.setString("Number of Walls: " +numberOfWalls);
+        charges.setString("Number of Charges: " +numberOfCharges);
+        voids.setString("Number of Voids: " +numberOfVoids);
+        doors.setString("Number of Doors: " +numberOfDoors);
     }
 
     /**
@@ -107,6 +149,10 @@ public class LevelMenuScene extends Scene {
         }
         userLevel.setString("Level " + userLevelNumber);
         changeBackground(userLevelNumber);
+        walls.setString("Number of Walls: " +numberOfWalls);
+        charges.setString("Number of Charges: " +numberOfCharges);
+        voids.setString("Number of Voids: " +numberOfVoids);
+        doors.setString("Number of Doors: " +numberOfDoors);
     }
 
     /**
@@ -148,6 +194,24 @@ public class LevelMenuScene extends Scene {
                         }
                         break;
                 }
+            case JOYSTICK_BUTTON_PRESSED:
+
+                System.out.println(event.asJoystickButtonEvent().button);
+
+                switch (event.asJoystickButtonEvent().button) {
+
+                    case 1: arrowKeyDown();break;
+                    case 3: arrowKeyUp();break;
+                    case 12: exitScene(this); break;
+                    case 13:
+                        try {
+                            enterPressed();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                break;
         }
     }
 
@@ -160,8 +224,14 @@ public class LevelMenuScene extends Scene {
                 window.draw(tileMap[i][j]);
             }
         }
+
         window.draw(textBackground);
+        window.draw(edgeFrame);
         window.draw(userLevel);
+        window.draw(walls);
+        window.draw(charges);
+        window.draw(voids);
+        window.draw(doors);
     }
     public void changeBackground(int levelNumber) {
         Tile.BlockType[][] tempTiles;   //Holds reference to newly loaded tile map of the types
@@ -204,7 +274,24 @@ public class LevelMenuScene extends Scene {
             }
         }
 
-        wnd.create(new VideoMode((int) tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int) tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize), "Level Menu");
+        //wnd.create(new VideoMode((int) tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int) tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize), "Level Menu");
+        edgeFrame.setSize(new Vector2f(wnd.getScreenWidth(), wnd.getScreenHeight()));
+        edgeFrame.setPosition(0,0);
+        Texture edgeFrameTexture = new Texture();
+
+        try{
+            edgeFrameTexture.loadFromFile(Paths.get("res/images/frame.png"));
+        }catch (IOException e){
+            System.out.println("Problem loading edge frame");
+        }
+
+        edgeFrameTexture.setSmooth(true);
+        edgeFrame.setTexture(edgeFrameTexture);
+
+
+        numberOfWalls = backgroundLevelLoader.getWallAmount();
+        numberOfCharges = backgroundLevelLoader.getChargeAmount();
+        numberOfDoors = backgroundLevelLoader.getDoorAmount();
+        numberOfVoids = backgroundLevelLoader.getVoidAmount();
     }
-    public int getCurrentLevel() { return userLevelNumber; }
 }

@@ -11,12 +11,14 @@ import java.io.PrintWriter;
 
 public class LevelMaker extends JFrame implements MouseListener, KeyListener {
 
-    Tile.BlockType[] allValues = Tile.BlockType.values();
+    private Tile.BlockType[] allValues = Tile.BlockType.values();
 
-    Tile[][] tiles;
+    private Tile[][] tiles;
 
     private int boardHeight;
     private int boardWidth;
+    private int numberOfStart;
+    private int numberOfFinish;
 
     //private boolean retina = false;
 
@@ -25,6 +27,8 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
     public LevelMaker(int width, int height) {
         boardHeight = height;
         boardWidth = width;
+        numberOfFinish = 0;
+        numberOfStart = 0;
 
         tiles = new Tile[width][height];
         JPanel panel = new JPanel();
@@ -76,20 +80,28 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
 
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-            try {
-                PrintWriter writer = new PrintWriter(new FileWriter("Levels.txt", true));
+            //countNumbersOfStartEnd();
 
-                for (int y = 0; y < boardHeight; y++) {
-                    for (int x = 0; x < boardWidth; x++) {
-                        writer.print(tiles[x][y].getBlockType().toString() + ",");
+            if(numberOfStart > 1){
+                JOptionPane.showMessageDialog(this,"You can only have one Start Square!");
+            }else if(numberOfFinish > 1){
+                JOptionPane.showMessageDialog(this,"You can only have one Finish Square!");
+            }else{
+                try {
+                    PrintWriter writer = new PrintWriter(new FileWriter("Levels.txt", true));
+
+                    for (int y = 0; y < boardHeight; y++) {
+                        for (int x = 0; x < boardWidth; x++) {
+                            writer.print(tiles[x][y].getBlockType().toString() + ",");
+                        }
+                        writer.println("");
                     }
-                    writer.println("");
+                    writer.close();
+                    JOptionPane.showMessageDialog(this,"Export Successful");
                 }
-                writer.close();
-                JOptionPane.showMessageDialog(this,"Export Successful");
-            }
-            catch (IOException f) {
-                JOptionPane.showMessageDialog(this,"Export Failed");
+                catch (IOException f) {
+                    JOptionPane.showMessageDialog(this,"Export Failed");
+                }
             }
         }
     }
@@ -105,6 +117,8 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
     public void mousePressed(MouseEvent e) {}
 
     public void mouseEntered(MouseEvent e) {}
+
+
 
     /*
     private boolean isRetina() {

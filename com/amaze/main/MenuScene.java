@@ -17,6 +17,7 @@ public class MenuScene extends Scene {
     private Title title;
     private Background background;
     private Music music;
+    private Music click;
     private Button musicButton;
     private boolean state = true;
 
@@ -56,11 +57,14 @@ public class MenuScene extends Scene {
         musicButton = new MusicButton(musicButtonXCord, musicButtonYCord, musicButtonWidth, musicButtonHeight, window, this);
 
         music = new Music();
+        click = new Music();
         try {
-            music.openFromFile(Paths.get("res/music/gs3.wav"));
+            music.openFromFile(Paths.get("res/music/gs2.wav"));
+            click.openFromFile(Paths.get("res/music/Click.wav"));
         } catch (IOException e) {
-            System.out.println("There was a problem loading the background music.");
+            System.out.println("There was a problem loading the background music or click music.");
         }
+
 
         music.play();
         buttons[0].setSelected(true);
@@ -72,6 +76,7 @@ public class MenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyUp() {
+        clicked();
         if (currentButton == 0) {
             buttons[currentButton].setSelected(false);
             buttons[NUMBER_OF_ITEMS - 1].setSelected(true);
@@ -87,6 +92,7 @@ public class MenuScene extends Scene {
      * Corresponding boolean variable, as well as the color of the item will change.
      */
     public void arrowKeyDown() {
+        clicked();
         if(currentButton == NUMBER_OF_ITEMS - 1) {
             buttons[currentButton].setSelected(false);
             buttons[0].setSelected(true);
@@ -135,10 +141,22 @@ public class MenuScene extends Scene {
                         music.stop();
                         enterPressed(); break;
                 }
-//            case JOYSTICK_MOVED:
-//
-//                    System.out.println(event.asJoystickMoveEvent().joyAxis);
-//
+            case JOYSTICK_BUTTON_PRESSED:
+
+                System.out.println(event.asJoystickButtonEvent().button);
+
+                switch (event.asJoystickButtonEvent().button) {
+
+                    case 1: arrowKeyDown();break;
+                    case 3: arrowKeyUp();break;
+                    case 9:
+                        state = !state;
+                        musicPlaying(state); break;
+                    case 13:
+                        music.stop();
+                        enterPressed(); break;
+                }
+                break;
        }
     }
 
@@ -164,5 +182,9 @@ public class MenuScene extends Scene {
             musicButton.setSelected(false);
             music.play();
         }
+    }
+    public void clicked() {
+
+        click.play();
     }
 }

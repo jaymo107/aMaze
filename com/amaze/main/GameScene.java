@@ -62,6 +62,9 @@ public class GameScene extends Scene {
 
 	private double timeExposedToVoid = 0;
 
+	private Music chargesSound;
+	private Music voidsSound;
+
 	/**
 	 * This constructor creates an instance of a GameScene.
 	 * Within this class all the game logic should be handled.
@@ -91,6 +94,7 @@ public class GameScene extends Scene {
 		for (int i = 0; i < tileTexture.length; i++) {
 			tileTexture[i] = new Texture();
 			tileTexture[i].loadFromFile(Paths.get("res/images/" + Tile.BlockType.values()[i].toString().toLowerCase() + ".png"));
+			tileTexture[i].setSmooth(true);
 		}
 
         /* Create new instances of tiles */
@@ -109,8 +113,12 @@ public class GameScene extends Scene {
 
         /* Load background music */
 		music = new Music();
+		chargesSound = new Music();
+		voidsSound = new Music();
 		try {
 			music.openFromFile(Paths.get("res/music/move.ogg"));
+			chargesSound.openFromFile(Paths.get("res/music/Charge.wav"));
+			voidsSound.openFromFile(Paths.get("res/music/Void.wav"));
 		} catch (IOException e) {
 			System.out.println("There was a problem loading the background music \n Error: " + e);
 		}
@@ -274,6 +282,13 @@ public class GameScene extends Scene {
 					case 1: down = true; break;
 					case 2: right = true; break;
 					case 3: up = true; break;
+                    case 12:
+                        music.stop();
+                        exitScene(this);
+                        break;
+                    case 9:
+                        state = !state;
+                        musicPlaying(state); break;
 				}
 				break;
 
@@ -356,6 +371,7 @@ public class GameScene extends Scene {
 				this.setRunning(false);
 			case VOID: break;
 			case CHARGE:
+				//chargeSound();
 				battery.increaseChargeLevel(Battery.MAX - battery.getChargeLevel());
 				battery.changeChargeLevel(battery.getChargeLevel() + (Battery.MAX - battery.getChargeLevel()));
 				fog.increase();
@@ -620,7 +636,7 @@ public class GameScene extends Scene {
 	}
 
 	public void voidDetection(){
-		Vector2i playerPos = rawPlayerToBlockPos();
+		Vector2i playerPos = rawPlayertoBlockPos();
 		int voidCount = 0;
 
 		for (int i = -1; i <= 1; i++) {
@@ -652,5 +668,13 @@ public class GameScene extends Scene {
 			timeExposedToVoid = 0;
 		}
 	}
+//	public void chargeSound() {
+//
+//		chargesSound.play();
+//	}
+//	public void voidSound() {
+//
+//		voidsSound.play();
+//	}
 
 }
