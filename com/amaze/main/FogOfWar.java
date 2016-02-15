@@ -1,9 +1,7 @@
 package com.amaze.main;
 
 import com.amaze.entities.Avatar;
-import org.jsfml.graphics.Image;
 import org.jsfml.system.Clock;
-import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
 public class FogOfWar {
@@ -36,7 +34,7 @@ public class FogOfWar {
 		return size;
 	}
 
-	private void drain() {
+	public void drain() {
 		size -= CHUNK_SIZE;
 		if (size <= 2) size = 2;
 	}

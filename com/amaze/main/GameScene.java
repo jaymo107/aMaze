@@ -628,9 +628,21 @@ public class GameScene extends Scene {
 				if (isVoid(playerPos.x + i, playerPos.y + j)) {
 					voidCount++;
 					voidClockToggled = true;
+					Runnable r = () ->{
+						try {
+							battery.decreaseChargeLevel(1);
+							Thread.sleep(500);
+							fog.drain();
+						} catch (InterruptedException e) {
+							System.err.println("Something went wrong.");
+						}
+					};
+					new Thread(r).start();
 				}
 			}
 		}
+
+		if (voidCount == 0) voidClockToggled = false;
 
 		if (voidClockToggled) {
 			timeExposedToVoid = voidDetectionClock.getElapsedTime().asMilliseconds();
@@ -639,8 +651,6 @@ public class GameScene extends Scene {
 			totalTimeSpentInVoid += timeExposedToVoid;
 			timeExposedToVoid = 0;
 		}
-
-		if (voidCount == 0) voidClockToggled = false;
 	}
 
 }
