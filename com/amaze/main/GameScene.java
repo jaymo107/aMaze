@@ -297,6 +297,13 @@ public class GameScene extends Scene {
 					case 1: down = true; break;
 					case 2: right = true; break;
 					case 3: up = true; break;
+                    case 12:
+                        music.stop();
+                        exitScene(this);
+                        break;
+                    case 9:
+                        state = !state;
+                        musicPlaying(state); break;
 				}
 				break;
 
