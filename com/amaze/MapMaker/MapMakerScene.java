@@ -182,7 +182,6 @@ public class MapMakerScene extends Scene {
             }
             writer.close();
             System.out.println("Export Successful");
-            window.create(new VideoMode(600,600+60),"aMaze");
         }
         catch (IOException f) {
             System.err.println("Export Failed");
