@@ -32,11 +32,9 @@ public class dbCon {
 
         String uidGet = "SELECT `uid` FROM `users` WHERE `uName` = '" + username + "';";
         String uploadName = "INSERT INTO `users`" + "(`uName`)" + "VALUES" + "('" + username + "');";
-        String uploadData = "INSERT INTO `leaderboard`" + " (`uid`, `levelNo`, `score`, `compTime`)" + "VALUES" + "('" + uid + "','" + level + "','" + score + "','" + compTime + "');";
-        
+
         System.out.println(uidGet);
         System.out.println(uploadName);
-        System.out.println(uploadData);
 
         try {
             stmt = conn.createStatement();
@@ -45,6 +43,7 @@ public class dbCon {
             while(rs.next()) {
                 uid = rs.getInt("uid");
             }
+            String uploadData = "INSERT INTO `leaderboard`" + " (`uid`, `levelNo`, `score`, `compTime`)" + "VALUES" + "('" + uid + "','" + level + "','" + score + "','" + compTime + "');";
             stmt.executeQuery(uploadData);
             System.out.println("Uploaded.");
         } catch (SQLException e) {
