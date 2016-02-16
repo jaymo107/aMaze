@@ -14,7 +14,6 @@ public class GridSelectionScene extends Scene {
     Background background;
     RectangleShape textBackground;
     Texture backgroundImage = new Texture();
-    Window wnd;
     Tile[][] tileMap;                           //Used for displaying map in background
     private int blocks;
 
@@ -27,9 +26,7 @@ public class GridSelectionScene extends Scene {
     private int mapHeight = 5;
 
     public GridSelectionScene(String sceneTitle, Window window) throws IOException {
-
         super(sceneTitle, window);
-        wnd = window;
         blocks = 0;
 
         //Create background
@@ -37,11 +34,7 @@ public class GridSelectionScene extends Scene {
 
         //Create Font
         Font maze = new Font();
-        try {
-            maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
-        } catch (IOException e) {
-            System.out.println("Could not load the font!");
-        }
+		maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
 
         float textBackgroundHeight = window.getScreenHeight() / 5;
         float textBackgroundWidth  = window.getScreenWidth() / 1.25F;
@@ -53,7 +46,6 @@ public class GridSelectionScene extends Scene {
 
         int fontSize = window.getScreenWidth() / 4;
 
-        //Vector2f position = new Vector2f(xCord, yCord);
         Vector2f size = new Vector2f(textBackgroundWidth, textBackgroundHeight);
         textBackground = new RectangleShape(size);
         textBackground.setPosition(textBackgroundXCord, textBackgroundYCord);
@@ -110,14 +102,12 @@ public class GridSelectionScene extends Scene {
      * Based on the button, a specific function will be invoked.
      */
     public void enterPressed() throws Exception {
-
         try {
             MapMakerScene mapMaker = new MapMakerScene("Map Maker", getWindow(), mapWidth); // mapwidth is number of blocks X
-            wnd.addScene(mapMaker);
-            wnd.setScene(wnd.getArrayList().indexOf(mapMaker));
+            getWindow().addScene(mapMaker);
+            getWindow().setScene(getWindow().getArrayList().indexOf(mapMaker));
             this.setRunning(false);
         } catch (IOException e) {
-
             e.printStackTrace();
         }
     }
@@ -141,13 +131,6 @@ public class GridSelectionScene extends Scene {
                         break;
                 }
 				break;
-			case MOUSE_WHEEL_MOVED:
-				if (event.asMouseWheelEvent().delta < 0) {
-					arrowKeyDown();
-				} else {
-					arrowKeyUp();
-				}
-				break;
 			case MOUSE_BUTTON_PRESSED:
 				switch (event.asMouseButtonEvent().button) {
 					case LEFT:
@@ -159,9 +142,16 @@ public class GridSelectionScene extends Scene {
 						break;
 				}
 				break;
-
+			case MOUSE_WHEEL_MOVED:
+				if (event.asMouseWheelEvent().delta < 0) {
+					arrowKeyDown();
+				} else {
+					arrowKeyUp();
+				}
+				break;
         }
     }
+
     public void drawGraphics(RenderWindow window) {
         window.draw(background);
 
@@ -174,4 +164,5 @@ public class GridSelectionScene extends Scene {
         window.draw(textBackground);
         window.draw(userLevel);
     }
+
 }

@@ -2,7 +2,6 @@ package com.amaze.main;
 
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
-import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.File;
@@ -15,10 +14,8 @@ public class LevelMenuScene extends Scene {
     private Text userLevel;
 	private RectangleShape textBackground;
     private Texture backgroundImage = new Texture();
-    private Window wnd;
     private Tile[][] tileMap;                           //Used for displaying map in background
     private int blocks;
-    static final int MIN_LEVEL = 1;
 
     private int numberOfVoids;
     private int numberOfCharges;
@@ -30,6 +27,8 @@ public class LevelMenuScene extends Scene {
     private Text walls;
     private Text doors;
 
+	public static final int MIN_LEVEL = 1;
+
     RectangleShape edgeFrame = new RectangleShape();
 
     ArrayList<String> results = new ArrayList<>();
@@ -37,8 +36,7 @@ public class LevelMenuScene extends Scene {
     int userLevelNumber = 1;
 
     public LevelMenuScene(String sceneTitle, Window window) throws IOException {
-        super(sceneTitle,window);
-        wnd = window;
+        super(sceneTitle, window);
         blocks = 0;
 
         //Create background
@@ -96,16 +94,11 @@ public class LevelMenuScene extends Scene {
         doors.setStyle(Text.BOLD);
         doors.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + 1.8F*fontSize);
 
-
-
-
         //Following set of codes adds all the files to the located in Levels folder to results arrayList
         File[] files = new File("res/Levels").listFiles();
 
         for(File file: files != null ? files : new File[0]) {
-
             if(file.isFile()) {
-
                 results.add(file.getName());
             }
         }
@@ -157,17 +150,13 @@ public class LevelMenuScene extends Scene {
      * Based on the button, a specific function will be invoked.
      */
     public void enterPressed() throws Exception {
-
         LevelReader level = new LevelReader();
-
         level.loadMap(getUserLevelNumber());
 
-        Driver.BLOCK_SIZE = Driver.WINDOW_SIZE / level.getSizeOfMaze();
-
+		Driver.BLOCK_SIZE = Driver.WINDOW_SIZE / level.getSizeOfMaze();
         GameScene game = new GameScene("Game", getWindow(), level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel(), userLevelNumber);
 
 		getWindow().addScene(game);
-
 		getWindow().getScene(getWindow().getArrayList().indexOf(game)).display();
         this.setRunning(false);
     }
@@ -190,6 +179,18 @@ public class LevelMenuScene extends Scene {
                         }
                         break;
                 }
+				break;
+			case MOUSE_BUTTON_PRESSED:
+				switch (event.asMouseButtonEvent().button) {
+					case LEFT:
+						try {
+							enterPressed();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						break;
+				}
+				break;
             case JOYSTICK_BUTTON_PRESSED:
                 System.out.println(event.asJoystickButtonEvent().button);
                 switch (event.asJoystickButtonEvent().button) {
@@ -212,30 +213,17 @@ public class LevelMenuScene extends Scene {
 					arrowKeyUp();
 				}
 				break;
-			case MOUSE_BUTTON_PRESSED:
-				switch (event.asMouseButtonEvent().button) {
-					case LEFT:
-						try {
-							enterPressed();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						break;
-				}
-				break;
         }
     }
 
 	public String getUserLevelNumber() { return String.valueOf(userLevelNumber); }
 
     public void drawGraphics(RenderWindow window) {
-
         for (int j = 0; j < blocks; j++) {
             for (int i = 0; i < blocks; i++) {
                 window.draw(tileMap[i][j]);
             }
         }
-
         window.draw(textBackground);
         window.draw(edgeFrame);
         window.draw(userLevel);
@@ -244,6 +232,7 @@ public class LevelMenuScene extends Scene {
         window.draw(voids);
         window.draw(doors);
     }
+
     public void changeBackground(int levelNumber) {
         Tile.BlockType[][] tempTiles;   //Holds reference to newly loaded tile map of the types
         int blockSize;
@@ -275,7 +264,7 @@ public class LevelMenuScene extends Scene {
 
         /* Workout maze sizings */
         blocks = backgroundLevelLoader.getSizeOfMaze();
-        blockSize = wnd.getSize().x / blocks;
+        blockSize = getWindow().getSize().x / blocks;
 
         tileMap = new Tile[blocks][blocks];
 
@@ -285,8 +274,7 @@ public class LevelMenuScene extends Scene {
             }
         }
 
-        //wnd.create(new VideoMode((int) tileMap[blocks - 1][blocks - 1].getPosition().x + blockSize, (int) tileMap[blocks - 1][blocks - 1].getPosition().y + blockSize), "Level Menu");
-        edgeFrame.setSize(new Vector2f(wnd.getScreenWidth(), wnd.getScreenHeight()));
+        edgeFrame.setSize(new Vector2f(getWindow().getScreenWidth(), getWindow().getScreenHeight()));
         edgeFrame.setPosition(0,0);
         Texture edgeFrameTexture = new Texture();
 
@@ -299,10 +287,10 @@ public class LevelMenuScene extends Scene {
         edgeFrameTexture.setSmooth(true);
         edgeFrame.setTexture(edgeFrameTexture);
 
-
         numberOfWalls = backgroundLevelLoader.getWallAmount();
         numberOfCharges = backgroundLevelLoader.getChargeAmount();
         numberOfDoors = backgroundLevelLoader.getDoorAmount();
         numberOfVoids = backgroundLevelLoader.getVoidAmount();
     }
+
 }
