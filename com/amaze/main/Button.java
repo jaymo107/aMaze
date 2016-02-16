@@ -3,6 +3,8 @@ package com.amaze.main;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
+import org.jsfml.window.Mouse;
 
 import java.io.IOException;
 
@@ -88,8 +90,20 @@ public abstract class Button extends RectangleShape {
 
     public void setIcon(Texture t) {
         t.setSmooth(true);
-        setTexture(t); }
+        setTexture(t);
+	}
 
     public abstract void performAction();
+
+	public boolean isMouseOn() {
+		Vector2i mousePos = Mouse.getPosition(getWindow());
+		Vector2f buttonPos = getPosition();
+
+		return (mousePos.x > buttonPos.x &&
+				mousePos.y > buttonPos.y &&
+				mousePos.x < buttonPos.x + getSize().x &&
+				mousePos.y < buttonPos.y + getSize().y
+		);
+	}
 
 }

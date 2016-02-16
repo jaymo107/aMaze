@@ -143,6 +143,7 @@ public class MenuScene extends Scene {
                         music.stop();
                         enterPressed(); break;
                 }
+				break;
             case JOYSTICK_BUTTON_PRESSED:
 
                 System.out.println(event.asJoystickButtonEvent().button);
@@ -159,6 +160,20 @@ public class MenuScene extends Scene {
                         enterPressed(); break;
                 }
                 break;
+			case MOUSE_MOVED:
+				for (int i = 0; i < buttons.length; i++) {
+					if (buttons[i].isMouseOn()) {
+						buttons[i].setSelected(true);
+						currentButton = i;
+					}
+					if (i != currentButton) buttons[i].setSelected(false);
+				}
+				break;
+			case MOUSE_BUTTON_PRESSED:
+				switch (event.asMouseButtonEvent().button) {
+					case LEFT: enterPressed(); break;
+				}
+				break;
        }
     }
 
