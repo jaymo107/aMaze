@@ -1,5 +1,6 @@
 package com.amaze.main;
 
+import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.VideoMode;
@@ -30,16 +31,19 @@ public class LevelMenuScene extends Scene {
     private Text walls;
     private Text doors;
 
+    private Music music;
+
     RectangleShape edgeFrame = new RectangleShape();
 
     ArrayList<String> results = new ArrayList<>();
 
     int userLevelNumber = 1;
 
-    public LevelMenuScene(String sceneTitle, Window window) throws IOException {
+    public LevelMenuScene(String sceneTitle, Window window, Music m) throws IOException {
         super(sceneTitle,window);
         wnd = window;
         blocks = 0;
+        music = m;
 
         //Create background
 		new Background(window.getScreenWidth(), window.getScreenHeight());
@@ -161,6 +165,8 @@ public class LevelMenuScene extends Scene {
         LevelReader level = new LevelReader();
 
         level.loadMap(getUserLevelNumber());
+
+        music.stop();
 
         Driver.BLOCK_SIZE = Driver.WINDOW_SIZE / level.getSizeOfMaze();
 

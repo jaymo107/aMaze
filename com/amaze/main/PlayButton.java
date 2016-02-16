@@ -1,5 +1,6 @@
 package com.amaze.main;
 
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -9,6 +10,7 @@ import java.nio.file.Paths;
 public class PlayButton extends Button {
 
     Window window;
+    MenuScene menu;
 
     /**
      * Construct a button with following parameters:
@@ -22,6 +24,7 @@ public class PlayButton extends Button {
     public PlayButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
         super(xCord, yCord, width, height, window, menu);
 
+        this.menu = menu;
         this.window = window;
 
         getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/play.png"));
@@ -42,7 +45,7 @@ public class PlayButton extends Button {
 
         try {
 
-            LevelMenuScene levelMenu = new LevelMenuScene("Level Menu", window);
+            LevelMenuScene levelMenu = new LevelMenuScene("Level Menu", window, menu.getMusic());
             window.addScene(levelMenu);
             window.setScene(window.getArrayList().indexOf(levelMenu));
             getMenu().setRunning(false);

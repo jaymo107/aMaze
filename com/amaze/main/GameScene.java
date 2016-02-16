@@ -581,7 +581,7 @@ public class GameScene extends Scene {
 			case TEXT_ENTERED:
 				if (event.asTextEvent().unicode >= 32 && event.asTextEvent().unicode <= 126) {
 
-					if(userName.length() >= 12) { break; }
+					if(userName.length() >= 120) { break; }
 					else {
 
 						userName += (char) event.asTextEvent().unicode;

@@ -17,7 +17,7 @@ public class MenuScene extends Scene {
     private int currentButton = 0;                          // Track currently selected item in the menu.
     private Title title;
     private Background background;
-    private Music music;
+    public Music music;
     private Music click;
     private Button musicButton;
     private boolean state = true;
@@ -140,7 +140,7 @@ public class MenuScene extends Scene {
                         state = !state;
                         musicPlaying(state); break;
                     case RETURN:
-                        music.stop();
+                        //music.stop();
                         enterPressed(); break;
                 }
             case JOYSTICK_BUTTON_PRESSED:
@@ -188,5 +188,9 @@ public class MenuScene extends Scene {
     public void clicked() {
 
         click.play();
+    }
+
+    public Music getMusic(){
+        return music;
     }
 }
