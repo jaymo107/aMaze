@@ -2,7 +2,7 @@ package com.amaze.main;
 
 import java.sql.*;
 
-public class dbCon {
+public class DatabaseConnection {
 
 	//JDBC connection stuff
     private static final String dbDriver = "org.mariadb.jdbc.Driver";
@@ -14,7 +14,7 @@ public class dbCon {
     private Connection conn = null;
     private Statement stmt = null;
 
-    public dbCon() {
+    public DatabaseConnection() {
         try {
             Class.forName(dbDriver);
             conn = DriverManager.getConnection(dbLoc, username, password);

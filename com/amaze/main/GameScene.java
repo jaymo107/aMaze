@@ -603,7 +603,7 @@ public class GameScene extends Scene {
 		System.out.println("Level: " +currentLevel);
 		System.out.println("Level Completion Time: " + txtTime.getString().substring(7));
 
-		dbCon upload = new dbCon();
+		DatabaseConnection upload = new DatabaseConnection();
 		upload.uploadResult(userName, score, currentLevel, txtTime.getString().substring(7));
 		upload.clean();
 	}
