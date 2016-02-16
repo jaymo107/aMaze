@@ -26,8 +26,11 @@ public class PlayButton extends Button {
 
         getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/play.png"));
         getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/playsel.png"));
+        getDefaultIcon().setSmooth(true);
+        getSelectedIcon().setSmooth(true);
 
         this.setTexture(getDefaultIcon());
+
     }
 
     /**

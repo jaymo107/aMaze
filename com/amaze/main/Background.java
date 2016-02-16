@@ -23,6 +23,7 @@ public class Background extends RectangleShape {
 		Texture icon = new Texture();
         icon.loadFromFile(Paths.get("res/menuGraphics/maze.png"));
         this.setTexture(icon);
+        icon.setSmooth(true);
 		this.setSize(size);
     }
 

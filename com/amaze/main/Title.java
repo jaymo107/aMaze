@@ -33,6 +33,7 @@ public class Title extends RectangleShape {
 
         icon = new Texture();
         icon.loadFromFile(Paths.get("res/menuGraphics/logo.png"));
+        icon.setSmooth(true);
         this.setTexture(icon);
     }
 

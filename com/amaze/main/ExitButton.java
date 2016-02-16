@@ -22,6 +22,8 @@ public class ExitButton extends Button {
 
         getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/exit.png"));
         getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/exitsel.png"));
+        getDefaultIcon().setSmooth(true);
+        getSelectedIcon().setSmooth(true);
 
         this.setTexture(getDefaultIcon());
     }
