@@ -27,14 +27,12 @@ public class dbCon {
         }
     }
 
-    public void uploadResult(String username, int score, int level, String compTime) {
+    public void uploadResult(String name, int score, int level, String compTime) {
         int uid = 0;
+        String username = name.replaceAll("[^a-zA-Z0-9]+","");
 
         String uidGet = "SELECT `uid` FROM `users` WHERE `uName` = '" + username + "';";
         String uploadName = "INSERT INTO `users`" + "(`uName`)" + "VALUES" + "('" + username + "');";
-
-        System.out.println(uidGet);
-        System.out.println(uploadName);
 
         try {
             stmt = conn.createStatement();
