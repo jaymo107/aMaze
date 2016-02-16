@@ -38,7 +38,7 @@ public class MapMakerScene extends Scene {
 
     Font maze = new Font();
 
-	private static Integer currentLevel = 15;
+	private static Integer currentLevel = 7;
 
     public MapMakerScene(String sceneTitle, Window window, int blocks) throws IOException {
         super(sceneTitle, window);
