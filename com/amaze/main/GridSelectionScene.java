@@ -3,7 +3,6 @@ package com.amaze.main;
 import com.amaze.MapMaker.MapMakerScene;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
-import org.jsfml.window.event.Event;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -109,46 +108,6 @@ public class GridSelectionScene extends Scene {
             this.setRunning(false);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void executeEvent(Event event) {
-        switch (event.type) {
-            case CLOSED:
-                systemExit();
-                break;
-            case KEY_PRESSED:
-                switch (event.asKeyEvent().key) {
-                    case UP: arrowKeyUp(); break;
-                    case DOWN: arrowKeyDown(); break;
-                    case ESCAPE: exitScene(this); break;
-                    case RETURN:
-                        try {
-                            enterPressed();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                }
-				break;
-			case MOUSE_BUTTON_PRESSED:
-				switch (event.asMouseButtonEvent().button) {
-					case LEFT:
-						try {
-							enterPressed();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						break;
-				}
-				break;
-			case MOUSE_WHEEL_MOVED:
-				if (event.asMouseWheelEvent().delta < 0) {
-					arrowKeyDown();
-				} else {
-					arrowKeyUp();
-				}
-				break;
         }
     }
 

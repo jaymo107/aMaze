@@ -43,7 +43,60 @@ public abstract class Scene implements Displayable {
      * set of steps depending on the event.
      * @param event - input based event (e.g arrow key up)
      */
-    public  abstract void executeEvent(Event event);
+    public void executeEvent(Event event) {
+		switch (event.type) {
+			case CLOSED:
+				systemExit();
+				break;
+			case KEY_PRESSED:
+				switch (event.asKeyEvent().key) {
+					case UP: arrowKeyUp(); break;
+					case DOWN: arrowKeyDown(); break;
+					case ESCAPE: exitScene(this); break;
+					case RETURN:
+						try {
+							enterPressed();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						break;
+				}
+				break;
+			case MOUSE_BUTTON_PRESSED:
+				switch (event.asMouseButtonEvent().button) {
+					case LEFT:
+						try {
+							enterPressed();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						break;
+				}
+				break;
+			case MOUSE_WHEEL_MOVED:
+				if (event.asMouseWheelEvent().delta < 0) {
+					arrowKeyDown();
+				} else {
+					arrowKeyUp();
+				}
+				break;
+			case JOYSTICK_BUTTON_PRESSED:
+				System.out.println(event.asJoystickButtonEvent().button);
+				switch (event.asJoystickButtonEvent().button) {
+					case 1: arrowKeyDown();break;
+					case 3: arrowKeyUp();break;
+					case 12: exitScene(this); break;
+					case 13:
+						try {
+							enterPressed();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						break;
+				}
+				break;
+		}
+	}
 
 	public abstract void drawGraphics(RenderWindow window);
 
@@ -73,5 +126,11 @@ public abstract class Scene implements Displayable {
 			Thread.currentThread().interrupt();
 		}
 	}
+
+	public void arrowKeyUp() {}
+
+	public void arrowKeyDown() {}
+
+	public void enterPressed() throws Exception {}
 
 }
