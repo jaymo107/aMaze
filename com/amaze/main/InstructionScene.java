@@ -30,7 +30,8 @@ public class InstructionScene extends Scene {
         textBackground.setPosition(0,0);
 
         //Loading of Background Image for Text box
-        backgroundImage.loadFromFile(Paths.get("res/menuGraphics/instructions.png"));
+        backgroundImage.loadFromFile(Paths.get("res/instructions/instructions.png"));
+        backgroundImage.setSmooth(true);
         textBackground.setTexture(backgroundImage);
     }
 
