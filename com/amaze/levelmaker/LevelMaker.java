@@ -20,8 +20,6 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
     private int numberOfStart;
     private int numberOfFinish;
 
-    //private boolean retina = false;
-
     ImageIcon[] blockImageIcons;
 
     public LevelMaker(int width, int height) {
@@ -35,9 +33,7 @@ public class LevelMaker extends JFrame implements MouseListener, KeyListener {
         setTitle("Map Maker");
         setContentPane(panel);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
-        //this.retina = isRetina();
-
+        
         panel.setLayout(new GridLayout(width, height));
 
         // Has to be done to get correct window and image size

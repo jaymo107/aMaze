@@ -109,6 +109,7 @@ public class GameScene extends Scene {
 
 		float batteryXCord = window.getScreenWidth();
 		float batteryYCord = window.getScreenHeight();
+
 		/* Create instance of battery */
 		battery = new Battery(batteryXCord, batteryYCord, 6, window);
 
