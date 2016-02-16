@@ -9,6 +9,7 @@ import org.jsfml.window.Mouse;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,6 +40,8 @@ public class MapMakerScene extends Scene {
     Font maze = new Font();
 
 	private static Integer currentLevel = 7;
+
+	private String finalOutputDir;
 
     public MapMakerScene(String sceneTitle, Window window, int blocks) throws IOException {
         super(sceneTitle, window);
@@ -105,7 +108,6 @@ public class MapMakerScene extends Scene {
 
     public void displayTitle(String text, int fSize){
         int fontSize = window.getScreenWidth() / fSize;
-
         float textXCord = window.getScreenWidth() / -9F;
         float textYCord = window.getScreenHeight() / -2.5F;
         userLevel = new Text(text, maze, fontSize);
@@ -162,7 +164,19 @@ public class MapMakerScene extends Scene {
         );
     }
 
+	public void checkForHighestLevelInFolder() {
+		File[] files = new File("res/Levels").listFiles();
+
+		for (File f: files != null ? files : new File[0]) {
+			if (f.isFile()) {
+				String[] s = f.getName().split(".");
+				System.out.println(s[0]);
+			}
+		}
+	}
+
     public void outputLevel() {
+		checkForHighestLevelInFolder();
         try {
             PrintWriter writer = new PrintWriter(new FileWriter("res/Levels/" + (currentLevel++).toString() + ".txt", true));
 
