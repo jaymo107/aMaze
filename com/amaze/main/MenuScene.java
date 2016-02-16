@@ -12,7 +12,7 @@ import java.nio.file.Paths;
  */
 public class MenuScene extends Scene {
 
-    private final int NUMBER_OF_ITEMS = 3;                  // Number of items available to select in the menu
+    private final int NUMBER_OF_ITEMS = 4;                  // Number of items available to select in the menu
     private Button buttons[] = new Button[NUMBER_OF_ITEMS];  // Array which holds buttons(items).
     private int currentButton = 0;                          // Track currently selected item in the menu.
     private Title title;
@@ -53,7 +53,8 @@ public class MenuScene extends Scene {
         title = new Title                (titleXCord, titleYCord,        titleWidth, titleHeight);
         buttons[0] = new PlayButton      (itemXCoord, itemYCoord,        itemWidth, itemHeight,  window, this);
         buttons[1] = new MapMakerButton  (itemXCoord, itemYCoord * 1.6F, itemWidth, itemHeight,  window, this);
-        buttons[2] = new ExitButton      (itemXCoord, itemYCoord * 2.2F, itemWidth, itemHeight,  window, this);
+        buttons[2] = new InstructionsButton(itemXCoord, itemYCoord * 2.2F, itemWidth, itemHeight,  window, this);
+        buttons[3] = new ExitButton      (itemXCoord, itemYCoord * 2.8F, itemWidth, itemHeight,  window, this);
 
         musicButton = new MusicButton(musicButtonXCord, musicButtonYCord, musicButtonWidth, musicButtonHeight, window, this);
 
