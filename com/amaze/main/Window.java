@@ -1,5 +1,6 @@
 package com.amaze.main;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 
