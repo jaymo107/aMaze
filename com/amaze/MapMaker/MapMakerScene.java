@@ -9,11 +9,14 @@ import org.jsfml.window.Mouse;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author Jay Feng
@@ -38,7 +41,9 @@ public class MapMakerScene extends Scene {
 
 	Font maze = new Font();
 
-	private static Integer currentLevel = 15;
+	private ArrayList<Integer> results = new ArrayList<>();
+
+	private Integer highestLevelInFolder;
 
 	public MapMakerScene(String sceneTitle, Window window, int blocks) throws IOException {
 		super(sceneTitle, window);
@@ -162,8 +167,9 @@ public class MapMakerScene extends Scene {
 	}
 
 	public void outputLevel() {
+		checkHighestLevelInFolder();
 		try {
-			PrintWriter writer = new PrintWriter(new FileWriter("res/Levels/" + (currentLevel++).toString() + ".txt", true));
+			PrintWriter writer = new PrintWriter(new FileWriter("res/Levels/" + (++highestLevelInFolder).toString() + ".txt", true));
 
 			for (int y = 0; y < blocks; y++) {
 				for (int x = 0; x < blocks; x++) {
@@ -177,6 +183,22 @@ public class MapMakerScene extends Scene {
 		catch (IOException f) {
 			System.err.println("Export Failed");
 		}
+	}
+
+	public void checkHighestLevelInFolder() {
+		File[] files = new File("res/Levels").listFiles();
+
+		for (File f: files != null ? files : new File[0]) {
+			if (f.isFile()) {
+				String[] strings = f.getName().split(".txt");
+				Collections.addAll(results, Integer.parseInt(strings[0]));
+			}
+		}
+
+		Collections.sort(results);
+		highestLevelInFolder = results.get(results.size() - 1);
+		System.out.println("results = " + results);
+		System.out.println("highestLevelInFolder = " + highestLevelInFolder);
 	}
 
 	public void exportSuccessful() {
