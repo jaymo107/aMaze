@@ -30,7 +30,6 @@ public abstract class Button extends RectangleShape {
      * @param height - height of the button
      */
     public Button(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
-
         this.window = window;
         this.menu = menu;
 
@@ -42,8 +41,8 @@ public abstract class Button extends RectangleShape {
 
         selected = false;
     }
-    public Button(float xCord, float yCord, float width, float height, Window window) throws IOException {
 
+	public Button(float xCord, float yCord, float width, float height, Window window) throws IOException {
         this.window = window;
 
         Vector2f position = new Vector2f(xCord, yCord);

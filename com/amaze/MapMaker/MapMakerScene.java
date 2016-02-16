@@ -28,7 +28,6 @@ public class MapMakerScene extends Scene {
 
 	private int blocks;
 	private int blockSize;
-
 	private int numberOfStart;
 	private int numberOfFinish;
 
@@ -37,9 +36,7 @@ public class MapMakerScene extends Scene {
 	private RectangleShape textBackground;
 	private Text userLevel;
 
-	private Window window;
-
-	Font maze = new Font();
+	private Font maze = new Font();
 
 	private ArrayList<Integer> results = new ArrayList<>();
 
@@ -48,11 +45,10 @@ public class MapMakerScene extends Scene {
 	public MapMakerScene(String sceneTitle, Window window, int blocks) throws IOException {
 		super(sceneTitle, window);
 
-		this.window = window;
-
 		this.blocks = blocks;
-		tiles = new Tile[this.blocks][this.blocks];
 		this.blockSize = window.getSize().x / blocks;  //Work out how many blocks
+
+		tiles = new Tile[this.blocks][this.blocks];
 
 		blockTextures = new Texture[7];
 		for (int i = 0; i < blockTextures.length; i++) {
@@ -60,6 +56,7 @@ public class MapMakerScene extends Scene {
 			blockTextures[i].loadFromFile(Paths.get("res/images/" + allValues[i].toString().toLowerCase() + ".png"));
 			blockTextures[i].setSmooth(true);
 		}
+
 		for (int y = 0; y < this.blocks; y++) {
 			for (int x = 0; x < this.blocks; x++) {
 				tiles[x][y] = new Tile(blockTextures, x, y);
@@ -86,7 +83,7 @@ public class MapMakerScene extends Scene {
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
                     case ESCAPE:
-                        window.create(new VideoMode(window.getScreenWidth(),window.getScreenHeight()),"aMaze");
+                        getWindow().create(new VideoMode(getWindow().getScreenWidth(), getWindow().getScreenHeight()),"aMaze");
                         exitScene(this);
                         break;
                     case RETURN:
@@ -111,10 +108,10 @@ public class MapMakerScene extends Scene {
 	}
 
 	public void displayTitle(String text, int fSize){
-		int fontSize = window.getScreenWidth() / fSize;
+		int fontSize = getWindow().getScreenWidth() / fSize;
 
-		float textXCord = window.getScreenWidth() / -9F;
-		float textYCord = window.getScreenHeight() / -2.5F;
+		float textXCord = getWindow().getScreenWidth() / -9F;
+		float textYCord = getWindow().getScreenHeight() / -2.5F;
 		userLevel = new Text(text, maze, fontSize);
 		userLevel.setColor(Color.BLACK);
 		userLevel.setStyle(Text.BOLD);
@@ -204,14 +201,13 @@ public class MapMakerScene extends Scene {
 
 	public void exportSuccessful() {
 		try {
+			float textBackgroundHeight = getWindow().getScreenHeight() / 5;
+			float textBackgroundWidth  = getWindow().getScreenWidth() / 1.25F;
+			float textBackgroundXCord  = getWindow().getScreenWidth() / 2 - (textBackgroundWidth / 2);
+			float textBackgroundYCord  = getWindow().getScreenHeight() / 2  - (textBackgroundHeight / 1.5F);
 
-			float textBackgroundHeight = window.getScreenHeight() / 5;
-			float textBackgroundWidth  = window.getScreenWidth() / 1.25F;
-			float textBackgroundXCord  = window.getScreenWidth() / 2 - (textBackgroundWidth / 2);
-			float textBackgroundYCord  = window.getScreenHeight() / 2  - (textBackgroundHeight / 1.5F);
-
-			float textXCord = window.getScreenWidth() / -9F;
-			float textYCord = window.getScreenHeight() / -2.5F;
+			float textXCord = getWindow().getScreenWidth() / -9F;
+			float textYCord = getWindow().getScreenHeight() / -2.5F;
 
 			Vector2f size = new Vector2f(textBackgroundWidth, textBackgroundHeight);
 			textBackground = new RectangleShape(size);
@@ -224,7 +220,7 @@ public class MapMakerScene extends Scene {
 			textBackground.setTexture(backgroundImage);
 
 			//Create text
-			int fontSize = window.getScreenWidth() / 11;
+			int fontSize = getWindow().getScreenWidth() / 11;
 			userLevel = new Text("Export Successful", maze, fontSize);
 			userLevel.setColor(Color.BLACK);
 			userLevel.setStyle(Text.BOLD);

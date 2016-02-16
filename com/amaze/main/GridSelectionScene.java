@@ -9,20 +9,21 @@ import java.nio.file.Paths;
 
 public class GridSelectionScene extends Scene {
 
-    Text userLevel;
-    Background background;
-    RectangleShape textBackground;
-    Texture backgroundImage = new Texture();
-    Tile[][] tileMap;                           //Used for displaying map in background
+    private Text userLevel;
+	private Background background;
+	private RectangleShape textBackground;
+	private Texture backgroundImage = new Texture();
     private int blocks;
 
-    static final int MAX_WIDTH = 30;
-    static final int MAX_HEIGHT = 30;
-    static final int MIN_WIDTH = 5;
-    static final int MIN_HEIGHT = 5;
+    public static final int MAX_WIDTH = 30;
+	public static final int MAX_HEIGHT = 30;
+	public static final int MIN_WIDTH = 5;
+	public static final int MIN_HEIGHT = 5;
 
     private int mapWidth = 5;
     private int mapHeight = 5;
+
+	Tile[][] tileMap;                           //Used for displaying map in background
 
     public GridSelectionScene(String sceneTitle, Window window) throws IOException {
         super(sceneTitle, window);

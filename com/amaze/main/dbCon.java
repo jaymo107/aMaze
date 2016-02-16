@@ -3,10 +3,12 @@ package com.amaze.main;
 import java.sql.*;
 
 public class dbCon {
-    //JDBC connection stuff
+
+	//JDBC connection stuff
     private static final String dbDriver = "org.mariadb.jdbc.Driver";
     private static final String dbLoc = "jdbc:mysql://178.62.72.43:3306/aMazeDB";
-    //Credentials for the database
+
+	//Credentials for the database
     private static final String username = "phpuser";
     private static final String password = "aMaze";
     private Connection conn = null;
@@ -15,14 +17,9 @@ public class dbCon {
     public dbCon() {
         try {
             Class.forName(dbDriver);
-
             conn = DriverManager.getConnection(dbLoc, username, password);
-
-        } catch(SQLException se){
-            //SQL exception handler
-            se.printStackTrace();
         } catch(Exception e){
-            //Normal exception handler
+            // Exception handler
             e.printStackTrace();
         }
     }
@@ -57,4 +54,5 @@ public class dbCon {
             e.printStackTrace();
         }
     }
+
 }

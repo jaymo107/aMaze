@@ -1,7 +1,6 @@
 package com.amaze.main;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -17,9 +16,7 @@ public class MenuScene extends Scene {
     private int currentButton = 0;                          // Track currently selected item in the menu.
     private Title title;
     private Background background;
-    private Music music;
-    private Music click;
-    private Button musicButton;
+	private Music click;
     private boolean state = true;
 
 	/**
@@ -30,7 +27,6 @@ public class MenuScene extends Scene {
      */
 
     public MenuScene(String sceneTitle, Window window) throws IOException {
-
         super(sceneTitle, window);
 
         float titleHeight = window.getScreenHeight() / 3;
@@ -56,21 +52,19 @@ public class MenuScene extends Scene {
         buttons[2] = new InstructionsButton(itemXCoord, itemYCoord * 2.2F, itemWidth, itemHeight,  window, this);
         buttons[3] = new ExitButton      (itemXCoord, itemYCoord * 2.8F, itemWidth, itemHeight,  window, this);
 
-        musicButton = new MusicButton(musicButtonXCord, musicButtonYCord, musicButtonWidth, musicButtonHeight, window, this);
+        setMusicButton(new MusicButton(musicButtonXCord, musicButtonYCord, musicButtonWidth, musicButtonHeight, window, this));
 
-        music = new Music();
+        setMusic(new Music());
         click = new Music();
         try {
-            music.openFromFile(Paths.get("res/music/theme.wav"));
+            getMusic().openFromFile(Paths.get("res/music/theme.wav"));
             click.openFromFile(Paths.get("res/music/Click.wav"));
         } catch (IOException e) {
             System.out.println("There was a problem loading the background music or click music.");
         }
 
-
-        music.play();
+		getMusic().play();
         buttons[0].setSelected(true);
-
     }
 
     /**
@@ -130,7 +124,7 @@ public class MenuScene extends Scene {
     public void executeEvent(Event event) {
         switch(event.type) {
             case CLOSED:
-                music.stop();
+				getMusic().stop();
                 systemExit();
                 break;
             case KEY_PRESSED:
@@ -141,7 +135,7 @@ public class MenuScene extends Scene {
                         state = !state;
                         musicPlaying(state); break;
                     case RETURN:
-                        music.stop();
+						getMusic().stop();
                         enterPressed(); break;
                 }
 				break;
@@ -157,7 +151,7 @@ public class MenuScene extends Scene {
                         state = !state;
                         musicPlaying(state); break;
                     case 13:
-                        music.stop();
+						getMusic().stop();
                         enterPressed(); break;
                 }
                 break;
@@ -188,21 +182,12 @@ public class MenuScene extends Scene {
 		for(Button b: getButtons()) {
             window.draw(b);
         }
-        window.draw(musicButton);
-
+        window.draw(getMusicButton());
         window.draw(title);
     }
-    public void musicPlaying(boolean state) {
-        if (!state) {
-            music.pause();
-            musicButton.setSelected(true);
-        } else {
-            musicButton.setSelected(false);
-            music.play();
-        }
-    }
-    public void clicked() {
 
+    public void clicked() {
         click.play();
     }
+
 }

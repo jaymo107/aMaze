@@ -1,6 +1,5 @@
 package com.amaze.main;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 
@@ -15,7 +14,7 @@ public class Window extends RenderWindow{
     private int screenWidth;
     private int screenHeight;
 
-    ArrayList<Displayable> scenes = new ArrayList<>();  //Holds all the scenes. This ArrayList is populated from the Main function.
+    private ArrayList<Displayable> scenes = new ArrayList<>();  //Holds all the scenes. This ArrayList is populated from the Main function.
 
     /*******************************************************************************************************
      *                                       !IMPORTANT!                                                   *

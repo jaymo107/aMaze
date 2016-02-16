@@ -1,17 +1,15 @@
 package com.amaze.entities;
 
+import com.amaze.main.GameScene;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
-import com.amaze.main.GameScene;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -19,9 +17,7 @@ import java.util.Random;
  */
 public class Avatar extends RectangleShape {
 
-    private int currentX;
-    private int currentY;
-    private int level;                  // Level that player is on
+	private int level;                  // Level that player is on
     private int score;                  // Holds player score
     private Vector2i oldTile;
     private int numberOfChargesPickedUp;
@@ -32,7 +28,6 @@ public class Avatar extends RectangleShape {
      * from the res/avatars.
      * @param startX Start Pixel X location
      * @param startY Start Pixel Y location
-     * @throws Exception If fails to load texture
      */
 
     public Avatar(int startX, int startY, int blockSize) {
@@ -42,23 +37,21 @@ public class Avatar extends RectangleShape {
         timeSpentInVoid = 0;
         Texture t = new Texture();
 
-        List<String> avatarFileNames = new ArrayList<String>();
+        ArrayList<String> avatarFileNames = new ArrayList<>();
 
         File[] files = new File("res/avatars").listFiles();
 
-        for(File file: files) {
-
+        for(File file: files != null ? files : new File[0]) {
             if (file.isFile()) {
-
                 avatarFileNames.add(file.getName());
             }
         }
 
         Random random = new Random();
-        String randomImagePath = avatarFileNames.get(random.nextInt(avatarFileNames.size() - 1 + 1) + 0);
-        try{
-            t.loadFromFile(Paths.get("res/avatars/" + randomImagePath));
+        String randomImagePath = avatarFileNames.get(random.nextInt(avatarFileNames.size() - 1 + 1));
 
+		try{
+            t.loadFromFile(Paths.get("res/avatars/" + randomImagePath));
             System.out.println(randomImagePath);
         }catch (IOException e){
             System.out.println("There is either no avatar in the folder or a hidden file that needs to be deleted");
@@ -122,7 +115,7 @@ public class Avatar extends RectangleShape {
     }
 
     public int getTimeSpentInVoid() {
-
         return timeSpentInVoid;
     }
+
 }

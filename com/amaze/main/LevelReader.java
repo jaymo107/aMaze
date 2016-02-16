@@ -1,10 +1,6 @@
 package com.amaze.main;
 
-import org.jsfml.graphics.Texture;
-
 import java.io.*;
-import java.nio.file.Paths;
-import java.util.Arrays;
 
 /**
  *Reads a text file with a csv type format into a BlockType 2D array (currently 5 x 5)
@@ -17,8 +13,7 @@ public class LevelReader {
     private int voidAmount = 0;
     private int chargeAmount = 0;
     private int wallAmount = 0;
-    private int floorAmount = 0;
-    private int doorAmount = 0;
+	private int doorAmount = 0;
 
 
 	/**
@@ -46,8 +41,7 @@ public class LevelReader {
             return Tile.BlockType.CHARGE;
         }
         if (blockType.equals("FLOOR")) {
-            floorAmount++;
-            return Tile.BlockType.FLOOR;
+			return Tile.BlockType.FLOOR;
         }
 
         return Tile.BlockType.WALL;
@@ -123,10 +117,6 @@ public class LevelReader {
 
     public int getWallAmount() {
         return wallAmount;
-    }
-
-    public int getFloorAmount() {
-        return floorAmount;
     }
 
 }
