@@ -2,6 +2,7 @@ package com.amaze.main;
 
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.File;

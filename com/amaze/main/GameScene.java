@@ -109,6 +109,7 @@ public class GameScene extends Scene {
 
 		float batteryXCord = window.getScreenWidth();
 		float batteryYCord = window.getScreenHeight();
+
 		/* Create instance of battery */
 		battery = new Battery(batteryXCord, batteryYCord, 6, window);
 
@@ -615,6 +616,7 @@ public class GameScene extends Scene {
 		System.out.println("Level: " +currentLevel);
 		System.out.println("Level Completion Time: " + txtTime.getString().substring(7));
 
+		userName = userName.replaceAll("/\\*.*?\\*/", "");
 		dbCon upload = new dbCon();
 		upload.uploadResult(userName, score, currentLevel, txtTime.getString().substring(7));
 		upload.clean();

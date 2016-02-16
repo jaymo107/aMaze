@@ -24,7 +24,8 @@ public class MusicButton extends Button {
 
 		getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOn.png"));
         getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/musicOff.png"));
-
+        getDefaultIcon().setSmooth(true);
+        getSelectedIcon().setSmooth(true);
         this.setTexture(getDefaultIcon());
 
 

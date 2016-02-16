@@ -22,6 +22,8 @@ public class MapMakerButton extends Button {
 
         getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/mapmake.png"));
         getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/mapmakesel.png"));
+        getDefaultIcon().setSmooth(true);
+        getSelectedIcon().setSmooth(true);
 
         this.setTexture(getDefaultIcon());
     }

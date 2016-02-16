@@ -65,6 +65,8 @@ public abstract class Button extends RectangleShape {
      */
     public void setSelected(boolean selected) {
         this.selected = selected;
+        defaultIcon.setSmooth(true);
+        selectedIcon.setSmooth(true);
         setIcon(selected ? selectedIcon : defaultIcon);
     }
 
@@ -80,11 +82,13 @@ public abstract class Button extends RectangleShape {
      */
     public MenuScene getMenu() { return menu; }
 
-    public Texture getDefaultIcon() { return defaultIcon; }
+    public Texture getDefaultIcon() {return defaultIcon; }
 
     public Texture getSelectedIcon() { return selectedIcon; }
 
-    public void setIcon(Texture t) { setTexture(t); }
+    public void setIcon(Texture t) {
+        t.setSmooth(true);
+        setTexture(t); }
 
     public abstract void performAction();
 
