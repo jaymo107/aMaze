@@ -89,13 +89,13 @@ public class MapMakerScene extends Scene {
 					case RETURN:
 						countNumbersOfStartEnd();
 
-						if(numberOfStart != 1){
+						if (numberOfStart != 1) {
 							System.out.println("You need one start block!");
 							displayTitle("Must have one start and \n\t\t\tone finish",15);
-						}else if(numberOfFinish != 1){
+						} else if(numberOfFinish != 1) {
 							System.out.println("You need one finish block!");
 							displayTitle("\"Must have one start and \n\t\t\tone finish",15);
-						}else{
+						} else {
 							outputLevel();
 							drawExportWindow(getWindow());
 							getWindow().display();
@@ -178,6 +178,7 @@ public class MapMakerScene extends Scene {
 				writer.println("");
 			}
 			writer.close();
+			displayTitle("Export Successful", 15);
 			System.out.println("Export Successful");
 		}
 		catch (IOException f) {
@@ -197,8 +198,6 @@ public class MapMakerScene extends Scene {
 
 		Collections.sort(results);
 		highestLevelInFolder = results.get(results.size() - 1);
-		System.out.println("results = " + results);
-		System.out.println("highestLevelInFolder = " + highestLevelInFolder);
 	}
 
 	public void exportSuccessful() {
@@ -240,6 +239,7 @@ public class MapMakerScene extends Scene {
 	}
 
 	public void countNumbersOfStartEnd(){
+		numberOfStart = numberOfFinish = 0;
 		for (Tile[] row : tiles) {
 			for (Tile tile: row) {
 				switch (tile.getBlockType()) {
