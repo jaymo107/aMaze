@@ -80,7 +80,10 @@ public class MapMakerScene extends Scene {
                 break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
-                    case ESCAPE:exitScene(this); break;
+                    case ESCAPE:
+                        window.create(new VideoMode(window.getScreenWidth(),window.getScreenHeight()),"aMaze");
+                        exitScene(this);
+                        break;
                     case RETURN:
                         countNumbersOfStartEnd();
 
@@ -173,6 +176,7 @@ public class MapMakerScene extends Scene {
             }
             writer.close();
             System.out.println("Export Successful");
+            window.create(new VideoMode(600,600+60),"aMaze");
         }
         catch (IOException f) {
             System.err.println("Export Failed");
