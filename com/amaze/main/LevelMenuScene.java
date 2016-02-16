@@ -190,11 +190,8 @@ public class LevelMenuScene extends Scene {
                         break;
                 }
             case JOYSTICK_BUTTON_PRESSED:
-
                 System.out.println(event.asJoystickButtonEvent().button);
-
                 switch (event.asJoystickButtonEvent().button) {
-
                     case 1: arrowKeyDown();break;
                     case 3: arrowKeyUp();break;
                     case 12: exitScene(this); break;
@@ -207,6 +204,24 @@ public class LevelMenuScene extends Scene {
                         break;
                 }
                 break;
+			case MOUSE_WHEEL_MOVED:
+				if (event.asMouseWheelEvent().delta < 0) {
+					arrowKeyDown();
+				} else {
+					arrowKeyUp();
+				}
+				break;
+			case MOUSE_BUTTON_PRESSED:
+				switch (event.asMouseButtonEvent().button) {
+					case LEFT:
+						try {
+							enterPressed();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						break;
+				}
+				break;
         }
     }
 

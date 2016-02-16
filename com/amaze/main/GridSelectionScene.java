@@ -129,17 +129,10 @@ public class GridSelectionScene extends Scene {
                 break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
-                    case UP:
-                        arrowKeyUp();
-                        break;
-                    case DOWN:
-                        arrowKeyDown();
-                        break;
-                    case ESCAPE:
-                        exitScene(this);
-                        break;
+                    case UP: arrowKeyUp(); break;
+                    case DOWN: arrowKeyDown(); break;
+                    case ESCAPE: exitScene(this); break;
                     case RETURN:
-
                         try {
                             enterPressed();
                         } catch (Exception e) {
@@ -147,6 +140,25 @@ public class GridSelectionScene extends Scene {
                         }
                         break;
                 }
+				break;
+			case MOUSE_WHEEL_MOVED:
+				if (event.asMouseWheelEvent().delta < 0) {
+					arrowKeyDown();
+				} else {
+					arrowKeyUp();
+				}
+				break;
+			case MOUSE_BUTTON_PRESSED:
+				switch (event.asMouseButtonEvent().button) {
+					case LEFT:
+						try {
+							enterPressed();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						break;
+				}
+				break;
 
         }
     }
