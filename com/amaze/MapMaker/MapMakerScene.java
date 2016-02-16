@@ -86,19 +86,22 @@ public class MapMakerScene extends Scene {
                     case ESCAPE:exitScene(this); break;
                     case RETURN:
                         countNumbersOfStartEnd();
+						System.out.println("numberOfStart = " + numberOfStart);
+						System.out.println("numberOfFinish = " + numberOfFinish);
 
-                        if(numberOfStart != 1){
+						if (numberOfStart == 1 && numberOfFinish == 1) {
+							outputLevel();
+							drawExportWindow(getWindow());
+							getWindow().display();
+							pause(2000);
+							exitScene(this);
+						}
+						else if (numberOfStart != 1){
                             System.out.println("You need one start block!");
                             displayTitle("Must have one start and \n\t\t\tone finish",15);
-                        }else if(numberOfFinish != 1){
+                        } else {
                             System.out.println("You need one finish block!");
                             displayTitle("\"Must have one start and \n\t\t\tone finish",15);
-                        }else{
-                            outputLevel();
-                            drawExportWindow(getWindow());
-                            getWindow().display();
-                            pause(2000);
-                            exitScene(this);
                         }
                         break;
                 }
@@ -233,6 +236,7 @@ public class MapMakerScene extends Scene {
     }
 
     public void countNumbersOfStartEnd(){
+		numberOfStart = numberOfFinish = 0;
 		for (Tile[] row : tiles) {
 			for (Tile tile: row) {
 				switch (tile.getBlockType()) {
