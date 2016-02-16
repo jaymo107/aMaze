@@ -73,21 +73,24 @@ public class MapMakerScene extends Scene {
 		exportSuccessful();
 	}
 
-	public void executeEvent(Event event) {
-		switch(event.type) {
-			case CLOSED: systemExit(); break;
-			case MOUSE_BUTTON_PRESSED:
-				for (Tile[] rows: tiles) {
-					for (Tile tile: rows) {
-						if (isMouseOn(tile)) changeTexture(tile);
-					}
-				}
-				break;
-			case KEY_PRESSED:
-				switch (event.asKeyEvent().key) {
-					case ESCAPE:exitScene(this); break;
-					case RETURN:
-						countNumbersOfStartEnd();
+    public void executeEvent(Event event) {
+        switch(event.type) {
+            case CLOSED: systemExit(); break;
+            case MOUSE_BUTTON_PRESSED:
+                for (Tile[] rows: tiles) {
+                    for (Tile tile: rows) {
+                        if (isMouseOn(tile)) changeTexture(tile);
+                    }
+                }
+                break;
+            case KEY_PRESSED:
+                switch (event.asKeyEvent().key) {
+                    case ESCAPE:
+                        window.create(new VideoMode(window.getScreenWidth(),window.getScreenHeight()),"aMaze");
+                        exitScene(this);
+                        break;
+                    case RETURN:
+                        countNumbersOfStartEnd();
 
 						if (numberOfStart != 1) {
 							System.out.println("You need one start block!");
@@ -171,20 +174,20 @@ public class MapMakerScene extends Scene {
 		try {
 			PrintWriter writer = new PrintWriter(new FileWriter("res/Levels/" + (++highestLevelInFolder).toString() + ".txt", true));
 
-			for (int y = 0; y < blocks; y++) {
-				for (int x = 0; x < blocks; x++) {
-					writer.print(tiles[x][y].getBlockType().toString() + ",");
-				}
-				writer.println("");
-			}
-			writer.close();
-			displayTitle("Export Successful", 15);
-			System.out.println("Export Successful");
-		}
-		catch (IOException f) {
-			System.err.println("Export Failed");
-		}
-	}
+            for (int y = 0; y < blocks; y++) {
+                for (int x = 0; x < blocks; x++) {
+                    writer.print(tiles[x][y].getBlockType().toString() + ",");
+                }
+                writer.println("");
+            }
+            writer.close();
+            System.out.println("Export Successful");
+            window.create(new VideoMode(600,600+60),"aMaze");
+        }
+        catch (IOException f) {
+            System.err.println("Export Failed");
+        }
+    }
 
 	public void checkHighestLevelInFolder() {
 		File[] files = new File("res/Levels").listFiles();
