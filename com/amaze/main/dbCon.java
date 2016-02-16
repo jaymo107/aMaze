@@ -30,9 +30,13 @@ public class dbCon {
     public void uploadResult(String username, int score, int level, String compTime) {
         int uid = 0;
 
-        String uidGet = "SELECT uid FROM users WHERE username = '" + username + "'";
-        String uploadName = "INSERT INTO users" + "(uName)" + "VALUES" + "(" + username + ")";
-        String uploadData = "INSERT INTO leaderboard" + "(uid, levelNo, score, compTime)" + "VALUES" + "(" + uid + "," + level + "," + score + "," + compTime + "," + ")";
+        String uidGet = "SELECT `uid` FROM `users` WHERE `uName` = '" + username + "';";
+        String uploadName = "INSERT INTO `users`" + "(`uName`)" + "VALUES" + "('" + username + "');";
+        String uploadData = "INSERT INTO `leaderboard`" + " (`uid`, `levelNo`, `score`, `compTime`)" + "VALUES" + "('" + uid + "','" + level + "','" + score + "','" + compTime + "');";
+        
+        System.out.println(uidGet);
+        System.out.println(uploadName);
+        System.out.println(uploadData);
 
         try {
             stmt = conn.createStatement();
