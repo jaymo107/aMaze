@@ -12,12 +12,7 @@ import java.nio.file.Paths;
  */
 public class Title extends RectangleShape {
 
-    private Vector2f size;
-    private Vector2f position;
-    private Texture icon;
-
-
-    /**
+	/**
      * Construct a button with following parameters:
      *
      * @param width - width of the title
@@ -25,13 +20,13 @@ public class Title extends RectangleShape {
      */
     public Title(float xCord, float yCord, float width, float height) throws IOException {
 
-        size = new Vector2f(width,height);
-        position = new Vector2f(xCord, yCord);
+		Vector2f size = new Vector2f(width, height);
+		Vector2f position = new Vector2f(xCord, yCord);
 
         this.setSize(size);
         this.setPosition(position);
 
-        icon = new Texture();
+		Texture icon = new Texture();
         icon.loadFromFile(Paths.get("res/menuGraphics/logo.png"));
         icon.setSmooth(true);
         this.setTexture(icon);

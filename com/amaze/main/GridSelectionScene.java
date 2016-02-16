@@ -3,33 +3,30 @@ package com.amaze.main;
 import com.amaze.MapMaker.MapMakerScene;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
-import org.jsfml.window.event.Event;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 
 public class GridSelectionScene extends Scene {
 
-    Text userLevel;
-    Background background;
-    RectangleShape textBackground;
-    Texture backgroundImage = new Texture();
-    Window wnd;
-    Tile[][] tileMap;                           //Used for displaying map in background
+    private Text userLevel;
+	private Background background;
+	private RectangleShape textBackground;
+	private Texture backgroundImage = new Texture();
     private int blocks;
 
-    static final int MAX_WIDTH = 30;
-    static final int MAX_HEIGHT = 30;
-    static final int MIN_WIDTH = 5;
-    static final int MIN_HEIGHT = 5;
+    public static final int MAX_WIDTH = 30;
+	public static final int MAX_HEIGHT = 30;
+	public static final int MIN_WIDTH = 5;
+	public static final int MIN_HEIGHT = 5;
 
     private int mapWidth = 5;
     private int mapHeight = 5;
 
-    public GridSelectionScene(String sceneTitle, Window window) throws IOException {
+	Tile[][] tileMap;                           //Used for displaying map in background
 
+    public GridSelectionScene(String sceneTitle, Window window) throws IOException {
         super(sceneTitle, window);
-        wnd = window;
         blocks = 0;
 
         //Create background
@@ -37,11 +34,7 @@ public class GridSelectionScene extends Scene {
 
         //Create Font
         Font maze = new Font();
-        try {
-            maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
-        } catch (IOException e) {
-            System.out.println("Could not load the font!");
-        }
+		maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
 
         float textBackgroundHeight = window.getScreenHeight() / 5;
         float textBackgroundWidth  = window.getScreenWidth() / 1.25F;
@@ -53,7 +46,6 @@ public class GridSelectionScene extends Scene {
 
         int fontSize = window.getScreenWidth() / 4;
 
-        //Vector2f position = new Vector2f(xCord, yCord);
         Vector2f size = new Vector2f(textBackgroundWidth, textBackgroundHeight);
         textBackground = new RectangleShape(size);
         textBackground.setPosition(textBackgroundXCord, textBackgroundYCord);
@@ -110,46 +102,16 @@ public class GridSelectionScene extends Scene {
      * Based on the button, a specific function will be invoked.
      */
     public void enterPressed() throws Exception {
-
         try {
             MapMakerScene mapMaker = new MapMakerScene("Map Maker", getWindow(), mapWidth); // mapwidth is number of blocks X
-            wnd.addScene(mapMaker);
-            wnd.setScene(wnd.getArrayList().indexOf(mapMaker));
+            getWindow().addScene(mapMaker);
+            getWindow().setScene(getWindow().getArrayList().indexOf(mapMaker));
             this.setRunning(false);
         } catch (IOException e) {
-
             e.printStackTrace();
         }
     }
 
-    public void executeEvent(Event event) {
-        switch (event.type) {
-            case CLOSED:
-                systemExit();
-                break;
-            case KEY_PRESSED:
-                switch (event.asKeyEvent().key) {
-                    case UP:
-                        arrowKeyUp();
-                        break;
-                    case DOWN:
-                        arrowKeyDown();
-                        break;
-                    case ESCAPE:
-                        exitScene(this);
-                        break;
-                    case RETURN:
-
-                        try {
-                            enterPressed();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                }
-
-        }
-    }
     public void drawGraphics(RenderWindow window) {
         window.draw(background);
 
@@ -162,4 +124,5 @@ public class GridSelectionScene extends Scene {
         window.draw(textBackground);
         window.draw(userLevel);
     }
+
 }

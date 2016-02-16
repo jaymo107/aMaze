@@ -9,17 +9,14 @@ import java.nio.file.Paths;
 public class MusicButton extends Button {
 
 	public MusicButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
-
         super(xCord, yCord, width, height, window, menu);
 
 		getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOn.png"));
         getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/musicOff.png"));
-
         this.setTexture(getDefaultIcon());
-
     }
-    public MusicButton(float xCord, float yCord, float width, float height, Window window) throws IOException {
 
+	public MusicButton(float xCord, float yCord, float width, float height, Window window) throws IOException {
         super(xCord, yCord, width, height, window);
 
 		getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOn.png"));
@@ -27,12 +24,10 @@ public class MusicButton extends Button {
         getDefaultIcon().setSmooth(true);
         getSelectedIcon().setSmooth(true);
         this.setTexture(getDefaultIcon());
-
-
     }
-    public void performAction() {
 
+	public void performAction() {
         System.out.println("Music Button Pressed");
-
     }
+
 }

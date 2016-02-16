@@ -22,8 +22,7 @@ public class GameScene extends Scene {
 	private int blockCount;             //Number of blocks in a row
 	private Tile[][] tileMap;           //Represents the maze
 	private Avatar player;              //Represents the player(avatar)
-	private Battery battery;            //
-	private Music music;                //Background music
+	private Battery battery;
 	private FogOfWar fog;
 	private Text txtScore;
 	private Text txtTime;
@@ -46,7 +45,6 @@ public class GameScene extends Scene {
 	private RectangleShape textBackground;
 	private Text message;
 	private Text message2;
-	private MusicButton musicButton;
 
 	private int fontSizeUserInput;
 	private float textXCordUserInput;
@@ -114,12 +112,12 @@ public class GameScene extends Scene {
 		battery = new Battery(batteryXCord, batteryYCord, 6, window);
 
         /* Load background music */
-		music = new Music();
+		setMusic(new Music());
 		chargesSound = new Music();
 		voidsSound = new Music();
 		try {
-		  String musicPaths[] = {"res/music/gs2.wav", "res/music/gs3.wav", "res/music/move.ogg"};
-			music.openFromFile(Paths.get(musicPaths[new Random().nextInt(musicPaths.length)]));
+		  	String musicPaths[] = {"res/music/gs2.wav", "res/music/gs3.wav", "res/music/move.ogg"};
+			getMusic().openFromFile(Paths.get(musicPaths[new Random().nextInt(musicPaths.length)]));
 			chargesSound.openFromFile(Paths.get("res/music/Charge.wav"));
 			voidsSound.openFromFile(Paths.get("res/music/Void.wav"));
 		} catch (IOException e) {
@@ -155,7 +153,7 @@ public class GameScene extends Scene {
 		float musicButtonXCord = window.getScreenWidth() / 3F;
 		float musicButtonYCord = window.getScreenHeight() / 1.08F;
 
-		musicButton = new MusicButton(musicButtonXCord,musicButtonYCord,musicButtonWidth,musicButtonHeight, window);
+		setMusicButton(new MusicButton(musicButtonXCord,musicButtonYCord,musicButtonWidth,musicButtonHeight, window));
 
         /* Change avatar location */
         for(int i = 0;i < blocks; i++){
@@ -214,8 +212,8 @@ public class GameScene extends Scene {
 		setRunning(true);
 		getWindow().setTitle(getSceneTitle());
 
-		music.play();
-		music.setLoop(true);
+		getMusic().play();
+		getMusic().setLoop(true);
 		Clock clock = new Clock();
 		Clock timer = new Clock();
 
@@ -245,7 +243,7 @@ public class GameScene extends Scene {
 				}
 				getWindow().display();
 			} catch (Exception e) {
-				music.stop();
+				getMusic().stop();
 				System.out.println("There has been an issue drawing something, exiting to level menu\n\n");
 				e.printStackTrace();
 				setRunning(false);
@@ -269,7 +267,7 @@ public class GameScene extends Scene {
 					case LEFT:left = true;break;
 					case RIGHT:right = true;break;
 					case ESCAPE:
-						music.stop();
+						getMusic().stop();
 						exitScene(this);
 						break;
 					case M:
@@ -277,17 +275,14 @@ public class GameScene extends Scene {
 						musicPlaying(state); break;
 				}
 				break;
-
 			case JOYSTICK_BUTTON_PRESSED:
-
 				switch (event.asJoystickButtonEvent().button) {
-
 					case 0: left = true; break;
 					case 1: down = true; break;
 					case 2: right = true; break;
 					case 3: up = true; break;
                     case 12:
-                        music.stop();
+						getMusic().stop();
                         exitScene(this);
                         break;
                     case 9:
@@ -306,7 +301,7 @@ public class GameScene extends Scene {
 					case LEFT:left = false;break;
 					case RIGHT:right = false;break;
 					case ESCAPE:
-						music.stop();
+						getMusic().stop();
 						exitScene(this);
 						break;
 				}
@@ -322,7 +317,7 @@ public class GameScene extends Scene {
 				}
 				break;
 			case CLOSED:
-				music.stop();
+				getMusic().stop();
 				systemExit();
 				break;
 		}
@@ -453,7 +448,7 @@ public class GameScene extends Scene {
 		window.draw(battery);
 
 		//Draw music button
-		window.draw(musicButton);
+		window.draw(getMusicButton());
 
 		//Draw score text
 		window.draw(txtScore);
@@ -523,9 +518,7 @@ public class GameScene extends Scene {
 	}
 
 	public void drawFinishWindow(RenderWindow window) {
-
 		try {
-
 			float textBackgroundHeight = getWindow().getScreenHeight() / 5;
 			float textBackgroundWidth  = getWindow().getScreenWidth() / 1.25F;
 			float textBackgroundXCord  = getWindow().getScreenWidth() / 2 - (textBackgroundWidth / 2);
@@ -560,7 +553,6 @@ public class GameScene extends Scene {
 
 		} catch (IOException e) {
 			System.err.println("There was a problem loading the finish window.");
-
 		}
 
 		window.draw(textBackground);
@@ -576,22 +568,17 @@ public class GameScene extends Scene {
 		window.draw(un);
 	}
 	public void listenForInput(Event event) {
-
 		switch (event.type) {
 			case TEXT_ENTERED:
 				if (event.asTextEvent().unicode >= 32 && event.asTextEvent().unicode <= 126) {
-
-					if(userName.length() >= 12) { break; }
+					if (userName.length() >= 200) break;
 					else {
-
 						userName += (char) event.asTextEvent().unicode;
 						break;
 					}
 				}
 				if (event.asTextEvent().unicode == 8) {
-
-					if(userName.length() == 0) { userName = ""; }
-
+					if (userName.length() == 0) userName = "";
 					else {
 						userName = userName.substring(0, userName.length() - 1);
 						break;
@@ -616,20 +603,11 @@ public class GameScene extends Scene {
 		System.out.println("Level: " +currentLevel);
 		System.out.println("Level Completion Time: " + txtTime.getString().substring(7));
 
-		dbCon upload = new dbCon();
+		DatabaseConnection upload = new DatabaseConnection();
 		upload.uploadResult(userName, score, currentLevel, txtTime.getString().substring(7));
 		upload.clean();
 	}
 
-	public void musicPlaying(boolean state) {
-		if (!state) {
-			music.pause();
-			musicButton.setSelected(true);
-		} else {
-			musicButton.setSelected(false);
-			music.play();
-		}
-	}
 	public Vector2i rawPlayerToBlockPos(){
 		int playerPosBlockX = (int)((getPlayerX() + 1) / blockSize);
 		int playerPosBlockY = (int)((getPlayerY() + 1) / blockSize);
@@ -677,13 +655,5 @@ public class GameScene extends Scene {
 			timeExposedToVoid = 0;
 		}
 	}
-//	public void chargeSound() {
-//
-//		chargesSound.play();
-//	}
-//	public void voidSound() {
-//
-//		voidsSound.play();
-//	}
 
 }

@@ -33,6 +33,8 @@ public class Tile extends RectangleShape {
         type = block;
     }
 
-    public BlockType getBlockType(){ return type; }
+    public BlockType getBlockType() {
+		return type;
+	}
 
 }
