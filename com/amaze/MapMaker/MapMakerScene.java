@@ -153,7 +153,6 @@ public class MapMakerScene extends Scene {
 	 * @param blockX Block number
 	 * @return Raw pixel value
 	 */
-
 	public int translateX(int blockSize, int blockX){
 		return blockSize * blockX;
 	}
@@ -163,7 +162,6 @@ public class MapMakerScene extends Scene {
 	 * @param blockY Block number
 	 * @return Raw pixel value
 	 */
-
 	public int translateY(int blockSize, int blockY){
 		return blockSize * blockY;
 	}
