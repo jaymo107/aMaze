@@ -76,7 +76,14 @@ public class MapMakerScene extends Scene {
             case MOUSE_BUTTON_PRESSED:
                 for (Tile[] rows: tiles) {
                     for (Tile tile: rows) {
-                        if (isMouseOn(tile)) changeTexture(tile);
+                        if (isMouseOn(tile)) {
+							Mouse.Button b = event.asMouseButtonEvent().button;
+							if (b == Mouse.Button.LEFT) {
+								changeTextureCW(tile);
+							} else {
+								changeTextureACW(tile);
+							}
+						}
                     }
                 }
                 break;
@@ -92,7 +99,7 @@ public class MapMakerScene extends Scene {
 						if (numberOfStart != 1) {
 							System.out.println("You need one start block!");
 							displayTitle("Must have one start and \n\t\t\tone finish",15);
-						} else if(numberOfFinish != 1) {
+						} else if (numberOfFinish != 1) {
 							System.out.println("You need one finish block!");
 							displayTitle("\"Must have one start and \n\t\t\tone finish",15);
 						} else {
@@ -121,9 +128,15 @@ public class MapMakerScene extends Scene {
 		pause(2000);
 	}
 
-	public void changeTexture(Tile tile) {
+	public void changeTextureCW(Tile tile) {
 		int nextImageIndex = Arrays.asList(allValues).indexOf(tile.getBlockType()) + 1;
 		if (nextImageIndex > allValues.length - 1) nextImageIndex = 0;
+		tile.changeBlockType(allValues[nextImageIndex]);
+	}
+
+	public void changeTextureACW(Tile tile) {
+		int nextImageIndex = Arrays.asList(allValues).indexOf(tile.getBlockType()) - 1;
+		if (nextImageIndex < 0) nextImageIndex = allValues.length - 1;
 		tile.changeBlockType(allValues[nextImageIndex]);
 	}
 
