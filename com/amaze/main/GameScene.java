@@ -22,7 +22,8 @@ public class GameScene extends Scene {
 	private int blockCount;             //Number of blocks in a row
 	private Tile[][] tileMap;           //Represents the maze
 	private Avatar player;              //Represents the player(avatar)
-	private Battery battery;
+	private Battery battery;            //
+	private Music music;                //Background music
 	private FogOfWar fog;
 	private Text txtScore;
 	private Text txtTime;
@@ -45,6 +46,7 @@ public class GameScene extends Scene {
 	private RectangleShape textBackground;
 	private Text message;
 	private Text message2;
+	private MusicButton musicButton;
 
 	private int fontSizeUserInput;
 	private float textXCordUserInput;
@@ -79,7 +81,7 @@ public class GameScene extends Scene {
 
 		this.currentLevel = currentLevel;
 
-        Tile currentlyLoaded;
+		Tile currentlyLoaded;
 
 		GameScene.blockSize = blockSize;
 
@@ -112,12 +114,12 @@ public class GameScene extends Scene {
 		battery = new Battery(batteryXCord, batteryYCord, 6, window);
 
         /* Load background music */
-		setMusic(new Music());
+		music = new Music();
 		chargesSound = new Music();
 		voidsSound = new Music();
 		try {
-		  	String musicPaths[] = {"res/music/gs2.wav", "res/music/gs3.wav", "res/music/move.ogg"};
-			getMusic().openFromFile(Paths.get(musicPaths[new Random().nextInt(musicPaths.length)]));
+			String musicPaths[] = {"res/music/gs2.wav", "res/music/gs3.wav", "res/music/move.ogg"};
+			music.openFromFile(Paths.get(musicPaths[new Random().nextInt(musicPaths.length)]));
 			chargesSound.openFromFile(Paths.get("res/music/Charge.wav"));
 			voidsSound.openFromFile(Paths.get("res/music/Void.wav"));
 		} catch (IOException e) {
@@ -153,22 +155,22 @@ public class GameScene extends Scene {
 		float musicButtonXCord = window.getScreenWidth() / 3F;
 		float musicButtonYCord = window.getScreenHeight() / 1.08F;
 
-		setMusicButton(new MusicButton(musicButtonXCord,musicButtonYCord,musicButtonWidth,musicButtonHeight, window));
+		musicButton = new MusicButton(musicButtonXCord,musicButtonYCord,musicButtonWidth,musicButtonHeight, window);
 
         /* Change avatar location */
-        for(int i = 0;i < blocks; i++){
-            for(int j = 0; j < blocks; j++){
-                currentlyLoaded = tileMap[i][j];
+		for(int i = 0;i < blocks; i++){
+			for(int j = 0; j < blocks; j++){
+				currentlyLoaded = tileMap[i][j];
 
-                if (currentlyLoaded.getTileType() == Tile.BlockType.START) {
-                    player.setPosition(currentlyLoaded.getPosition());
+				if (currentlyLoaded.getTileType() == Tile.BlockType.START) {
+					player.setPosition(currentlyLoaded.getPosition());
 					startTile = new Vector2i(Math.round(player.getPosition().x/blockSize), Math.round(player.getPosition().y/blockSize));
-                }
+				}
 				if (currentlyLoaded.getTileType() == Tile.BlockType.FINISH) {
 					endTile = new Vector2i(Math.round(currentlyLoaded.getPosition().x/blockSize), Math.round(currentlyLoaded.getPosition().y/blockSize));
 				}
-            }
-        }
+			}
+		}
 
 		fontSizeUserInput = getWindow().getScreenWidth() / 14;
 		textXCordUserInput = getWindow().getScreenWidth() / -4.5F;
@@ -212,8 +214,8 @@ public class GameScene extends Scene {
 		setRunning(true);
 		getWindow().setTitle(getSceneTitle());
 
-		getMusic().play();
-		getMusic().setLoop(true);
+		music.play();
+		music.setLoop(true);
 		Clock clock = new Clock();
 		Clock timer = new Clock();
 
@@ -243,7 +245,7 @@ public class GameScene extends Scene {
 				}
 				getWindow().display();
 			} catch (Exception e) {
-				getMusic().stop();
+				music.stop();
 				System.out.println("There has been an issue drawing something, exiting to level menu\n\n");
 				e.printStackTrace();
 				setRunning(false);
@@ -267,7 +269,7 @@ public class GameScene extends Scene {
 					case LEFT:left = true;break;
 					case RIGHT:right = true;break;
 					case ESCAPE:
-						getMusic().stop();
+						music.stop();
 						exitScene(this);
 						break;
 					case M:
@@ -275,19 +277,22 @@ public class GameScene extends Scene {
 						musicPlaying(state); break;
 				}
 				break;
+
 			case JOYSTICK_BUTTON_PRESSED:
+
 				switch (event.asJoystickButtonEvent().button) {
+
 					case 0: left = true; break;
 					case 1: down = true; break;
 					case 2: right = true; break;
 					case 3: up = true; break;
-                    case 12:
-						getMusic().stop();
-                        exitScene(this);
-                        break;
-                    case 9:
-                        state = !state;
-                        musicPlaying(state); break;
+					case 12:
+						music.stop();
+						exitScene(this);
+						break;
+					case 9:
+						state = !state;
+						musicPlaying(state); break;
 				}
 				break;
 
@@ -301,7 +306,7 @@ public class GameScene extends Scene {
 					case LEFT:left = false;break;
 					case RIGHT:right = false;break;
 					case ESCAPE:
-						getMusic().stop();
+						music.stop();
 						exitScene(this);
 						break;
 				}
@@ -317,7 +322,7 @@ public class GameScene extends Scene {
 				}
 				break;
 			case CLOSED:
-				getMusic().stop();
+				music.stop();
 				systemExit();
 				break;
 		}
@@ -448,7 +453,7 @@ public class GameScene extends Scene {
 		window.draw(battery);
 
 		//Draw music button
-		window.draw(getMusicButton());
+		window.draw(musicButton);
 
 		//Draw score text
 		window.draw(txtScore);
@@ -513,7 +518,6 @@ public class GameScene extends Scene {
 				e.printStackTrace();
 			}
 		};
-
 		new Thread(r).start();
 	}
 
@@ -550,7 +554,6 @@ public class GameScene extends Scene {
 			message2.setColor(Color.BLACK);
 			message2.setStyle(Text.BOLD);
 			message2.setOrigin(textXCord + 35, textYCord - 40);
-
 		} catch (IOException e) {
 			System.err.println("There was a problem loading the finish window.");
 		}
@@ -559,14 +562,15 @@ public class GameScene extends Scene {
 		window.draw(message);
 		window.draw(message2);
 	}
-	public void drawUserName(RenderWindow window) {
 
+	public void drawUserName(RenderWindow window) {
 		Text un = new Text(userName, textFontUserInput, fontSizeUserInput);
 		un.setColor(Color.BLACK);
 		un.setStyle(Text.BOLD);
 		un.setOrigin(textXCordUserInput + 35, textYCordUserInput - 130);
 		window.draw(un);
 	}
+
 	public void listenForInput(Event event) {
 		switch (event.type) {
 			case TEXT_ENTERED:
@@ -588,15 +592,14 @@ public class GameScene extends Scene {
 		switch (event.type){
 			case KEY_PRESSED:
 				switch (event.asKeyEvent().key) {
-
 					case RETURN:
 						getWindow().setScene(getWindow().getArrayList().indexOf(0));
 						listeningForUserName = false;
 						break;
-
-			}
+				}
 		}
 	}
+
 	public void exportToDB() {
 		System.out.println("Username: "+userName);
 		System.out.println("Score: " +score);
@@ -606,6 +609,16 @@ public class GameScene extends Scene {
 		DatabaseConnection upload = new DatabaseConnection();
 		upload.uploadResult(userName, score, currentLevel, txtTime.getString().substring(7));
 		upload.clean();
+	}
+
+	public void musicPlaying(boolean state) {
+		if (!state) {
+			music.pause();
+			musicButton.setSelected(true);
+		} else {
+			musicButton.setSelected(false);
+			music.play();
+		}
 	}
 
 	public Vector2i rawPlayerToBlockPos(){
