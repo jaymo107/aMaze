@@ -211,7 +211,6 @@ public class LevelMenuScene extends Scene {
         blockSize = getWindow().getSize().x / blocks;
 
         tileMap = new Tile[blocks][blocks];
-
         for (int j = 0; j < blocks; j++) {
             for (int i = 0; i < blocks; i++) {
                 tileMap[i][j] = new Tile(blockSize * i, blockSize * j, blockSize, blockSize, tempTiles[i][j], tileTexture);
