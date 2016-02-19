@@ -82,8 +82,8 @@ public class MenuScene extends Scene {
 		clicked();
 		if (currentButton == 0) {
 			buttons[currentButton].setSelected(false);
-			buttons[NUMBER_OF_ITEMS - 1].setSelected(true);
-			currentButton = NUMBER_OF_ITEMS - 1;
+			buttons[3].setSelected(true);
+			currentButton = 3;
 		} else {
 			buttons[currentButton].setSelected(false);
 			buttons[--currentButton].setSelected(true);

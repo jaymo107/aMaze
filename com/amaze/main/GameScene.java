@@ -279,9 +279,7 @@ public class GameScene extends Scene {
 				break;
 
 			case JOYSTICK_BUTTON_PRESSED:
-
 				switch (event.asJoystickButtonEvent().button) {
-
 					case 0: left = true; break;
 					case 1: down = true; break;
 					case 2: right = true; break;
@@ -295,7 +293,6 @@ public class GameScene extends Scene {
 						musicPlaying(state); break;
 				}
 				break;
-
 		}
 		/* Sets boolean if the key has been released */
 		switch (event.type) {
@@ -615,9 +612,21 @@ public class GameScene extends Scene {
 		if (!state) {
 			music.pause();
 			musicButton.setSelected(true);
+			try {
+				musicButton.getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOff.png"));
+				musicButton.getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/musicOffsel.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} else {
 			musicButton.setSelected(false);
 			music.play();
+			try {
+				musicButton.getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOn.png"));
+				musicButton.getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/musicOnsel.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
