@@ -33,6 +33,7 @@ public class ExitButton extends Button {
      */
     public void performAction() {
         System.out.println("Exit Button Pressed");
+        getMenu().getMusic().stop();
         getWindow().close();
         System.exit(0);
     }
