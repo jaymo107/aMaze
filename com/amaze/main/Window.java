@@ -2,6 +2,7 @@ package com.amaze.main;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
+import org.jsfml.window.event.Event;
 
 import java.util.ArrayList;
 
@@ -81,6 +82,12 @@ public class Window extends RenderWindow{
     public int getScreenHeight() { return screenHeight; }
 
     public int getScreenWidth() { return screenWidth; }
+
+    public void setScreenWidth(int screenWidth){this.screenWidth = screenWidth; }
+
+    public void setScreenHeight(int screenHeight) {
+        this.screenHeight = screenHeight;
+    }
 
     /**
      * Obtains a scene's Displayable interface from ArrayList
