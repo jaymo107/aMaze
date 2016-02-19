@@ -107,6 +107,7 @@ public class MapMakerScene extends Scene {
 							drawExportWindow(getWindow());
 							getWindow().display();
 							pause(2000);
+							this.getWindow().create(new VideoMode(getWindow().getScreenWidth(),getWindow().getScreenHeight()), "aMaze");
 							exitScene(this);
 						}
 						break;
