@@ -151,7 +151,7 @@ public class MenuScene extends Scene {
                         webButton.performAction();
                         break;
                     case RETURN:
-                        music.stop();
+                        //music.stop();
                         enterPressed(); break;
                 }
                 break;
