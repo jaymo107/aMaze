@@ -1,5 +1,6 @@
 package com.amaze.main;
 
+import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
 
@@ -25,6 +26,7 @@ public class LevelMenuScene extends Scene {
     private Text charges;
     private Text walls;
     private Text doors;
+    private Music music;
 
 	public static final int MIN_LEVEL = 1;
 
@@ -34,9 +36,12 @@ public class LevelMenuScene extends Scene {
 
     int userLevelNumber = 1;
 
-    public LevelMenuScene(String sceneTitle, Window window) throws IOException {
+    public LevelMenuScene(String sceneTitle, Window window, Music music) throws IOException {
         super(sceneTitle, window);
         blocks = 0;
+
+        //Reference Music
+        this.music = music;
 
         //Create background
 		new Background(window.getScreenWidth(), window.getScreenHeight());
@@ -67,7 +72,7 @@ public class LevelMenuScene extends Scene {
         userLevel.setStyle(Text.BOLD);
         userLevel.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + fontSize);
 
-        changeBackground(userLevelNumber);
+        changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
 
         walls = new Text("Number Of Walls: ", arial, 30);
         walls.setString("Number of Walls: " +numberOfWalls);
@@ -117,7 +122,7 @@ public class LevelMenuScene extends Scene {
             userLevelNumber = results.size();
         }
         userLevel.setString("Level " + userLevelNumber);
-        changeBackground(userLevelNumber);
+        changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
         walls.setString("Number of Walls: " +numberOfWalls);
         charges.setString("Number of Charges: " +numberOfCharges);
         voids.setString("Number of Voids: " +numberOfVoids);
@@ -136,7 +141,7 @@ public class LevelMenuScene extends Scene {
             userLevelNumber--;
         }
         userLevel.setString("Level " + userLevelNumber);
-        changeBackground(userLevelNumber);
+        changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
         walls.setString("Number of Walls: " +numberOfWalls);
         charges.setString("Number of Charges: " +numberOfCharges);
         voids.setString("Number of Voids: " +numberOfVoids);
@@ -155,6 +160,7 @@ public class LevelMenuScene extends Scene {
 		Driver.BLOCK_SIZE = Driver.WINDOW_SIZE / level.getSizeOfMaze();
         GameScene game = new GameScene("Game", getWindow(), level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel(), userLevelNumber);
 
+        music.stop();
 		getWindow().addScene(game);
 		getWindow().getScene(getWindow().getArrayList().indexOf(game)).display();
         this.setRunning(false);
@@ -177,9 +183,9 @@ public class LevelMenuScene extends Scene {
         window.draw(doors);
     }
 
-    public void changeBackground(int levelNumber) {
+    public void changeBackground(int levelNumber, int blockSize) {
         Tile.BlockType[][] tempTiles;   //Holds reference to newly loaded tile map of the types
-        int blockSize;
+        //int blockSize;
 
         /* Cache textures before we start using them in order to increase performance */
         Texture tileTexture[] = new Texture[7];
@@ -208,7 +214,7 @@ public class LevelMenuScene extends Scene {
 
         /* Workout maze sizings */
         blocks = backgroundLevelLoader.getSizeOfMaze();
-        blockSize = getWindow().getSize().x / blocks;
+        //blockSize = getWindow().getSize().x / blocks;
 
         tileMap = new Tile[blocks][blocks];
 

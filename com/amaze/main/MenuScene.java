@@ -1,6 +1,7 @@
 package com.amaze.main;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
@@ -68,7 +69,7 @@ public class MenuScene extends Scene {
         music = new Music();
         click = new Music();
         try {
-            music.openFromFile(Paths.get("res/music/theme.wav"));
+            music.openFromFile(Paths.get("res/music/Chilled Music.wav"));
             click.openFromFile(Paths.get("res/music/Click.wav"));
         } catch (IOException e) {
             System.out.println("There was a problem loading the background music or click music.");
@@ -151,7 +152,7 @@ public class MenuScene extends Scene {
                         webButton.performAction();
                         break;
                     case RETURN:
-                        music.stop();
+                        //music.stop();
                         enterPressed(); break;
                 }
                 break;
@@ -185,6 +186,9 @@ public class MenuScene extends Scene {
                     case LEFT: enterPressed(); break;
                 }
                 break;
+            case RESIZED:
+                //getWindow().setScreenWidth(getWindow().getSize().x);
+                //getWindow().setScreenWidth(getWindow().getSize().y);
         }
     }
 
@@ -215,5 +219,9 @@ public class MenuScene extends Scene {
     public void clicked() {
 
         click.play();
+    }
+    public Music getMusic() {
+
+        return music;
     }
 }

@@ -107,6 +107,7 @@ public class MapMakerScene extends Scene {
 							drawExportWindow(getWindow());
 							getWindow().display();
 							pause(2000);
+							this.getWindow().create(new VideoMode(getWindow().getScreenWidth(),getWindow().getScreenHeight()), "aMaze");
 							exitScene(this);
 						}
 						break;
@@ -192,7 +193,7 @@ public class MapMakerScene extends Scene {
             System.out.println("Export Successful");
         }
         catch (IOException f) {
-            System.err.println("Export Failed");
+            System.out.println("Export Failed");
         }
     }
 
@@ -202,7 +203,11 @@ public class MapMakerScene extends Scene {
 		for (File f: files != null ? files : new File[0]) {
 			if (f.isFile()) {
 				String[] strings = f.getName().split(".txt");
-				Collections.addAll(results, Integer.parseInt(strings[0]));
+
+				if(!strings[0].equals(".DS_Store")){
+					Collections.addAll(results, Integer.parseInt(strings[0]));
+				}
+
 			}
 		}
 
