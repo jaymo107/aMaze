@@ -18,6 +18,7 @@ public class WebButton extends Button {
         super(xCord, yCord, width, height, window, menu);
 
         getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/web.png"));
+        getDefaultIcon().setSmooth(true);
         this.setTexture(getDefaultIcon());
 
     }
