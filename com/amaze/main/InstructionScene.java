@@ -30,14 +30,14 @@ public class InstructionScene extends Scene {
 
 
         //Loading of Background Image for Text box
-        backgroundImage1.loadFromFile(Paths.get("res/instructions/instructionsp1.png"));
+        backgroundImage1.loadFromFile(Paths.get("res/instructions/instructions p1.png"));
         backgroundImage1.setSmooth(true);
         textBackground1.setTexture(backgroundImage1);
 
-        backgroundImage2.loadFromFile(Paths.get("res/instructions/instructionsp2.png"));
+        backgroundImage2.loadFromFile(Paths.get("res/instructions/instructions p2.png"));
         backgroundImage2.setSmooth(true);
 
-        backgroundImage3.loadFromFile(Paths.get("res/instructions/instructionsp3.png"));
+        backgroundImage3.loadFromFile(Paths.get("res/instructions/instructions p3.png"));
         backgroundImage3.setSmooth(true);
     }
 
