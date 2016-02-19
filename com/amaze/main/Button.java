@@ -98,8 +98,6 @@ public abstract class Button extends RectangleShape {
 		Vector2i mousePos = Mouse.getPosition(getWindow());
 		Vector2f buttonPos = getPosition();
 
-		System.out.println("mousePos x = " + mousePos.x + ", mousePos y = " + mousePos.y);
-
 		return (mousePos.x > buttonPos.x &&
 				mousePos.y > buttonPos.y + 20 &&
 				mousePos.x < buttonPos.x + getSize().x &&
