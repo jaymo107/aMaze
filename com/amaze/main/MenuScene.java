@@ -1,6 +1,7 @@
 package com.amaze.main;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -58,14 +59,14 @@ public class MenuScene extends Scene {
 		buttons[4] = new MusicButton       (itemXCoord * 4.0F, itemYCoord * 3.5F, musicButtonWidth, musicButtonHeight, window, this);
 		buttons[5] = new WebButton         (itemXCoord * 0.2F, itemYCoord * 3.5F, webButtonWidth, webButtonHeight, window, this);
 
-		music = new Music();
-		click = new Music();
-		try {
-			music.openFromFile(Paths.get("res/music/theme.wav"));
-			click.openFromFile(Paths.get("res/music/Click.wav"));
-		} catch (IOException e) {
-			System.out.println("There was a problem loading the background music or click music.");
-		}
+        music = new Music();
+        click = new Music();
+        try {
+            music.openFromFile(Paths.get("res/music/Chilled Music.wav"));
+            click.openFromFile(Paths.get("res/music/Click.wav"));
+        } catch (IOException e) {
+            System.out.println("There was a problem loading the background music or click music.");
+        }
 
 
 		music.play();

@@ -33,6 +33,7 @@ public abstract class Scene implements Displayable {
 			}
 			getWindow().display();
 		} catch (Exception e) {
+			e.printStackTrace();
 			setRunning(false);
 		}
 	}

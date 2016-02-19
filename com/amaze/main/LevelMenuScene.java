@@ -72,7 +72,7 @@ public class LevelMenuScene extends Scene {
         userLevel.setStyle(Text.BOLD);
         userLevel.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + fontSize);
 
-        changeBackground(userLevelNumber);
+        changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
 
         walls = new Text("Number Of Walls: ", arial, 30);
         walls.setString("Number of Walls: " +numberOfWalls);
@@ -122,7 +122,7 @@ public class LevelMenuScene extends Scene {
             userLevelNumber = results.size();
         }
         userLevel.setString("Level " + userLevelNumber);
-        changeBackground(userLevelNumber);
+        changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
         walls.setString("Number of Walls: " +numberOfWalls);
         charges.setString("Number of Charges: " +numberOfCharges);
         voids.setString("Number of Voids: " +numberOfVoids);
@@ -141,7 +141,7 @@ public class LevelMenuScene extends Scene {
             userLevelNumber--;
         }
         userLevel.setString("Level " + userLevelNumber);
-        changeBackground(userLevelNumber);
+        changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
         walls.setString("Number of Walls: " +numberOfWalls);
         charges.setString("Number of Charges: " +numberOfCharges);
         voids.setString("Number of Voids: " +numberOfVoids);
@@ -183,9 +183,9 @@ public class LevelMenuScene extends Scene {
         window.draw(doors);
     }
 
-    public void changeBackground(int levelNumber) {
+    public void changeBackground(int levelNumber, int blockSize) {
         Tile.BlockType[][] tempTiles;   //Holds reference to newly loaded tile map of the types
-        int blockSize;
+        //int blockSize;
 
         /* Cache textures before we start using them in order to increase performance */
         Texture tileTexture[] = new Texture[7];
@@ -214,7 +214,7 @@ public class LevelMenuScene extends Scene {
 
         /* Workout maze sizings */
         blocks = backgroundLevelLoader.getSizeOfMaze();
-        blockSize = getWindow().getSize().x / blocks;
+        //blockSize = getWindow().getSize().x / blocks;
 
         tileMap = new Tile[blocks][blocks];
 
