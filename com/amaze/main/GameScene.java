@@ -605,6 +605,7 @@ public class GameScene extends Scene {
 
 							userName = "defaultUser";
 						}
+						music.stop();
 						getWindow().setScene(getWindow().getArrayList().indexOf(0));
 						listeningForUserName = false;
 						break;
