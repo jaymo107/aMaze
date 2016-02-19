@@ -20,6 +20,7 @@ public class MenuScene extends Scene {
     private Music music;
     private Music click;
     private Button musicButton;
+    private Button webButton;
     private boolean state = true;
 
     /**
@@ -48,6 +49,11 @@ public class MenuScene extends Scene {
         float musicButtonXCord = window.getScreenWidth() / 1.15F;
         float musicButtonYCord = window.getScreenHeight() / 1.15F;
 
+        float webButtonHeight = window.getScreenHeight() / 12;
+        float webButtonWidth = window.getScreenHeight() / 12;
+        float webButtonXCord = window.getScreenWidth() / 21.15F;
+        float webButtonYCord = window.getScreenHeight() / 1.15F;
+
         background = new Background(window.getScreenWidth(), window.getScreenHeight());
 
         title = new Title                (titleXCord, titleYCord,        titleWidth, titleHeight);
@@ -57,6 +63,7 @@ public class MenuScene extends Scene {
         buttons[3] = new ExitButton      (itemXCoord, itemYCoord * 2.8F, itemWidth, itemHeight,  window, this);
 
         musicButton = new MusicButton(musicButtonXCord, musicButtonYCord, musicButtonWidth, musicButtonHeight, window, this);
+        webButton = new WebButton(webButtonXCord, webButtonYCord, webButtonWidth, webButtonHeight, window, this);
 
         music = new Music();
         click = new Music();
@@ -140,6 +147,9 @@ public class MenuScene extends Scene {
                     case M:
                         state = !state;
                         musicPlaying(state); break;
+                    case N:
+                        webButton.performAction();
+                        break;
                     case RETURN:
                         music.stop();
                         enterPressed(); break;
@@ -189,6 +199,7 @@ public class MenuScene extends Scene {
             window.draw(b);
         }
         window.draw(musicButton);
+        window.draw(webButton);
 
         window.draw(title);
     }
