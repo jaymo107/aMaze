@@ -164,7 +164,10 @@ public class GameScene extends Scene {
 
 				if (currentlyLoaded.getTileType() == Tile.BlockType.START) {
 					player.setPosition(currentlyLoaded.getPosition());
-					startTile = new Vector2i(Math.round(player.getPosition().x/blockSize), Math.round(player.getPosition().y/blockSize));
+					Vector2f temp = currentlyLoaded.getPosition();
+					Vector2i temp2 = new Vector2i((int)temp.x,(int)temp.y);
+
+					startTile = temp2;//new Vector2i(Math.round(player.getPosition().x/blockSize), Math.round(player.getPosition().y/blockSize));
 				}
 				if (currentlyLoaded.getTileType() == Tile.BlockType.FINISH) {
 					endTile = new Vector2i(Math.round(currentlyLoaded.getPosition().x/blockSize), Math.round(currentlyLoaded.getPosition().y/blockSize));
@@ -245,10 +248,14 @@ public class GameScene extends Scene {
 				}
 				getWindow().display();
 			} catch (Exception e) {
-				music.stop();
-				System.out.println("There has been an issue drawing something, exiting to level menu\n\n");
-				e.printStackTrace();
-				setRunning(false);
+				//music.stop();
+				Vector2i temp = getStartTilePos();
+				Vector2f temp2 = new Vector2f(temp.x, temp.y);
+				player.move(temp2);
+				player.setPosition(temp.x, temp.y);
+				System.out.println("There has been an issue drawing something, moving player back to start! Don't try to glitch out the map!\n\n");
+				//e.printStackTrace();
+				//setRunning(false);
 			}
 		}
 	}
