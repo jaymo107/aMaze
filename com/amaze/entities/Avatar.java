@@ -47,18 +47,19 @@ public class Avatar extends RectangleShape {
         left = new Texture();
         right = new Texture();
 
+
         direction = "DOWN";
 
         Random random = new Random();
         imageNumber = random.nextInt(this.maxImageNumber) + 1;
-        
+
         try{
         //load in the directions
         up.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/UP.png"));
         down.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/DOWN.png"));
         left.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/LEFT.png"));
         right.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/RIGHT.png"));
-        
+
         }catch(Exception e){
           e.printStackTrace();
         }
@@ -77,11 +78,11 @@ public class Avatar extends RectangleShape {
     public void changeLevel(int levelNumber) {
 
     }
-    
+
     public Vector2i getTilePosition() {
 		return new Vector2i(Math.round(this.getPosition().x / GameScene.getBlockSize()), Math.round(this.getPosition().y / GameScene.getBlockSize()));
     }
-    
+
     /**
      * Event for when the user has moved tiles
      */
@@ -119,13 +120,13 @@ public class Avatar extends RectangleShape {
     public void setTimeSpentInVoid(int timeSpentInVoid) {
         this.timeSpentInVoid = timeSpentInVoid;
     }
-    
+
     public int getImageNumber(){
       return this.imageNumber;
     }
-    
+
     public void updateImageDirection(String direction){
-      
+
       switch(direction){
         case "UP":
           this.setTexture(up);

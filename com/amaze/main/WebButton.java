@@ -1,11 +1,6 @@
 package com.amaze.main;
 
-import java.awt.*;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Paths;
 
 /**
@@ -18,7 +13,11 @@ public class WebButton extends Button {
         super(xCord, yCord, width, height, window, menu);
 
         getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/web.png"));
+<<<<<<< HEAD
         getDefaultIcon().setSmooth(true);
+=======
+		getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/webSel.png"));
+>>>>>>> origin/master
         this.setTexture(getDefaultIcon());
 
     }
