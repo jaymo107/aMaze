@@ -17,11 +17,15 @@ import java.util.Random;
  */
 public class Avatar extends RectangleShape {
 
-	private int level;                  // Level that player is on
+	  private int level;                  // Level that player is on
     private int score;                  // Holds player score
     private Vector2i oldTile;
     private int numberOfChargesPickedUp;
     private int timeSpentInVoid;
+    private int imageNumber;
+    private int maxImageNumber = 2;
+    private Texture t;
+    private String direction;
 
     /**
      * Produces and avatar for the game and picks the texture of the avatar randomly
@@ -35,7 +39,7 @@ public class Avatar extends RectangleShape {
         score = 0;
         numberOfChargesPickedUp = 0;
         timeSpentInVoid = 0;
-        Texture t = new Texture();
+        t = new Texture();
 
         ArrayList<String> avatarFileNames = new ArrayList<>();
 
@@ -46,13 +50,21 @@ public class Avatar extends RectangleShape {
                 avatarFileNames.add(file.getName());
             }
         }
+        
+        direction = "DOWN";
 
         Random random = new Random();
+        imageNumber = random.nextInt(this.maxImageNumber) + 1;
+       
         String randomImagePath = avatarFileNames.get(random.nextInt(avatarFileNames.size() - 1 + 1));
+        
+        
+        
+        //System.out.println(avatarFileNames.get(0).toString());
 
 		try{
-            t.loadFromFile(Paths.get("res/avatars/" + randomImagePath));
-            System.out.println(randomImagePath);
+            t.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/down.png"));
+            
         }catch (IOException e){
             System.out.println("There is either no avatar in the folder or a hidden file that needs to be deleted");
         }
@@ -112,6 +124,21 @@ public class Avatar extends RectangleShape {
     /* Charge Options */
     public void setTimeSpentInVoid(int timeSpentInVoid) {
         this.timeSpentInVoid = timeSpentInVoid;
+    }
+    
+    public int getImageNumber(){
+      return this.imageNumber;
+    }
+    
+    public void updateImageDirection(String direction){
+      try {
+        if(this.direction != direction){
+          t.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/"+direction+".png"));
+          this.direction = direction;
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
 
     public int getTimeSpentInVoid() {

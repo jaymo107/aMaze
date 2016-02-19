@@ -467,18 +467,22 @@ public class GameScene extends Scene {
 		if (up && getPlayerY() >= 0) {
 			player.move(0, -1);
 			detectionHandler(detectCollision(), "DOWN");
+			player.updateImageDirection("UP");
 		}
 		else if (down && getPlayerY() <= translateY(blockCount - 1)) {
 			player.move(0, 1);
 			detectionHandler(detectCollision(), "UP");
+			player.updateImageDirection("DOWN");
 		}
 		else if (left && getPlayerX() >= 0) {
 			player.move(-1, 0);
 			detectionHandler(detectCollision(), "RIGHT");
+			player.updateImageDirection("LEFT");
 		}
 		else if (right && getPlayerX() < translateY(blockCount - 1)) {
 			player.move(1, 0);
 			detectionHandler(detectCollision(), "LEFT");
+			player.updateImageDirection("RIGHT");
 		}
 	}
 
