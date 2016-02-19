@@ -13,7 +13,7 @@ public class MusicButton extends Button {
         super(xCord, yCord, width, height, window, menu);
 
 		getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOn.png"));
-        getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/musicOff.png"));
+        getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/musicOnsel.png"));
         this.setTexture(getDefaultIcon());
     }
 
@@ -22,7 +22,7 @@ public class MusicButton extends Button {
         super(xCord, yCord, width, height, window);
 
 		getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/musicOn.png"));
-        getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/musicOff.png"));
+        getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/musicOnsel.png"));
         getDefaultIcon().setSmooth(true);
         getSelectedIcon().setSmooth(true);
         this.setTexture(getDefaultIcon());
@@ -31,4 +31,5 @@ public class MusicButton extends Button {
 	public void performAction() {
         System.out.println("Music Button Pressed");
     }
+
 }

@@ -1,11 +1,6 @@
 package com.amaze.main;
 
-import java.awt.*;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Paths;
 
 /**
