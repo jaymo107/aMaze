@@ -1,8 +1,10 @@
 package com.amaze.main;
 
 import com.amaze.MapMaker.MapMakerScene;
+import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.event.Event;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -23,10 +25,14 @@ public class GridSelectionScene extends Scene {
     private int mapWidth = 5;
     private int mapHeight = 5;
 
+    private Music music;
+
 	Tile[][] tileMap;                           //Used for displaying map in background
 
-    public GridSelectionScene(String sceneTitle, Window window) throws IOException {
+    public GridSelectionScene(String sceneTitle, Window window, Music music) throws IOException {
         super(sceneTitle, window);
+
+        this.music = music;
         blocks = 0;
 
         //Create background
@@ -94,6 +100,66 @@ public class GridSelectionScene extends Scene {
             mapWidth--;
         }
         userLevel.setString(mapWidth + " X " + mapHeight);
+    }
+    /**
+     * When invoked, this function is responsible for executing appropriate
+     * set of steps depending on the event.
+     * @param event - input based event (e.g arrow key up)
+     */
+    public void executeEvent(Event event) {
+        switch (event.type) {
+            case CLOSED:
+                music.stop();
+                systemExit();
+                break;
+            case KEY_PRESSED:
+                switch (event.asKeyEvent().key) {
+                    case UP: arrowKeyUp(); break;
+                    case DOWN: arrowKeyDown(); break;
+                    case ESCAPE: exitScene(this); break;
+                    case RETURN:
+                        try {
+                            enterPressed();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                break;
+            case MOUSE_BUTTON_PRESSED:
+                switch (event.asMouseButtonEvent().button) {
+                    case LEFT:
+                        try {
+                            enterPressed();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                break;
+            case MOUSE_WHEEL_MOVED:
+                if (event.asMouseWheelEvent().delta < 0) {
+                    arrowKeyDown();
+                } else {
+                    arrowKeyUp();
+                }
+                break;
+            case JOYSTICK_BUTTON_PRESSED:
+                System.out.println(event.asJoystickButtonEvent().button);
+                switch (event.asJoystickButtonEvent().button) {
+                    case 1: arrowKeyDown();break;
+                    case 3: arrowKeyUp();break;
+                    case 12: exitScene(this); break;
+                    case 13:
+                        try {
+                            enterPressed();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                break;
+        }
     }
 
     /**

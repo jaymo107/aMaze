@@ -1,5 +1,6 @@
 package com.amaze.main;
 
+import org.jsfml.audio.Music;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Texture;
@@ -16,9 +17,12 @@ public class InstructionScene extends Scene {
     private Texture backgroundImage2 = new Texture();
     private Texture backgroundImage3 = new Texture();
     private int currentInstructionScene = 1;
+    private Music music;
 
-	public InstructionScene(String sceneTitle, Window window) throws IOException {
+	public InstructionScene(String sceneTitle, Window window, Music music) throws IOException {
         super(sceneTitle,window);
+
+        this.music = music;
 
 		//Create background
         textBackground1 = new Background(window.getScreenWidth(), window.getScreenHeight());
@@ -49,6 +53,7 @@ public class InstructionScene extends Scene {
 
         switch (event.type) {
             case CLOSED:
+                music.stop();
                 systemExit();
                 break;
             case KEY_PRESSED:

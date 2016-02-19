@@ -70,6 +70,7 @@ public class MenuScene extends Scene {
 
 
 		music.play();
+		music.setLoop(true);
 		buttons[0].setSelected(true);
 
 	}
@@ -151,7 +152,6 @@ public class MenuScene extends Scene {
 						buttons[5].performAction();
 						break;
 					case RETURN:
-						//music.stop();
 						enterPressed(); break;
 				}
 				break;
