@@ -104,8 +104,7 @@ public class MapMakerScene extends Scene {
 							displayTitle("\"Must have one start and \n\t\t\tone finish",15);
 						} else {
 							outputLevel();
-							drawExportWindow(getWindow());
-							getWindow().display();
+							displayTitle("Export Successful", 12);
 							pause(2000);
 							this.getWindow().create(new VideoMode(getWindow().getScreenWidth(),getWindow().getScreenHeight()), "aMaze");
 							exitScene(this);
