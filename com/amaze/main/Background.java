@@ -16,6 +16,7 @@ import java.util.Random;
 public class Background extends RectangleShape {
 
     ArrayList<String> results = new ArrayList<>();
+    String currentTheme;
 
     /**
      * Construct a button with following parameters:
@@ -24,37 +25,38 @@ public class Background extends RectangleShape {
      * @param height - height of the background
      */
     public Background(float width, float height) throws IOException {
-		Vector2f size = new Vector2f(width, height);
-		Texture icon = new Texture();
 
-        ArrayList<String> themes = new ArrayList<>();
 
-        File[] files = new File("res/menuGraphics/Theme").listFiles();
+            Vector2f size = new Vector2f(width, height);
+            Texture icon = new Texture();
 
-        for(File file: files != null ? files : new File[0]) {
-            if (file.isFile()) {
-                if((file.getName()).startsWith(".")) {
-                    continue;
+            ArrayList<String> themes = new ArrayList<>();
+
+            File[] files = new File("res/menuGraphics/Theme").listFiles();
+
+            for (File file : files != null ? files : new File[0]) {
+                if (file.isFile()) {
+                    if ((file.getName()).startsWith(".")) {
+                        continue;
+                    }
+                    themes.add(file.getName());
                 }
-                themes.add(file.getName());
-                System.out.println(themes);
             }
-        }
 
-        Random random = new Random();
-        String randomImagePath = themes.get(random.nextInt(themes.size()- 1 + 1));
+            Random random = new Random();
+            String randomImagePath = themes.get(random.nextInt(themes.size() - 1 + 1));
 
-        try{
-            icon.loadFromFile(Paths.get("res/menuGraphics/Theme/" + randomImagePath));
-            System.out.println(randomImagePath);
-        }catch (IOException e){
-            System.out.println("There is either no avatar in the folder or a hidden file that needs to be deleted");
-        }
+            try {
+                currentTheme = "res/menuGraphics/Theme/" + randomImagePath;
+                icon.loadFromFile(Paths.get(currentTheme));
 
-        this.setTexture(icon);
-        icon.setSmooth(true);
-        this.setSize(size);
+                System.out.println(randomImagePath);
+            } catch (IOException e) {
+                System.out.println("There is either no avatar in the folder or a hidden file that needs to be deleted");
+            }
+            this.setTexture(icon);
+            icon.setSmooth(true);
+            this.setSize(size);
     }
-
 }
 

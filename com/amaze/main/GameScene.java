@@ -581,6 +581,10 @@ public class GameScene extends Scene {
 
 	public void listenForInput(Event event) {
 		switch (event.type) {
+			case CLOSED:
+				music.stop();
+				systemExit();
+				break;
 			case TEXT_ENTERED:
 				if (event.asTextEvent().unicode >= 32 && event.asTextEvent().unicode <= 126) {
 					if (userName.length() >= 200) break;
@@ -598,6 +602,10 @@ public class GameScene extends Scene {
 				}
 		}
 		switch (event.type){
+			case CLOSED:
+				music.stop();
+				systemExit();
+				break;
 			case KEY_PRESSED:
 				switch (event.asKeyEvent().key) {
 					case RETURN:
@@ -605,6 +613,7 @@ public class GameScene extends Scene {
 
 							userName = "defaultUser";
 						}
+						music.stop();
 						getWindow().setScene(getWindow().getArrayList().indexOf(0));
 						listeningForUserName = false;
 						break;

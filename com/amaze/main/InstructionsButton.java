@@ -34,7 +34,7 @@ public class InstructionsButton extends Button {
     public void performAction() {
         System.out.println("Instruction Button Pressed");
         try {
-            InstructionScene instructionScene = new InstructionScene("Instructions", getWindow());
+            InstructionScene instructionScene = new InstructionScene("Instructions", getWindow(), getMenu().getMusic());
             getWindow().addScene(instructionScene);
 			getWindow().setScene(getWindow().getArrayList().indexOf(instructionScene));
             getMenu().setRunning(false);

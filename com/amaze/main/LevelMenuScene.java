@@ -3,6 +3,7 @@ package com.amaze.main;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.event.Event;
 
 import java.io.File;
 import java.io.IOException;
@@ -148,6 +149,61 @@ public class LevelMenuScene extends Scene {
         charges.setString("Number of Charges: " +numberOfCharges);
         voids.setString("Number of Voids: " +numberOfVoids);
         doors.setString("Number of Doors: " +numberOfDoors);
+    }
+    public void executeEvent(Event event) {
+        switch (event.type) {
+            case CLOSED:
+                music.stop();
+                systemExit();
+                break;
+            case KEY_PRESSED:
+                switch (event.asKeyEvent().key) {
+                    case UP: arrowKeyUp(); break;
+                    case DOWN: arrowKeyDown(); break;
+                    case ESCAPE: exitScene(this); break;
+                    case RETURN:
+                        try {
+                            enterPressed();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                break;
+            case MOUSE_BUTTON_PRESSED:
+                switch (event.asMouseButtonEvent().button) {
+                    case LEFT:
+                        try {
+                            enterPressed();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                break;
+            case MOUSE_WHEEL_MOVED:
+                if (event.asMouseWheelEvent().delta < 0) {
+                    arrowKeyDown();
+                } else {
+                    arrowKeyUp();
+                }
+                break;
+            case JOYSTICK_BUTTON_PRESSED:
+                System.out.println(event.asJoystickButtonEvent().button);
+                switch (event.asJoystickButtonEvent().button) {
+                    case 1: arrowKeyDown();break;
+                    case 3: arrowKeyUp();break;
+                    case 12: exitScene(this); break;
+                    case 13:
+                        try {
+                            enterPressed();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                break;
+        }
     }
 
     /**
