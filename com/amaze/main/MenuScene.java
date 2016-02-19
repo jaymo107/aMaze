@@ -1,6 +1,7 @@
 package com.amaze.main;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
@@ -185,6 +186,9 @@ public class MenuScene extends Scene {
                     case LEFT: enterPressed(); break;
                 }
                 break;
+            case RESIZED:
+                //getWindow().setScreenWidth(getWindow().getSize().x);
+                //getWindow().setScreenWidth(getWindow().getSize().y);
         }
     }
 
