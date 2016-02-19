@@ -1,6 +1,5 @@
 package com.amaze.main;
 
-import org.jsfml.audio.Music;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.event.Event;
@@ -13,9 +12,6 @@ public abstract class Scene implements Displayable {
     private Window window;              	//Object reference to the window class.
     private String sceneTitle;              //Title which is displayed on the window frame.
     private boolean running = false;        //State
-
-	private Music music;
-	private MusicButton musicButton;
 
     public Scene(String sceneTitle, Window window) {
         this.sceneTitle = sceneTitle;
@@ -136,32 +132,6 @@ public abstract class Scene implements Displayable {
 
 	public void enterPressed() throws Exception {}
 
-	public void musicPlaying(boolean state) {
-		//if (music == null|| musicButton == null) return;
-
-		if (!state) {
-			music.pause();
-			musicButton.setSelected(true);
-		} else {
-			musicButton.setSelected(false);
-			music.play();
-		}
-	}
-
-	public Music getMusic() {
-		return music;
-	}
-
-	public void setMusic(Music music) {
-		this.music = music;
-	}
-
-	public Button getMusicButton() {
-		return musicButton;
-	}
-
-	public void setMusicButton(MusicButton musicButton) {
-		this.musicButton = musicButton;
-	}
+	public void musicPlaying(boolean state) {}
 
 }
