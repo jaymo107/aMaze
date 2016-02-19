@@ -17,7 +17,10 @@ public class MenuScene extends Scene {
     private int currentButton = 0;                          // Track currently selected item in the menu.
     private Title title;
     private Background background;
+    private Music music;
     private Music click;
+    private Button musicButton;
+    private Button webButton;
     private boolean state = true;
 
     /**
@@ -46,6 +49,11 @@ public class MenuScene extends Scene {
         float musicButtonXCord = window.getScreenWidth() / 1.15F;
         float musicButtonYCord = window.getScreenHeight() / 1.15F;
 
+        float webButtonHeight = window.getScreenHeight() / 12;
+        float webButtonWidth = window.getScreenHeight() / 12;
+        float webButtonXCord = window.getScreenWidth() / 21.15F;
+        float webButtonYCord = window.getScreenHeight() / 1.15F;
+
         background = new Background(window.getScreenWidth(), window.getScreenHeight());
 
         title = new Title                (titleXCord, titleYCord,        titleWidth, titleHeight);
@@ -54,19 +62,20 @@ public class MenuScene extends Scene {
         buttons[2] = new InstructionsButton(itemXCoord, itemYCoord * 2.2F, itemWidth, itemHeight,  window, this);
         buttons[3] = new ExitButton      (itemXCoord, itemYCoord * 2.8F, itemWidth, itemHeight,  window, this);
 
-        setMusicButton(new MusicButton(musicButtonXCord, musicButtonYCord, musicButtonWidth, musicButtonHeight, window, this));
+        musicButton = new MusicButton(musicButtonXCord, musicButtonYCord, musicButtonWidth, musicButtonHeight, window, this);
+        webButton = new WebButton(webButtonXCord, webButtonYCord, webButtonWidth, webButtonHeight, window, this);
 
-        setMusic(new Music());
+        music = new Music();
         click = new Music();
-
         try {
-            getMusic().openFromFile(Paths.get("res/music/theme.wav"));
+            music.openFromFile(Paths.get("res/music/theme.wav"));
             click.openFromFile(Paths.get("res/music/Click.wav"));
         } catch (IOException e) {
             System.out.println("There was a problem loading the background music or click music.");
         }
 
-        getMusic().play();
+
+        music.play();
         buttons[0].setSelected(true);
 
     }
@@ -128,7 +137,7 @@ public class MenuScene extends Scene {
     public void executeEvent(Event event) {
         switch(event.type) {
             case CLOSED:
-                getMusic().stop();
+                music.stop();
                 systemExit();
                 break;
             case KEY_PRESSED:
@@ -138,6 +147,9 @@ public class MenuScene extends Scene {
                     case M:
                         state = !state;
                         musicPlaying(state); break;
+                    case N:
+                        webButton.performAction();
+                        break;
                     case RETURN:
                         enterPressed(); break;
                 }
@@ -182,11 +194,15 @@ public class MenuScene extends Scene {
         for(Button b: getButtons()) {
             window.draw(b);
         }
-        window.draw(getMusicButton());
+        window.draw(musicButton);
+        window.draw(webButton);
+
+        //window.draw(getMusicButton());
         window.draw(title);
     }
 
     public void clicked() {
+
         click.play();
     }
 
