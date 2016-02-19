@@ -103,7 +103,9 @@ public class LevelMenuScene extends Scene {
 
         for(File file: files != null ? files : new File[0]) {
             if(file.isFile()) {
-                results.add(file.getName());
+                if(!file.getName().startsWith(".")){
+                    results.add(file.getName());
+                }
             }
         }
         System.out.println(results);
@@ -116,7 +118,7 @@ public class LevelMenuScene extends Scene {
      */
 
     public void arrowKeyUp() {
-        if(userLevelNumber < results.size()) {
+        if(userLevelNumber < results.size() - 2) {
             userLevelNumber++;
         } else {
             userLevelNumber = results.size();
