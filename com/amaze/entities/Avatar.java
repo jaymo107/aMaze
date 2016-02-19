@@ -41,26 +41,11 @@ public class Avatar extends RectangleShape {
         timeSpentInVoid = 0;
         t = new Texture();
 
-        ArrayList<String> avatarFileNames = new ArrayList<>();
-
-        File[] files = new File("res/avatars").listFiles();
-
-        for(File file: files != null ? files : new File[0]) {
-            if (file.isFile()) {
-                avatarFileNames.add(file.getName());
-            }
-        }
-        
         direction = "DOWN";
 
         Random random = new Random();
         imageNumber = random.nextInt(this.maxImageNumber) + 1;
-       
-        String randomImagePath = avatarFileNames.get(random.nextInt(avatarFileNames.size() - 1 + 1));
-        
-        
-        
-        //System.out.println(avatarFileNames.get(0).toString());
+
 
 		try{
             t.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/down.png"));
@@ -131,14 +116,17 @@ public class Avatar extends RectangleShape {
     }
     
     public void updateImageDirection(String direction){
-      try {
-        if(this.direction != direction){
-          t.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/"+direction+".png"));
-          this.direction = direction;
+      
+        try {
+          if(!direction.equals(this.direction)){
+            t.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/"+direction+".png"));
+            this.direction = direction;
+          }
+          
+        } catch (IOException e) {
+          e.printStackTrace();
         }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      
     }
 
     public int getTimeSpentInVoid() {
