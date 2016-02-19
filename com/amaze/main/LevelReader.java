@@ -56,6 +56,7 @@ public class LevelReader {
     }
 
     public void loadMap(String levelNumber) throws IOException {
+
         StringBuilder stringBuilder = new StringBuilder();
         int i;
         int x = 0;

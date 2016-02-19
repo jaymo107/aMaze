@@ -23,6 +23,7 @@ public class GameScene extends Scene {
 	private Tile[][] tileMap;           //Represents the maze
 	private Avatar player;              //Represents the player(avatar)
 	private Battery battery;            //
+	private Music music;                //Background music
 	private FogOfWar fog;
 	private Text txtScore;
 	private Text txtTime;
@@ -45,6 +46,7 @@ public class GameScene extends Scene {
 	private RectangleShape textBackground;
 	private Text message;
 	private Text message2;
+	private MusicButton musicButton;
 
 	private int fontSizeUserInput;
 	private float textXCordUserInput;
@@ -112,12 +114,12 @@ public class GameScene extends Scene {
 		battery = new Battery(batteryXCord, batteryYCord, 6, window);
 
         /* Load background music */
-		setMusic(new Music());
+		music = new Music();
 		chargesSound = new Music();
 		voidsSound = new Music();
 		try {
 			String musicPaths[] = {"res/music/gs2.wav", "res/music/gs3.wav", "res/music/move.ogg"};
-			getMusic().openFromFile(Paths.get(musicPaths[new Random().nextInt(musicPaths.length)]));
+			music.openFromFile(Paths.get(musicPaths[new Random().nextInt(musicPaths.length)]));
 			chargesSound.openFromFile(Paths.get("res/music/Charge.wav"));
 			voidsSound.openFromFile(Paths.get("res/music/Void.wav"));
 		} catch (IOException e) {
@@ -153,7 +155,7 @@ public class GameScene extends Scene {
 		float musicButtonXCord = window.getScreenWidth() / 3F;
 		float musicButtonYCord = window.getScreenHeight() / 1.08F;
 
-		setMusicButton(new MusicButton(musicButtonXCord,musicButtonYCord,musicButtonWidth,musicButtonHeight, window));
+		musicButton = new MusicButton(musicButtonXCord,musicButtonYCord,musicButtonWidth,musicButtonHeight, window);
 
         /* Change avatar location */
 		for(int i = 0;i < blocks; i++){
@@ -212,8 +214,8 @@ public class GameScene extends Scene {
 		setRunning(true);
 		getWindow().setTitle(getSceneTitle());
 
-		getMusic().play();
-		getMusic().setLoop(true);
+		music.play();
+		music.setLoop(true);
 		Clock clock = new Clock();
 		Clock timer = new Clock();
 
@@ -243,7 +245,7 @@ public class GameScene extends Scene {
 				}
 				getWindow().display();
 			} catch (Exception e) {
-				getMusic().stop();
+				music.stop();
 				System.out.println("There has been an issue drawing something, exiting to level menu\n\n");
 				e.printStackTrace();
 				setRunning(false);
@@ -267,7 +269,7 @@ public class GameScene extends Scene {
 					case LEFT:left = true;break;
 					case RIGHT:right = true;break;
 					case ESCAPE:
-						getMusic().stop();
+						music.stop();
 						exitScene(this);
 						break;
 					case M:
@@ -285,7 +287,7 @@ public class GameScene extends Scene {
 					case 2: right = true; break;
 					case 3: up = true; break;
 					case 12:
-						getMusic().stop();
+						music.stop();
 						exitScene(this);
 						break;
 					case 9:
@@ -304,7 +306,7 @@ public class GameScene extends Scene {
 					case LEFT:left = false;break;
 					case RIGHT:right = false;break;
 					case ESCAPE:
-						getMusic().stop();
+						music.stop();
 						exitScene(this);
 						break;
 				}
@@ -320,7 +322,7 @@ public class GameScene extends Scene {
 				}
 				break;
 			case CLOSED:
-				getMusic().stop();
+				music.stop();
 				systemExit();
 				break;
 		}
@@ -451,7 +453,7 @@ public class GameScene extends Scene {
 		window.draw(battery);
 
 		//Draw music button
-		window.draw(getMusicButton());
+		window.draw(musicButton);
 
 		//Draw score text
 		window.draw(txtScore);
@@ -607,6 +609,16 @@ public class GameScene extends Scene {
 		DatabaseConnection upload = new DatabaseConnection();
 		upload.uploadResult(userName, score, currentLevel, txtTime.getString().substring(7));
 		upload.clean();
+	}
+
+	public void musicPlaying(boolean state) {
+		if (!state) {
+			music.pause();
+			musicButton.setSelected(true);
+		} else {
+			musicButton.setSelected(false);
+			music.play();
+		}
 	}
 
 	public Vector2i rawPlayerToBlockPos(){

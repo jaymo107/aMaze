@@ -151,18 +151,23 @@ public class MenuScene extends Scene {
                         webButton.performAction();
                         break;
                     case RETURN:
+                        music.stop();
                         enterPressed(); break;
                 }
                 break;
             case JOYSTICK_BUTTON_PRESSED:
+
                 System.out.println(event.asJoystickButtonEvent().button);
+
                 switch (event.asJoystickButtonEvent().button) {
+
                     case 1: arrowKeyDown();break;
                     case 3: arrowKeyUp();break;
                     case 9:
                         state = !state;
                         musicPlaying(state); break;
                     case 13:
+                        music.stop();
                         enterPressed(); break;
                 }
                 break;
@@ -177,8 +182,7 @@ public class MenuScene extends Scene {
                 break;
             case MOUSE_BUTTON_PRESSED:
                 switch (event.asMouseButtonEvent().button) {
-                    case LEFT:
-                        enterPressed(); break;
+                    case LEFT: enterPressed(); break;
                 }
                 break;
         }
@@ -197,10 +201,17 @@ public class MenuScene extends Scene {
         window.draw(musicButton);
         window.draw(webButton);
 
-        //window.draw(getMusicButton());
         window.draw(title);
     }
-
+    public void musicPlaying(boolean state) {
+        if (!state) {
+            music.pause();
+            musicButton.setSelected(true);
+        } else {
+            musicButton.setSelected(false);
+            music.play();
+        }
+    }
     public void clicked() {
 
         click.play();
