@@ -137,8 +137,6 @@ public abstract class Scene implements Displayable {
 	public void enterPressed() throws Exception {}
 
 	public void musicPlaying(boolean state) {
-		//if (music == null|| musicButton == null) return;
-
 		if (!state) {
 			music.pause();
 			musicButton.setSelected(true);

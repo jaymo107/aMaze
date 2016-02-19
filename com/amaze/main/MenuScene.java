@@ -207,5 +207,6 @@ public class MenuScene extends Scene {
     }
 
     public MenuScene getMenuScene() {return this;}
+    public Music getMusic() { return music;}
 
 }

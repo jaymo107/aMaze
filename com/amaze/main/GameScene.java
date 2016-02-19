@@ -656,5 +656,4 @@ public class GameScene extends Scene {
 			timeExposedToVoid = 0;
 		}
 	}
-
 }
