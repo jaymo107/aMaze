@@ -103,10 +103,9 @@ public class LevelMenuScene extends Scene {
 
         for(File file: files != null ? files : new File[0]) {
             if(file.isFile()) {
-                if((file.getName()).startsWith(".")) {
-                    continue;
+                if(!file.getName().startsWith(".")){
+                    results.add(file.getName());
                 }
-                results.add(file.getName());
             }
         }
         System.out.println(results);
@@ -119,7 +118,7 @@ public class LevelMenuScene extends Scene {
      */
 
     public void arrowKeyUp() {
-        if(userLevelNumber < results.size()) {
+        if(userLevelNumber < results.size() - 2) {
             userLevelNumber++;
         } else {
             userLevelNumber = results.size();
@@ -217,13 +216,14 @@ public class LevelMenuScene extends Scene {
 
         /* Workout maze sizings */
         blocks = backgroundLevelLoader.getSizeOfMaze();
-        //blockSize = getWindow().getSize().x / blocks;
 
+        int blockSizeX = getWindow().getScreenWidth() / blocks;
+        int blockSizeY = getWindow().getScreenHeight() / blocks;
         tileMap = new Tile[blocks][blocks];
 
         for (int j = 0; j < blocks; j++) {
             for (int i = 0; i < blocks; i++) {
-                tileMap[i][j] = new Tile(blockSize * i, blockSize * j, blockSize, blockSize, tempTiles[i][j], tileTexture);
+                tileMap[i][j] = new Tile(blockSizeX * i, blockSizeY * j, blockSizeX, blockSizeY, tempTiles[i][j], tileTexture);
             }
         }
 

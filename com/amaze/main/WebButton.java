@@ -13,6 +13,7 @@ public class WebButton extends Button {
         super(xCord, yCord, width, height, window, menu);
 
         getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/web.png"));
+		getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/webSel.png"));
         this.setTexture(getDefaultIcon());
 
     }
