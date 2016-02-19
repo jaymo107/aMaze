@@ -216,4 +216,8 @@ public class MenuScene extends Scene {
 
         click.play();
     }
+
+    public MenuScene getMenuScene() {return this;}
+    public Music getMusic() { return music;}
+
 }
