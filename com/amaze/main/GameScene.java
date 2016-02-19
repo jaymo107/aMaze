@@ -118,10 +118,10 @@ public class GameScene extends Scene {
 		chargesSound = new Music();
 		voidsSound = new Music();
 		try {
-			String musicPaths[] = {"res/music/gs2.wav", "res/music/gs3.wav", "res/music/move.ogg"};
+			String musicPaths[] = {"res/music/gs2.wav", "res/music/gs3.wav", "res/music/theme.wav"};
 			music.openFromFile(Paths.get(musicPaths[new Random().nextInt(musicPaths.length)]));
-			chargesSound.openFromFile(Paths.get("res/music/Charge.wav"));
-			voidsSound.openFromFile(Paths.get("res/music/Void.wav"));
+			chargesSound.openFromFile(Paths.get("res/music/Newcharge.wav"));
+			voidsSound.openFromFile(Paths.get("res/music/newvoid.wav"));
 		} catch (IOException e) {
 			System.out.println("There was a problem loading the background music \n Error: " + e);
 		}
@@ -375,7 +375,7 @@ public class GameScene extends Scene {
 				this.setRunning(false);
 			case VOID: break;
 			case CHARGE:
-				//chargeSound();
+				playChargeSoung();
 				battery.increaseChargeLevel(Battery.MAX - battery.getChargeLevel());
 				battery.changeChargeLevel(battery.getChargeLevel() + (Battery.MAX - battery.getChargeLevel()));
 				fog.increase();
@@ -593,6 +593,10 @@ public class GameScene extends Scene {
 			case KEY_PRESSED:
 				switch (event.asKeyEvent().key) {
 					case RETURN:
+						if(userName.equals("")) {
+
+							userName = "defaultUser";
+						}
 						getWindow().setScene(getWindow().getArrayList().indexOf(0));
 						listeningForUserName = false;
 						break;
@@ -646,6 +650,7 @@ public class GameScene extends Scene {
 					voidClockToggled = true;
 					Runnable r = () ->{
 						try {
+							playVoidSound();
 							battery.decreaseChargeLevel(1);
 							Thread.sleep(500);
 							fog.drain();
@@ -668,5 +673,14 @@ public class GameScene extends Scene {
 			timeExposedToVoid = 0;
 		}
 	}
+	public void playVoidSound() {
+
+		voidsSound.play();
+	}
+	public void playChargeSoung() {
+
+		chargesSound.play();
+	}
+
 
 }
