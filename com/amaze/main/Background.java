@@ -33,6 +33,9 @@ public class Background extends RectangleShape {
 
         for(File file: files != null ? files : new File[0]) {
             if (file.isFile()) {
+                if((file.getName()).startsWith(".")) {
+                    continue;
+                }
                 themes.add(file.getName());
                 System.out.println(themes);
             }
