@@ -103,6 +103,9 @@ public class LevelMenuScene extends Scene {
 
         for(File file: files != null ? files : new File[0]) {
             if(file.isFile()) {
+                if((file.getName()).startsWith(".")) {
+                    continue;
+                }
                 results.add(file.getName());
             }
         }
