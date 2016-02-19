@@ -24,7 +24,10 @@ public class Avatar extends RectangleShape {
     private int timeSpentInVoid;
     private int imageNumber;
     private int maxImageNumber = 2;
-    private Texture t;
+    private Texture up;
+    private Texture down;
+    private Texture left;
+    private Texture right;
     private String direction;
 
     /**
@@ -39,39 +42,31 @@ public class Avatar extends RectangleShape {
         score = 0;
         numberOfChargesPickedUp = 0;
         timeSpentInVoid = 0;
-        t = new Texture();
+        up = new Texture();
+        down = new Texture();
+        left = new Texture();
+        right = new Texture();
 
-        ArrayList<String> avatarFileNames = new ArrayList<>();
 
-        File[] files = new File("res/avatars").listFiles();
-
-        for(File file: files != null ? files : new File[0]) {
-            if (file.isFile()) {
-                avatarFileNames.add(file.getName());
-            }
-        }
-        
         direction = "DOWN";
 
         Random random = new Random();
         imageNumber = random.nextInt(this.maxImageNumber) + 1;
-       
-        String randomImagePath = avatarFileNames.get(random.nextInt(avatarFileNames.size() - 1 + 1));
-        
-        
-        
-        //System.out.println(avatarFileNames.get(0).toString());
 
-		try{
-            t.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/down.png"));
-            
-        }catch (IOException e){
-            System.out.println("There is either no avatar in the folder or a hidden file that needs to be deleted");
+        try{
+        //load in the directions
+        up.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/UP.png"));
+        down.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/DOWN.png"));
+        left.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/LEFT.png"));
+        right.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/RIGHT.png"));
+
+        }catch(Exception e){
+          e.printStackTrace();
         }
 
         this.setSize(new Vector2f((float)(blockSize / 1.2),(float)(blockSize / 1.2)));
         this.setPosition(startX,startY);
-        this.setTexture(t);
+        this.setTexture(down);
         this.oldTile = new Vector2i(0,0);
         System.out.println("");
     }
@@ -83,11 +78,11 @@ public class Avatar extends RectangleShape {
     public void changeLevel(int levelNumber) {
 
     }
-    
+
     public Vector2i getTilePosition() {
 		return new Vector2i(Math.round(this.getPosition().x / GameScene.getBlockSize()), Math.round(this.getPosition().y / GameScene.getBlockSize()));
     }
-    
+
     /**
      * Event for when the user has moved tiles
      */
@@ -125,20 +120,30 @@ public class Avatar extends RectangleShape {
     public void setTimeSpentInVoid(int timeSpentInVoid) {
         this.timeSpentInVoid = timeSpentInVoid;
     }
-    
+
     public int getImageNumber(){
       return this.imageNumber;
     }
-    
+
     public void updateImageDirection(String direction){
-      try {
-        if(this.direction != direction){
-          t.loadFromFile(Paths.get("res/avatars/" + imageNumber+"/"+direction+".png"));
-          this.direction = direction;
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
+
+      switch(direction){
+        case "UP":
+          this.setTexture(up);
+          break;
+        case "DOWN":
+          this.setTexture(down);
+          break;
+        case "LEFT":
+          this.setTexture(left);
+          break;
+        case "RIGHT":
+          this.setTexture(right);
+          break;
+         default:
+            this.setTexture(up);
       }
+
     }
 
     public int getTimeSpentInVoid() {
