@@ -1,9 +1,7 @@
 package com.amaze.main;
 
-import org.jsfml.audio.Music;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
-import org.jsfml.window.event.Event;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +26,6 @@ public class LevelMenuScene extends Scene {
     private Text walls;
     private Text doors;
 
-    private Music music;
-
 	public static final int MIN_LEVEL = 1;
 
     RectangleShape edgeFrame = new RectangleShape();
@@ -38,11 +34,9 @@ public class LevelMenuScene extends Scene {
 
     int userLevelNumber = 1;
 
-    public LevelMenuScene(String sceneTitle, Window window, Music music) throws IOException {
+    public LevelMenuScene(String sceneTitle, Window window) throws IOException {
         super(sceneTitle, window);
         blocks = 0;
-
-        this.music = music;
 
         //Create background
 		new Background(window.getScreenWidth(), window.getScreenHeight());
@@ -161,8 +155,6 @@ public class LevelMenuScene extends Scene {
 		Driver.BLOCK_SIZE = Driver.WINDOW_SIZE / level.getSizeOfMaze();
         GameScene game = new GameScene("Game", getWindow(), level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel(), userLevelNumber);
 
-        music.stop();
-
 		getWindow().addScene(game);
 		getWindow().getScene(getWindow().getArrayList().indexOf(game)).display();
         this.setRunning(false);
@@ -219,6 +211,7 @@ public class LevelMenuScene extends Scene {
         blockSize = getWindow().getSize().x / blocks;
 
         tileMap = new Tile[blocks][blocks];
+
         for (int j = 0; j < blocks; j++) {
             for (int i = 0; i < blocks; i++) {
                 tileMap[i][j] = new Tile(blockSize * i, blockSize * j, blockSize, blockSize, tempTiles[i][j], tileTexture);

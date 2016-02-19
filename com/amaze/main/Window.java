@@ -44,7 +44,7 @@ public class Window extends RenderWindow{
      * @param resolutionY Height in pixels(physical size of window)
      *
      * Example:
-     *                maze(1920,1080)
+     *                maze(1920,1080,25,25)
      *                This would create a window of 1920x1080 pixels but with 25 by 25
      *                grid to place objects into a maze
      */
