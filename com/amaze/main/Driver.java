@@ -36,7 +36,6 @@ class Driver{
 
         window.addScene(menu);
 
-
         /**
          * GameScene and LevelMenuScene calls are now happening in the appropriate places.
          * By doing this we don't need to allocate additional memory to store information about the game and level menu

@@ -214,13 +214,14 @@ public class LevelMenuScene extends Scene {
 
         /* Workout maze sizings */
         blocks = backgroundLevelLoader.getSizeOfMaze();
-        //blockSize = getWindow().getSize().x / blocks;
 
+        int blockSizeX = getWindow().getScreenWidth() / blocks;
+        int blockSizeY = getWindow().getScreenHeight() / blocks;
         tileMap = new Tile[blocks][blocks];
 
         for (int j = 0; j < blocks; j++) {
             for (int i = 0; i < blocks; i++) {
-                tileMap[i][j] = new Tile(blockSize * i, blockSize * j, blockSize, blockSize, tempTiles[i][j], tileTexture);
+                tileMap[i][j] = new Tile(blockSizeX * i, blockSizeY * j, blockSizeX, blockSizeY, tempTiles[i][j], tileTexture);
             }
         }
 
