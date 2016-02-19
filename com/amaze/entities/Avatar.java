@@ -47,6 +47,9 @@ public class Avatar extends RectangleShape {
 
         for(File file: files != null ? files : new File[0]) {
             if (file.isFile()) {
+                if((file.getName()).startsWith(".")) {
+                    continue;
+                }
                 avatarFileNames.add(file.getName());
             }
         }
