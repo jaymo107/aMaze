@@ -51,8 +51,8 @@ public class LevelMenuScene extends Scene {
         Font maze = new Font();
         Font arial = new Font();
         try {
-            maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
-            arial.loadFromFile(Paths.get("res/fonts/Arial.ttf"));
+            maze.loadFromFile(Paths.get("res/fonts/Roboto.ttf"));
+            arial.loadFromFile(Paths.get("res/fonts/Roboto.ttf"));
         } catch (IOException e){
             System.out.println("Could not load the font!");
         }

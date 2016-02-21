@@ -129,7 +129,7 @@ public class GameScene extends Scene {
 		/* Load font and text*/
 		Font scoreFont = new Font();
 		try {
-			scoreFont.loadFromFile(Paths.get("res/fonts/Arial.ttf"));
+			scoreFont.loadFromFile(Paths.get("res/fonts/Coolvetica.ttf"));
 		} catch (IOException e) {
 			System.out.println("Could not load the font!");
 		}
@@ -546,7 +546,7 @@ public class GameScene extends Scene {
 			textBackground.setPosition(textBackgroundXCord, textBackgroundYCord);
 
 			Font textFont = new Font();
-			textFont.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
+			textFont.loadFromFile(Paths.get("res/fonts/Roboto.ttf"));
 
 			float textXCord = getWindow().getScreenWidth() / -4.5F;
 			float textYCord = getWindow().getScreenHeight() / -2.8F;

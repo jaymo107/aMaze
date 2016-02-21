@@ -40,17 +40,17 @@ public class GridSelectionScene extends Scene {
 
         //Create Font
         Font maze = new Font();
-		maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
+		maze.loadFromFile(Paths.get("res/fonts/Roboto.ttf"));
 
-        float textBackgroundHeight = window.getScreenHeight() / 5;
+        float textBackgroundHeight = window.getScreenHeight() / 5 + 20;
         float textBackgroundWidth  = window.getScreenWidth() / 1.25F;
         float textBackgroundXCord  = window.getScreenWidth() / 2 - (textBackgroundWidth / 2);
-        float textBackgroundYCord  = window.getScreenHeight() / 2  - (textBackgroundHeight / 1.5F);
+        float textBackgroundYCord  = window.getScreenHeight() / 2  - (textBackgroundHeight / 1.5F) - 25;
 
         float textXCord = window.getScreenWidth() / -7.5F;
         float textYCord = window.getScreenHeight() / -3.4F;
 
-        int fontSize = window.getScreenWidth() / 4;
+        int fontSize = (window.getScreenWidth() / 4) - 20;
 
         Vector2f size = new Vector2f(textBackgroundWidth, textBackgroundHeight);
         textBackground = new RectangleShape(size);

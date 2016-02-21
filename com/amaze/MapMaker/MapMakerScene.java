@@ -228,7 +228,7 @@ public class MapMakerScene extends Scene {
 			textBackground = new RectangleShape(size);
 			textBackground.setPosition(textBackgroundXCord, textBackgroundYCord);
 
-			maze.loadFromFile(Paths.get("res/fonts/Maze.ttf"));
+			maze.loadFromFile(Paths.get("res/fonts/Roboto.ttf"));
 
 			Texture backgroundImage = new Texture();
 			backgroundImage.loadFromFile(Paths.get("res/menuGraphics/Wall.png"));
