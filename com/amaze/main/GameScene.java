@@ -355,7 +355,7 @@ public class GameScene extends Scene {
 	 */
 	public void detectionHandler(Tile tile, String reboundDir) {
 		switch (tile.getTileType()) {
-			case WALL: reboundPlayer(reboundDir); break;
+			case WALL: reboundPlayer(reboundDir); break; //reboundPlayer(reboundDir); break;
 			case DOOR: closeDoor(tile); break;
 			case START: break;
 			case FINISH:
@@ -398,7 +398,7 @@ public class GameScene extends Scene {
 	 * @param dir The direction the avatar should be rebounded.
 	 */
 	public void reboundPlayer(String dir) {
-		int reboundStep = 7; //Number of steps to rebound the player.
+		int reboundStep = blockSize / 2; //Number of steps to rebound the player.
 
 		switch (dir) {
 			case "UP":

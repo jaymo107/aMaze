@@ -10,7 +10,7 @@ class Driver{
     static int WINDOW_SIZE; //Resolution(number of pixels) on X/Y axis
 
 	public static void main(String[] args) throws Exception{
-        WINDOW_SIZE = 600;
+        WINDOW_SIZE = 750;
 
 		// Load Level and work out block size dynamically
         LevelReader level = new LevelReader();
