@@ -53,7 +53,7 @@ public class MenuScene extends Scene {
 		title = new Title                  (titleXCord, titleYCord,        titleWidth, titleHeight);
 		buttons[0] = new PlayButton        (itemXCoord, itemYCoord,        itemWidth, itemHeight,  window, this);
 		buttons[1] = new MapMakerButton    (itemXCoord, itemYCoord * 1.6F, itemWidth, itemHeight,  window, this);
-		buttons[2] = new InstructionsButton(itemXCoord, itemYCoord * 2.2F, itemWidth, itemHeight,  window, this);
+		buttons[2] = new InstructionsButton(itemXCoord, itemYCoord * 2.2F, itemWidth, itemHeight,  window, this, background.getCurrentTheme());
 		buttons[3] = new ExitButton        (itemXCoord, itemYCoord * 2.8F, itemWidth, itemHeight,  window, this);
 
 		buttons[4] = new MusicButton       (itemXCoord * 4.0F, itemYCoord * 3.5F, musicButtonWidth, musicButtonHeight, window, this);

@@ -7,6 +7,7 @@ import java.nio.file.Paths;
  * This class holds appropriate information about play button.
  */
 public class InstructionsButton extends Button {
+    String background;
 
     /**
      * Construct a button with following parameters:
@@ -17,9 +18,10 @@ public class InstructionsButton extends Button {
      * @param height - height of the button
      * @param window - reference to the main window
      */
-    public InstructionsButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
+    public InstructionsButton(float xCord, float yCord, float width, float height, Window window, MenuScene menu, String background) throws IOException {
         super(xCord, yCord, width, height, window, menu);
 
+        this.background = background;
         getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/instructions.png"));
         getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/instructionssel.png"));
         getDefaultIcon().setSmooth(true);
@@ -34,7 +36,7 @@ public class InstructionsButton extends Button {
     public void performAction() {
         System.out.println("Instruction Button Pressed");
         try {
-            InstructionScene instructionScene = new InstructionScene("Instructions", getWindow(), getMenu().getMusic());
+            InstructionScene instructionScene = new InstructionScene("Instructions", getWindow(), getMenu().getMusic(), background);
             getWindow().addScene(instructionScene);
 			getWindow().setScene(getWindow().getArrayList().indexOf(instructionScene));
             getMenu().setRunning(false);

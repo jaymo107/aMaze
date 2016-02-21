@@ -18,14 +18,15 @@ public class InstructionScene extends Scene {
     private Texture backgroundImage3 = new Texture();
     private int currentInstructionScene = 1;
     private Music music;
+    private Background mainBackground;
 
-	public InstructionScene(String sceneTitle, Window window, Music music) throws IOException {
+	public InstructionScene(String sceneTitle, Window window, Music music, String background) throws IOException {
         super(sceneTitle,window);
 
         this.music = music;
 
 		//Create background
-        textBackground1 = new Background(window.getScreenWidth(), window.getScreenHeight());
+        mainBackground = new Background(window.getScreenWidth(), window.getScreenHeight(),background);
 
         //Setting size of background shader (white part)
         Vector2f size = new Vector2f(window.getScreenWidth(), window.getScreenHeight());
@@ -34,18 +35,19 @@ public class InstructionScene extends Scene {
 
 
         //Loading of Background Image for Text box
-        backgroundImage1.loadFromFile(Paths.get("res/instructions/instructions p1.png"));
+        backgroundImage1.loadFromFile(Paths.get("res/instructions/instructionsp1.png"));
         backgroundImage1.setSmooth(true);
         textBackground1.setTexture(backgroundImage1);
 
-        backgroundImage2.loadFromFile(Paths.get("res/instructions/instructions p2.png"));
+        backgroundImage2.loadFromFile(Paths.get("res/instructions/instructionsp2.png"));
         backgroundImage2.setSmooth(true);
 
-        backgroundImage3.loadFromFile(Paths.get("res/instructions/instructions p3.png"));
+        backgroundImage3.loadFromFile(Paths.get("res/instructions/instructionsp3.png"));
         backgroundImage3.setSmooth(true);
     }
 
     public void drawGraphics(RenderWindow window) {
+        window.draw(mainBackground);
         window.draw(textBackground1);
     }
 
