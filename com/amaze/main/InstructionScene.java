@@ -16,6 +16,7 @@ public class InstructionScene extends Scene {
     private Texture backgroundImage1 = new Texture();
     private Texture backgroundImage2 = new Texture();
     private Texture backgroundImage3 = new Texture();
+    private Texture backgroundImage4 = new Texture();
     private int currentInstructionScene = 1;
     private Music music;
     private Background mainBackground;
@@ -44,6 +45,9 @@ public class InstructionScene extends Scene {
 
         backgroundImage3.loadFromFile(Paths.get("res/instructions/instructionsp3.png"));
         backgroundImage3.setSmooth(true);
+
+        backgroundImage4.loadFromFile(Paths.get("res/instructions/instructionsp4.png"));
+        backgroundImage4.setSmooth(true);
     }
 
     public void drawGraphics(RenderWindow window) {
@@ -115,7 +119,11 @@ public class InstructionScene extends Scene {
 
             textBackground1.setTexture(backgroundImage3);
         }
-        if(currentInstructionScene >= 4) {
+        if(currentInstructionScene == 4) {
+
+            textBackground1.setTexture(backgroundImage4);
+        }
+        if(currentInstructionScene >= 5) {
 
             exitScene(this);
         }
