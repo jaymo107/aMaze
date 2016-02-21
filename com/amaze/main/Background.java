@@ -58,5 +58,26 @@ public class Background extends RectangleShape {
             icon.setSmooth(true);
             this.setSize(size);
     }
+    public Background(float width, float height, String background)
+    {
+        Vector2f size = new Vector2f(width, height);
+        Texture icon = new Texture();
+
+        try {
+            currentTheme = background;
+            icon.loadFromFile(Paths.get(currentTheme));
+
+        } catch (IOException e) {
+            System.out.println("There is either no avatar in the folder or a hidden file that needs to be deleted");
+        }
+        this.setTexture(icon);
+        icon.setSmooth(true);
+        this.setSize(size);
+    }
+
+    public String getCurrentTheme()
+    {
+        return currentTheme;
+    }
 }
 
