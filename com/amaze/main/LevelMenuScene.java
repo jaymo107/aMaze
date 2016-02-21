@@ -71,33 +71,33 @@ public class LevelMenuScene extends Scene {
         userLevel = new Text("Level 1", maze, fontSize);
         userLevel.setColor(Color.BLACK);
         userLevel.setStyle(Text.BOLD);
-        userLevel.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + fontSize);
+        userLevel.setOrigin((-(window.getScreenWidth()/2.3F) + (fontSize * 1.5F)), -(window.getScreenHeight()/4) + fontSize);
 
         changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
 
-        walls = new Text("Number Of Walls: ", arial, 30);
-        walls.setString("Number of Walls: " +numberOfWalls);
+        walls = new Text("Walls:    ", arial, 30);
+        walls.setString("Walls: " +numberOfWalls);
         walls.setColor(Color.BLACK);
         walls.setStyle(Text.BOLD);
-        walls.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + fontSize);
+        walls.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)-100), -(window.getScreenHeight()/1.2F) + fontSize -190);
 
-        charges = new Text("Number Of Charges: ", arial, 30);
-        charges.setString("Number of Charges: " +numberOfCharges);
+        charges = new Text("Charges:    ", arial, 30);
+        charges.setString("Charges: " +numberOfCharges);
         charges.setColor(Color.BLACK);
         charges.setStyle(Text.BOLD);
-        charges.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + 1.2F*fontSize);
+        charges.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)-100), -(window.getScreenHeight()/1.2F) + 1.2F*fontSize -190);
 
-        voids = new Text("Number Of Voids: ", arial, 30);
-        voids.setString("Number of Voids: " +numberOfVoids);
+        voids = new Text("Voids:    ", arial, 30);
+        voids.setString("Voids: " +numberOfVoids);
         voids.setColor(Color.BLACK);
         voids.setStyle(Text.BOLD);
-        voids.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + 1.5F*fontSize);
+        voids.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F))-300, -(window.getScreenHeight()/1.2F) + fontSize -190);
 
-        doors = new Text("Number Of Doors: ", arial, 30);
-        doors.setString("Number of Doors: " +numberOfDoors);
+        doors = new Text("Doors:    ", arial, 30);
+        doors.setString("Doors: " +numberOfDoors);
         doors.setColor(Color.BLACK);
         doors.setStyle(Text.BOLD);
-        doors.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F)), -(window.getScreenHeight()/2) + 1.8F*fontSize);
+        doors.setOrigin((-(window.getScreenWidth()/2) + (fontSize * 1.85F))-300, -(window.getScreenHeight()/1.2F) + 1.2F*fontSize -190);
 
         //Following set of codes adds all the files to the located in Levels folder to results arrayList
         File[] files = new File("res/Levels").listFiles();
@@ -126,10 +126,10 @@ public class LevelMenuScene extends Scene {
         }
         userLevel.setString("Level " + userLevelNumber);
         changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
-        walls.setString("Number of Walls: " +numberOfWalls);
-        charges.setString("Number of Charges: " +numberOfCharges);
-        voids.setString("Number of Voids: " +numberOfVoids);
-        doors.setString("Number of Doors: " +numberOfDoors);
+        walls.setString("Walls: " +numberOfWalls);
+        charges.setString("Charges: " +numberOfCharges);
+        voids.setString("Voids: " +numberOfVoids);
+        doors.setString("Doors: " +numberOfDoors);
     }
 
     /**
@@ -145,10 +145,10 @@ public class LevelMenuScene extends Scene {
         }
         userLevel.setString("Level " + userLevelNumber);
         changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
-        walls.setString("Number of Walls: " +numberOfWalls);
-        charges.setString("Number of Charges: " +numberOfCharges);
-        voids.setString("Number of Voids: " +numberOfVoids);
-        doors.setString("Number of Doors: " +numberOfDoors);
+        walls.setString("Walls: " +numberOfWalls);
+        charges.setString("Charges: " +numberOfCharges);
+        voids.setString("Voids: " +numberOfVoids);
+        doors.setString("Doors: " +numberOfDoors);
     }
     public void executeEvent(Event event) {
         switch (event.type) {
