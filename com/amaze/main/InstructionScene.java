@@ -71,7 +71,18 @@ public class InstructionScene extends Scene {
                         break;
                 }
                 break;
+            case JOYSTICK_BUTTON_PRESSED:
+                System.out.println(event.asJoystickButtonEvent().button);
+                switch (event.asJoystickButtonEvent().button) {
+                    case 0: arrowKeyLeft();break;
+                    case 2: arrowKeyRight();break;
+                    case 12:
+                        exitScene(this);
+                        break;
+                }
+                break;
         }
+
     }
 
     public void arrowKeyRight() {

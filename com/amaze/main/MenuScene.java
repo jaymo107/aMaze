@@ -164,8 +164,10 @@ public class MenuScene extends Scene {
 						state = !state;
 						musicPlaying(state); break;
 					case 13:
-						music.stop();
 						enterPressed(); break;
+					case 8:
+						buttons[5].performAction();
+						break;
 				}
 				break;
 			case MOUSE_MOVED:
