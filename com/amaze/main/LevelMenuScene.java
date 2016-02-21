@@ -119,7 +119,7 @@ public class LevelMenuScene extends Scene {
      */
 
     public void arrowKeyUp() {
-        if(userLevelNumber < results.size() - 2) {
+        if(userLevelNumber < results.size() - 1) {
             userLevelNumber++;
         } else {
             userLevelNumber = results.size();
