@@ -29,14 +29,14 @@ public class GridSelectionScene extends Scene {
 
 	Tile[][] tileMap;                           //Used for displaying map in background
 
-    public GridSelectionScene(String sceneTitle, Window window, Music music) throws IOException {
+    public GridSelectionScene(String sceneTitle, Window window, Music music, String mainBackground) throws IOException {
         super(sceneTitle, window);
 
         this.music = music;
         blocks = 0;
 
         //Create background
-        background = new Background(window.getScreenWidth(), window.getScreenHeight());
+        background = new Background(window.getScreenWidth(), window.getScreenHeight(), mainBackground);
 
         //Create Font
         Font maze = new Font();
