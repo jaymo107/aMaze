@@ -99,7 +99,7 @@ public class MapMakerScene extends Scene {
 						if (numberOfStart != 1) {
 							displayTitle("Must have one start and \n\t\t\tone finish",15);
 						} else if (numberOfFinish != 1) {
-							displayTitle("\"Must have one start and \n\t\t\tone finish",15);
+							displayTitle("Must have one start and \n\t\t\tone finish",15);
 						} else {
 							outputLevel();
 							displayTitle("Export Successful", 12);
