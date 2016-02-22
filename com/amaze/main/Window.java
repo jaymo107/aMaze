@@ -65,7 +65,7 @@ public class Window extends RenderWindow {
 
     public void displayThis() {
         while (this.isOpen()) {
-            //Shows the scene that was selected on the menu.
+            //Shows the scene that was selected.
             scenes.get(currentScene).display();
         }
     }
