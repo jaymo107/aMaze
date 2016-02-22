@@ -40,7 +40,6 @@ public class DatabaseConnection {
             }
             String uploadData = "INSERT INTO `leaderboard`" + " (`uid`, `levelNo`, `score`, `compTime`)" + "VALUES" + "('" + uid + "','" + level + "','" + score + "','" + compTime + "');";
             stmt.executeQuery(uploadData);
-            System.out.println("Uploaded.");
         } catch (SQLException e) {
             e.printStackTrace();
         }

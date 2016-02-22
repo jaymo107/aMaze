@@ -35,7 +35,6 @@ public class InstructionsButton extends Button {
      * This function changes the scene to LevelMenuScene when called.
      */
     public void performAction() {
-        System.out.println("Instruction Button Pressed");
         try {
             InstructionScene instructionScene = new InstructionScene("Instructions", getWindow(), getMenu().getMusic(), background);
             getWindow().addScene(instructionScene);

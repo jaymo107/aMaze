@@ -144,11 +144,8 @@ public class MenuScene extends Scene {
 					case M:
 						state = !state;
 						musicPlaying(state); break;
-					case N:
-						buttons[5].performAction();
-						break;
-					case RETURN:
-						enterPressed(); break;
+					case N: buttons[5].performAction(); break;
+					case RETURN: enterPressed(); break;
 				}
 				break;
 			case JOYSTICK_BUTTON_PRESSED:
@@ -159,11 +156,8 @@ public class MenuScene extends Scene {
 					case 9:
 						state = !state;
 						musicPlaying(state); break;
-					case 13:
-						enterPressed(); break;
-					case 8:
-						buttons[5].performAction();
-						break;
+					case 13: enterPressed(); break;
+					case 8: buttons[5].performAction(); break;
 				}
 				break;
 			case MOUSE_MOVED:

@@ -28,8 +28,6 @@ public class MusicButton extends Button {
         this.setTexture(getDefaultIcon());
     }
 
-	public void performAction() {
-        System.out.println("Music Button Pressed");
-    }
+	public void performAction() {}
 
 }

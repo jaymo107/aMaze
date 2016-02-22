@@ -105,7 +105,6 @@ public class LevelMenuScene extends Scene {
                 }
             }
         }
-        System.out.println(results);
     }
 
     /**
@@ -186,7 +185,6 @@ public class LevelMenuScene extends Scene {
                 }
                 break;
             case JOYSTICK_BUTTON_PRESSED:
-                System.out.println(event.asJoystickButtonEvent().button);
                 switch (event.asJoystickButtonEvent().button) {
                     case 1: arrowKeyDown();break;
                     case 3: arrowKeyUp();break;

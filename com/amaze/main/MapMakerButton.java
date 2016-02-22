@@ -35,8 +35,6 @@ public class MapMakerButton extends Button {
      * This function displays the Map Maker when called
      */
     public void performAction() {
-        System.out.println("Level Maker Button Pressed");
-
         try {
             GridSelectionScene gridSelectionScene = new GridSelectionScene("Grid Selection", getWindow(), getMenu().getMusic(), background);
 			getWindow().addScene(gridSelectionScene);

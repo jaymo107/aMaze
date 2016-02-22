@@ -97,10 +97,8 @@ public class MapMakerScene extends Scene {
                         countNumbersOfStartEnd();
 
 						if (numberOfStart != 1) {
-							System.out.println("You need one start block!");
 							displayTitle("Must have one start and \n\t\t\tone finish",15);
 						} else if (numberOfFinish != 1) {
-							System.out.println("You need one finish block!");
 							displayTitle("\"Must have one start and \n\t\t\tone finish",15);
 						} else {
 							outputLevel();
@@ -189,10 +187,9 @@ public class MapMakerScene extends Scene {
                 writer.println("");
             }
             writer.close();
-            System.out.println("Export Successful");
         }
         catch (IOException f) {
-            System.out.println("Export Failed");
+            System.err.println("Export Failed");
         }
     }
 

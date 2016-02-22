@@ -61,9 +61,6 @@ public class GridSelectionScene extends Scene {
         userLevel.setColor(Color.BLACK);
         userLevel.setStyle(Text.BOLD);
         userLevel.setOrigin(textXCord, textYCord);
-
-        System.out.println(window.getScreenHeight());
-        System.out.println(window.getScreenWidth());
     }
 
     /**
@@ -141,7 +138,6 @@ public class GridSelectionScene extends Scene {
                 }
                 break;
             case JOYSTICK_BUTTON_PRESSED:
-                System.out.println(event.asJoystickButtonEvent().button);
                 switch (event.asJoystickButtonEvent().button) {
                     case 1: arrowKeyDown();break;
                     case 3: arrowKeyUp();break;

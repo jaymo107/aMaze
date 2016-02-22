@@ -32,7 +32,6 @@ public class PlayButton extends Button {
      * This function changes the scene to LevelMenuScene when called.
      */
     public void performAction() {
-        System.out.println("Play Button Pressed");
         try {
             LevelMenuScene levelMenu = new LevelMenuScene("Level Menu", getWindow(), getMenu().getMusic());
 			getWindow().addScene(levelMenu);

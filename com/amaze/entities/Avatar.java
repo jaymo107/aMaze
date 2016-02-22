@@ -47,7 +47,6 @@ public class Avatar extends RectangleShape {
         setSize(new Vector2f((float)(blockSize / 1.2),(float)(blockSize / 1.2)));
         setPosition(startX,startY);
         setTexture(direction[1]);
-        System.out.println("");
     }
 
 	public Vector2i getTilePosition() {

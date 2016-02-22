@@ -21,7 +21,6 @@ public class LevelReader {
      * the amount of each type of tile excluding START and FINISH
 	 */
     public Tile.BlockType stringToBlockType(String blockType) {
-
         if (blockType.equals("START")) return Tile.BlockType.START;
         if (blockType.equals("FINISH")) return Tile.BlockType.FINISH;
         if (blockType.equals("DOOR")) {
@@ -56,7 +55,6 @@ public class LevelReader {
     }
 
     public void loadMap(int levelNumber) throws IOException {
-
         StringBuilder stringBuilder = new StringBuilder();
         int i;
         int x = 0;
@@ -70,7 +68,6 @@ public class LevelReader {
 
         //Read map size
         while (currentlyReadChar != 10) {
-
             currentlyReadChar = reader.read();
             if (currentlyReadChar == 44) sizeOfMaze++;
         }
@@ -83,15 +80,14 @@ public class LevelReader {
         //Initialise Level
         level = new Tile.BlockType[sizeOfMaze][sizeOfMaze];
 
-        while ((i = reader.read()) != -1) // Reads all of the text file
-        {
+		// Reads all of the text file
+        while ((i = reader.read()) != -1) {
             if (Character.toString(((char) i)).equals(",")) {
                 level[y][x] = stringToBlockType(stringBuilder.toString());
                 stringBuilder.setLength(0); // empty StringBuilder
 
-
-                if (++y == level[0].length)//If length of first line == max
-                {
+				//If length of first line == max
+                if (++y == level[0].length) {
                     y = 0;
                     x++;
                     // goes to next row in the 2D Array
@@ -100,7 +96,6 @@ public class LevelReader {
                 stringBuilder.append((char) i);
             }
         }
-        //System.out.println(Arrays.deepToString(level));// <- Uncomment to see 2D array
     }
 
     public int getDoorAmount() {

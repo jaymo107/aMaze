@@ -252,8 +252,6 @@ public class GameScene extends Scene {
 				player.move(temp2);
 				player.setPosition(temp.x, temp.y);
 				System.out.println("There has been an issue drawing something, moving player back to start! Don't try to glitch out the map!\n\n");
-				//e.printStackTrace();
-				//setRunning(false);
 			}
 		}
 	}
@@ -336,9 +334,6 @@ public class GameScene extends Scene {
 		int playerX = Math.round(getPlayerX() / blockSize);
 		int playerY = Math.round(getPlayerY() / blockSize);
 
-		//Debugging - enable to display Player X & Y
-		//System.out.println("Player X: " + playerX + " - Player Y: " + playerY);
-
 		//Return the block the player is behind
 		return tileMap[playerX][playerY];
 	}
@@ -355,7 +350,6 @@ public class GameScene extends Scene {
 			case DOOR: closeDoor(tile); break;
 			case START: break;
 			case FINISH:
-				System.out.println("Time spent in void " + totalTimeSpentInVoid/1000 + " seconds");
 				musicPlaying(false);
 				listeningForUserName = true;
 
@@ -595,11 +589,6 @@ public class GameScene extends Scene {
 	}
 
 	public void exportToDB() {
-		System.out.println("Username: "+userName);
-		System.out.println("Score: " +score);
-		System.out.println("Level: " +currentLevel);
-		System.out.println("Level Completion Time: " + txtTime.getString().substring(7));
-
 		DatabaseConnection upload = new DatabaseConnection();
 		upload.uploadResult(userName, score, currentLevel, txtTime.getString().substring(7));
 		upload.clean();
