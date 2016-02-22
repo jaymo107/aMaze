@@ -1,7 +1,6 @@
 package com.amaze.main;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.io.IOException;
@@ -29,7 +28,6 @@ public class MenuScene extends Scene {
 	 */
 
 	public MenuScene(String sceneTitle, Window window) throws IOException {
-
 		super(sceneTitle, window);
 
 		float titleHeight = window.getScreenHeight() / 3;
@@ -68,11 +66,9 @@ public class MenuScene extends Scene {
             System.out.println("There was a problem loading the background music or click music.");
         }
 
-
 		music.play();
 		music.setLoop(true);
 		buttons[0].setSelected(true);
-
 	}
 
 	/**

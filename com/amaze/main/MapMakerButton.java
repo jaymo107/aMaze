@@ -8,7 +8,8 @@ import java.nio.file.Paths;
  */
 public class MapMakerButton extends Button {
 
-    String background;
+    private String background;
+
     /**
      * Construct a button with following parameters:
      *

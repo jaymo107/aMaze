@@ -17,11 +17,10 @@ public class Tile extends RectangleShape{
     }
 
     /**
-     *
+     * Construct a Tile
      * @param originX Start X pos
      * @param originY Start Y pos
      */
-
     public Tile(int originX, int originY, int sizeX, int sizeY, BlockType type, Texture[] imageCache){
 		Vector2f position = new Vector2f(originX, originY);
 		Vector2f tileSize = new Vector2f(sizeX, sizeY);

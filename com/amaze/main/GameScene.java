@@ -29,8 +29,9 @@ public class GameScene extends Scene {
 	private Text txtTime;
 	private Vector2i startTile;
 	private Vector2i endTile;
-	private boolean state = true;
 	private String userName = "";
+
+	private boolean state = true;
 
 	private boolean up = false;
 	private boolean down = false;
@@ -38,7 +39,6 @@ public class GameScene extends Scene {
 	private boolean right = false;
 
 	private int charges = 0;
-
 	private int score = 1200;
 
 	private Texture[] tileTexture;
@@ -78,7 +78,6 @@ public class GameScene extends Scene {
 
 	public GameScene(String sceneTitle, Window window, int blocks, int blockSize, Tile.BlockType[][] level, int currentLevel) throws Exception {
 		super(sceneTitle, window);
-
 		this.currentLevel = currentLevel;
 
 		Tile currentlyLoaded;
@@ -165,9 +164,7 @@ public class GameScene extends Scene {
 				if (currentlyLoaded.getTileType() == Tile.BlockType.START) {
 					player.setPosition(currentlyLoaded.getPosition());
 					Vector2f temp = currentlyLoaded.getPosition();
-					Vector2i temp2 = new Vector2i((int)temp.x,(int)temp.y);
-
-					startTile = temp2;//new Vector2i(Math.round(player.getPosition().x/blockSize), Math.round(player.getPosition().y/blockSize));
+					startTile = new Vector2i((int)temp.x,(int)temp.y);
 				}
 				if (currentlyLoaded.getTileType() == Tile.BlockType.FINISH) {
 					endTile = new Vector2i(Math.round(currentlyLoaded.getPosition().x/blockSize), Math.round(currentlyLoaded.getPosition().y/blockSize));
@@ -247,6 +244,7 @@ public class GameScene extends Scene {
 					executeEvent(event);
 				}
 				getWindow().display();
+
 			} catch (Exception e) {
 				//music.stop();
 				Vector2i temp = getStartTilePos();
@@ -317,12 +315,10 @@ public class GameScene extends Scene {
 				break;
 			case JOYSTICK_BUTTON_RELEASED:
 				switch (event.asJoystickButtonEvent().button) {
-
 					case 0: left = false; break;
 					case 1: down = false; break;
 					case 2: right = false; break;
 					case 3: up = false; break;
-
 				}
 				break;
 			case CLOSED:
@@ -379,7 +375,7 @@ public class GameScene extends Scene {
 				this.setRunning(false);
 			case VOID: break;
 			case CHARGE:
-				playChargeSoung();
+				playChargeSound();
 				battery.increaseChargeLevel(Battery.MAX - battery.getChargeLevel());
 				battery.changeChargeLevel(battery.getChargeLevel() + (Battery.MAX - battery.getChargeLevel()));
 				fog.increase();
@@ -401,21 +397,11 @@ public class GameScene extends Scene {
 		int reboundStep = blockSize / 2; //Number of steps to rebound the player.
 
 		switch (dir) {
-			case "UP":
-				player.move(0, -reboundStep);
-				break;
-			case "DOWN":
-				player.move(0, reboundStep);
-				break;
-			case "LEFT":
-				player.move(-reboundStep, 0);
-				break;
-			case "RIGHT":
-				player.move(reboundStep, 0);
-				break;
-			default:
-				System.out.println("Please select a direction defined.");
-				break;
+			case "UP": player.move(0, -reboundStep); break;
+			case "DOWN": player.move(0, reboundStep); break;
+			case "LEFT": player.move(-reboundStep, 0); break;
+			case "RIGHT": player.move(reboundStep, 0); break;
+			default: System.out.println("Please select a direction defined."); break;
 		}
 	}
 
@@ -429,8 +415,6 @@ public class GameScene extends Scene {
 	/**
 	 * Function to return the Y pixels of the player.
 	 */
-
-
 	public float getPlayerY() {
 		return player.getPosition().y;
 	}
@@ -440,8 +424,6 @@ public class GameScene extends Scene {
 	 *
 	 * @param window - reference to the main window.
 	 */
-
-
 	public void drawGraphics(RenderWindow window) {
 		for (int y = 0; y < blockCount; y++) {
 			for (int x = 0; x < blockCount; x++) {
@@ -450,19 +432,10 @@ public class GameScene extends Scene {
 				}
 			}
 		}
-		//Draw the player
 		window.draw(player);
-
-		//Draw the battery
 		window.draw(battery);
-
-		//Draw music button
 		window.draw(musicButton);
-
-		//Draw score text
 		window.draw(txtScore);
-
-		//Draw time text
 		window.draw(txtTime);
 	}
 
@@ -562,6 +535,7 @@ public class GameScene extends Scene {
 			message2.setColor(Color.BLACK);
 			message2.setStyle(Text.BOLD);
 			message2.setOrigin(textXCord + 35, textYCord - 40);
+
 		} catch (IOException e) {
 			System.err.println("There was a problem loading the finish window.");
 		}
@@ -609,8 +583,7 @@ public class GameScene extends Scene {
 			case KEY_PRESSED:
 				switch (event.asKeyEvent().key) {
 					case RETURN:
-						if(userName.equals("")) {
-
+						if (userName.equals("")) {
 							userName = "defaultUser";
 						}
 						music.stop();
@@ -702,14 +675,13 @@ public class GameScene extends Scene {
 			timeExposedToVoid = 0;
 		}
 	}
-	public void playVoidSound() {
 
+	public void playVoidSound() {
 		voidsSound.play();
 	}
-	public void playChargeSoung() {
 
+	public void playChargeSound() {
 		chargesSound.play();
 	}
-
 
 }

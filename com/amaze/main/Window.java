@@ -2,7 +2,6 @@ package com.amaze.main;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
-import org.jsfml.window.event.Event;
 
 import java.util.ArrayList;
 
@@ -10,7 +9,7 @@ import java.util.ArrayList;
  * This is a class responsible for holding a window for aMaze
  */
 
-public class Window extends RenderWindow{
+public class Window extends RenderWindow {
 
     private int screenWidth;
     private int screenHeight;
@@ -33,7 +32,7 @@ public class Window extends RenderWindow{
      *        These scenes will be placed right after the Menu (1,2,3,4,5....)                             *
      *        This will be constantly shifting the Game index.                                             *
      *                                                                                                     *
-     * At the moment, it should be 1.                                                                      *
+     * At the moment, it should be 0.                                                                      *
      *                                                                                                     *
      *******************************************************************************************************/
 
@@ -83,13 +82,7 @@ public class Window extends RenderWindow{
 
     public int getScreenWidth() { return screenWidth; }
 
-    public void setScreenWidth(int screenWidth){this.screenWidth = screenWidth; }
-
-    public void setScreenHeight(int screenHeight) {
-        this.screenHeight = screenHeight;
-    }
-
-    /**
+	/**
      * Obtains a scene's Displayable interface from ArrayList
      * @param i - the index of the scene in the ArrayList
      */

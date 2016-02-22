@@ -7,7 +7,8 @@ import java.nio.file.Paths;
  * This class holds appropriate information about play button.
  */
 public class InstructionsButton extends Button {
-    String background;
+
+	private String background;
 
     /**
      * Construct a button with following parameters:

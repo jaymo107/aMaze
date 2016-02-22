@@ -10,18 +10,16 @@ class Driver{
     static int WINDOW_SIZE; //Resolution(number of pixels) on X/Y axis
 
 	public static void main(String[] args) throws Exception{
-        WINDOW_SIZE = 600;
+		WINDOW_SIZE = 600;
 
-		// Load Level a-nd work out block size dynamically
         LevelReader level = new LevelReader();
-        level.loadMap("1");
-        BLOCK_SIZE = WINDOW_SIZE / level.getSizeOfMaze();
+        level.loadMap(1);
+
+		int BLOCK_SIZE = WINDOW_SIZE / level.getSizeOfMaze();
 
         //Check if we're using a nice resolution
-        if(WINDOW_SIZE % BLOCK_SIZE > 0){
-            //Then we cant display properly and therefore won't load the window!
-			System.out.println("WRONG SIZE");
-        }
+		//Then we cant display properly and therefore won't load the window!
+        if (WINDOW_SIZE % BLOCK_SIZE > 0) System.out.println("Wrong size");
 
         // Create new window and set FPS limit to 60
         Window window = new Window(WINDOW_SIZE, WINDOW_SIZE + 60);
@@ -29,22 +27,10 @@ class Driver{
 
         //Create Menu Scene
         MenuScene menu = new MenuScene("Main Menu",window);
-
-        //LevelMenuScene levelMenu = new LevelMenuScene("Level Menu", window);
-        //GameScene game = new GameScene("Game", window, level.getSizeOfMaze(), Driver.BLOCK_SIZE, level.getLevel());
-        //MapMakerScene mapMaker = new MapMakerScene("Level Menu", window, 30, 30);
-
         window.addScene(menu);
-
-        /**
-         * GameScene and LevelMenuScene calls are now happening in the appropriate places.
-         * By doing this we don't need to allocate additional memory to store information about the game and level menu
-         * right when the application is launched. It makes code much cleaner and is a good practice in general.
-         *
-         * All functionality remains intact
-         */
 
         //Start Displaying
         window.displayThis();
     }
+
 }

@@ -29,13 +29,13 @@ public class LevelMenuScene extends Scene {
     private Text doors;
     private Music music;
 
+    private RectangleShape edgeFrame = new RectangleShape();
+
+	private ArrayList<String> results = new ArrayList<>();
+
+	private int userLevelNumber = 1;
+
 	public static final int MIN_LEVEL = 1;
-
-    RectangleShape edgeFrame = new RectangleShape();
-
-    ArrayList<String> results = new ArrayList<>();
-
-    int userLevelNumber = 1;
 
     public LevelMenuScene(String sceneTitle, Window window, Music music) throws IOException {
         super(sceneTitle, window);
@@ -50,12 +50,8 @@ public class LevelMenuScene extends Scene {
         //Create Font
         Font maze = new Font();
         Font arial = new Font();
-        try {
-            maze.loadFromFile(Paths.get("res/fonts/Roboto.ttf"));
-            arial.loadFromFile(Paths.get("res/fonts/Roboto.ttf"));
-        } catch (IOException e){
-            System.out.println("Could not load the font!");
-        }
+		maze.loadFromFile(Paths.get("res/fonts/Roboto.ttf"));
+		arial.loadFromFile(Paths.get("res/fonts/Roboto.ttf"));
 
         //Setting size of background shader (white part)
         Vector2f size = new Vector2f(window.getScreenWidth(), window.getScreenHeight());
@@ -73,7 +69,7 @@ public class LevelMenuScene extends Scene {
         userLevel.setStyle(Text.BOLD);
         userLevel.setOrigin((-(window.getScreenWidth()/2.3F) + (fontSize * 1.5F)), -(window.getScreenHeight()/4) + fontSize);
 
-        changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
+        changeBackground(userLevelNumber);
 
         walls = new Text("Walls:    ", arial, 30);
         walls.setString("Walls: " +numberOfWalls);
@@ -125,7 +121,7 @@ public class LevelMenuScene extends Scene {
             userLevelNumber = results.size();
         }
         userLevel.setString("Level " + userLevelNumber);
-        changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
+        changeBackground(userLevelNumber);
         walls.setString("Walls: " +numberOfWalls);
         charges.setString("Charges: " +numberOfCharges);
         voids.setString("Voids: " +numberOfVoids);
@@ -144,12 +140,13 @@ public class LevelMenuScene extends Scene {
             userLevelNumber--;
         }
         userLevel.setString("Level " + userLevelNumber);
-        changeBackground(userLevelNumber,Driver.BLOCK_SIZE);
+        changeBackground(userLevelNumber);
         walls.setString("Walls: " +numberOfWalls);
         charges.setString("Charges: " +numberOfCharges);
         voids.setString("Voids: " +numberOfVoids);
         doors.setString("Doors: " +numberOfDoors);
     }
+
     public void executeEvent(Event event) {
         switch (event.type) {
             case CLOSED:
@@ -224,7 +221,7 @@ public class LevelMenuScene extends Scene {
         this.setRunning(false);
     }
 
-	public String getUserLevelNumber() { return String.valueOf(userLevelNumber); }
+	public int getUserLevelNumber() { return userLevelNumber; }
 
     public void drawGraphics(RenderWindow window) {
         for (int j = 0; j < blocks; j++) {
@@ -241,9 +238,8 @@ public class LevelMenuScene extends Scene {
         window.draw(doors);
     }
 
-    public void changeBackground(int levelNumber, int blockSize) {
+    public void changeBackground(int levelNumber) {
         Tile.BlockType[][] tempTiles;   //Holds reference to newly loaded tile map of the types
-        //int blockSize;
 
         /* Cache textures before we start using them in order to increase performance */
         Texture tileTexture[] = new Texture[7];
@@ -255,14 +251,13 @@ public class LevelMenuScene extends Scene {
             } catch (IOException e) {
                 System.out.println("Error loading tile image for menu background");
             }
-
         }
 
         /* Load Level from File according to number */
         LevelReader backgroundLevelLoader = new LevelReader();
 
         try {
-            backgroundLevelLoader.loadMap(String.valueOf(levelNumber));
+            backgroundLevelLoader.loadMap(levelNumber);
         } catch (IOException e) {
             System.out.println("Cannot load level " + levelNumber);
         }
@@ -275,8 +270,8 @@ public class LevelMenuScene extends Scene {
 
         int blockSizeX = getWindow().getScreenWidth() / blocks;
         int blockSizeY = getWindow().getScreenHeight() / blocks;
-        tileMap = new Tile[blocks][blocks];
 
+		tileMap = new Tile[blocks][blocks];
         for (int j = 0; j < blocks; j++) {
             for (int i = 0; i < blocks; i++) {
                 tileMap[i][j] = new Tile(blockSizeX * i, blockSizeY * j, blockSizeX, blockSizeY, tempTiles[i][j], tileTexture);

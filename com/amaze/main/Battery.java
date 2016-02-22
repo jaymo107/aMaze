@@ -23,7 +23,6 @@ public class Battery extends RectangleShape {
      * @param resY Size of window Y
      * @param defaultLevel Represents the level the battery will start at
      */
-
     public Battery(float resX, float resY, int defaultLevel, Window window) throws IOException{
 		float batteryXCord = resX - window.getScreenWidth() / 2.1F;
         float batteryYCord = resY - window.getScreenHeight() / 10;
@@ -42,7 +41,6 @@ public class Battery extends RectangleShape {
      * Changes the image shown too
      * @param level the level of the battery
      */
-
     public void changeChargeLevel(int level) {
         try{
 			texture.loadFromFile(Paths.get("res/images/battery/" + Integer.toString(level) + ".png"));

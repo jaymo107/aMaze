@@ -15,9 +15,8 @@ public class GridSelectionScene extends Scene {
 	private Background background;
 	private RectangleShape textBackground;
 	private Texture backgroundImage = new Texture();
-    private int blocks;
 
-    public static final int MAX_WIDTH = 30;
+	public static final int MAX_WIDTH = 30;
 	public static final int MAX_HEIGHT = 30;
 	public static final int MIN_WIDTH = 5;
 	public static final int MIN_HEIGHT = 5;
@@ -27,15 +26,12 @@ public class GridSelectionScene extends Scene {
 
     private Music music;
 
-	Tile[][] tileMap;                           //Used for displaying map in background
-
-    public GridSelectionScene(String sceneTitle, Window window, Music music, String mainBackground) throws IOException {
+	public GridSelectionScene(String sceneTitle, Window window, Music music, String mainBackground) throws IOException {
         super(sceneTitle, window);
 
         this.music = music;
-        blocks = 0;
 
-        //Create background
+		//Create background
         background = new Background(window.getScreenWidth(), window.getScreenHeight(), mainBackground);
 
         //Create Font
@@ -180,13 +176,6 @@ public class GridSelectionScene extends Scene {
 
     public void drawGraphics(RenderWindow window) {
         window.draw(background);
-
-        for (int j = 0; j < blocks; j++) {
-            for (int i = 0; i < blocks; i++) {
-                window.draw(tileMap[i][j]);
-            }
-        }
-
         window.draw(textBackground);
         window.draw(userLevel);
     }

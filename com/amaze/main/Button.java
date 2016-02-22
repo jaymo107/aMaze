@@ -16,10 +16,10 @@ public abstract class Button extends RectangleShape {
     private Window window;
     private MenuScene menu;
 
-    private boolean selected;
-
     private Texture defaultIcon = new Texture();
     private Texture selectedIcon = new Texture();
+
+	private boolean selected;
 
     /**
      * Construct a button with following parameters:
@@ -36,8 +36,8 @@ public abstract class Button extends RectangleShape {
         Vector2f position = new Vector2f(xCord, yCord);
         Vector2f size = new Vector2f(width, height);
 
-        this.setSize(size);
-        this.setPosition(position);
+        setSize(size);
+        setPosition(position);
 
         selected = false;
     }
@@ -48,8 +48,8 @@ public abstract class Button extends RectangleShape {
         Vector2f position = new Vector2f(xCord, yCord);
         Vector2f size = new Vector2f(width, height);
 
-        this.setSize(size);
-        this.setPosition(position);
+        setSize(size);
+        setPosition(position);
 
         selected = false;
     }
@@ -58,7 +58,7 @@ public abstract class Button extends RectangleShape {
      * Confirms if current button is selected.
      * @return - true/false based on the result.
      */
-    public boolean isSelected() {return selected;}
+    public boolean isSelected() { return selected; }
 
     /**
      * Change state of the button

@@ -55,7 +55,7 @@ public class LevelReader {
         return sizeOfMaze;
     }
 
-    public void loadMap(String levelNumber) throws IOException {
+    public void loadMap(int levelNumber) throws IOException {
 
         StringBuilder stringBuilder = new StringBuilder();
         int i;

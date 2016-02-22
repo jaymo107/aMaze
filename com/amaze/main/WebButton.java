@@ -13,21 +13,17 @@ public class WebButton extends Button {
         super(xCord, yCord, width, height, window, menu);
 
         getDefaultIcon().loadFromFile(Paths.get("res/menuGraphics/web.png"));
-
         getDefaultIcon().setSmooth(true);
         getSelectedIcon().loadFromFile(Paths.get("res/menuGraphics/webSel.png"));
-        this.setTexture(getDefaultIcon());
-
+        setTexture(getDefaultIcon());
     }
 
     public void performAction() {
-        System.out.println("WebButton Button Pressed");
         try {
             openWebpage();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void openWebpage() throws IOException {
@@ -36,11 +32,8 @@ public class WebButton extends Button {
         Runtime rt = Runtime.getRuntime();
 
         if (os.contains("win")) {
-
             rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
-
         } else if (os.contains("mac")) {
-
             rt.exec("open " + url);
         }
     }

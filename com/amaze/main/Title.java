@@ -19,7 +19,6 @@ public class Title extends RectangleShape {
      * @param height - height of the title
      */
     public Title(float xCord, float yCord, float width, float height) throws IOException {
-
 		Vector2f size = new Vector2f(width, height);
 		Vector2f position = new Vector2f(xCord, yCord);
 

@@ -47,11 +47,11 @@ public abstract class Scene implements Displayable {
 
 	public abstract void drawGraphics(RenderWindow window);
 
-    public String getSceneTitle() {return sceneTitle;}
+    public String getSceneTitle() { return sceneTitle; }
 
-    public boolean isRunning() {return running;}
+    public boolean isRunning() { return running; }
 
-    public void setRunning(boolean bool) {this.running = bool;}
+    public void setRunning(boolean bool) { this.running = bool; }
 
     public Window getWindow() { return window; }
 
