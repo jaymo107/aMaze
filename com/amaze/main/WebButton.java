@@ -31,7 +31,6 @@ public class WebButton extends Button {
     }
 
     public static void openWebpage() throws IOException {
-
         String url = "http://amazegame.xyz/leaderboard.php";
         String os = System.getProperty("os.name").toLowerCase();
         Runtime rt = Runtime.getRuntime();
@@ -44,6 +43,6 @@ public class WebButton extends Button {
 
             rt.exec("open " + url);
         }
-
     }
+
 }
