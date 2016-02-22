@@ -12,12 +12,11 @@ import java.nio.file.Paths;
 
 public class InstructionScene extends Scene {
 
-    private RectangleShape textBackground1;
-    private Texture backgroundImage1 = new Texture();
-    private Texture backgroundImage2 = new Texture();
-    private Texture backgroundImage3 = new Texture();
-    private Texture backgroundImage4 = new Texture();
-    private int currentInstructionScene = 1;
+    private RectangleShape textBackground;
+
+	private Texture[] backgroundImage = new Texture[4];
+
+    private int currentInstructionScene = 0;
     private Music music;
     private Background mainBackground;
 
@@ -31,48 +30,33 @@ public class InstructionScene extends Scene {
 
         //Setting size of background shader (white part)
         Vector2f size = new Vector2f(window.getScreenWidth(), window.getScreenHeight());
-        textBackground1 = new RectangleShape(size);
-        textBackground1.setPosition(0,0);
+        textBackground = new RectangleShape(size);
+        textBackground.setPosition(0,0);
 
-
-        //Loading of Background Image for Text box
-        backgroundImage1.loadFromFile(Paths.get("res/instructions/instructionsp1.png"));
-        backgroundImage1.setSmooth(true);
-        textBackground1.setTexture(backgroundImage1);
-
-        backgroundImage2.loadFromFile(Paths.get("res/instructions/instructionsp2.png"));
-        backgroundImage2.setSmooth(true);
-
-        backgroundImage3.loadFromFile(Paths.get("res/instructions/instructionsp3.png"));
-        backgroundImage3.setSmooth(true);
-
-        backgroundImage4.loadFromFile(Paths.get("res/instructions/instructionsp4.png"));
-        backgroundImage4.setSmooth(true);
+		for (int i = 0; i < backgroundImage.length; i++) {
+			backgroundImage[i] = new Texture();
+			backgroundImage[i].loadFromFile(Paths.get("res/instructions/instructionsp" + (i+1) +  ".png"));
+			backgroundImage[i].setSmooth(true);
+		}
+		textBackground.setTexture(backgroundImage[0]);
     }
 
     public void drawGraphics(RenderWindow window) {
         window.draw(mainBackground);
-        window.draw(textBackground1);
+        window.draw(textBackground);
     }
 
     public void executeEvent(Event event) {
-
         switch (event.type) {
             case CLOSED:
-                music.stop();
-                systemExit();
-                break;
+				music.stop();
+				systemExit();
+				break;
             case KEY_PRESSED:
                 switch (event.asKeyEvent().key) {
-                    case LEFT:
-                        arrowKeyLeft();
-                        break;
-                    case RIGHT:
-                        arrowKeyRight();
-                        break;
-                    case ESCAPE:
-                        exitScene(this);
-                        break;
+                    case LEFT: arrowKeyLeft(); break;
+                    case RIGHT: arrowKeyRight(); break;
+                    case ESCAPE: exitScene(this); break;
                 }
                 break;
             case JOYSTICK_BUTTON_PRESSED:
@@ -80,53 +64,33 @@ public class InstructionScene extends Scene {
                 switch (event.asJoystickButtonEvent().button) {
                     case 0: arrowKeyLeft();break;
                     case 2: arrowKeyRight();break;
-                    case 12:
-                        exitScene(this);
-                        break;
+                    case 12: exitScene(this); break;
                 }
                 break;
         }
-
     }
 
     public void arrowKeyRight() {
-
-        changeBackground(+1);
+        changeInstruction(1);
     }
-    public void arrowKeyLeft() {
-        changeBackground(-1);
+
+	public void arrowKeyLeft() {
+        changeInstruction(-1);
     }
-    public void changeBackground(int i) {
 
-        currentInstructionScene = currentInstructionScene + i;
+	/**
+	 * Changes the Instruction scene based-on the parameter tha represents the number of page to increment or decrement
+	 * @param i the integer represents the difference between the current page and the previous/next page.
+	 */
+    public void changeInstruction(int i) {
+        currentInstructionScene += i;
 
-        textBackground1.setTexture(backgroundImage2);
+		if (currentInstructionScene <= 0 || currentInstructionScene >= 4) {
+			exitScene(this);
+			return;
+		}
 
-        if(currentInstructionScene <= 0) {
-
-            exitScene(this);
-        }
-
-        if(currentInstructionScene == 1) {
-
-            textBackground1.setTexture(backgroundImage1);
-        }
-        if(currentInstructionScene == 2) {
-
-            textBackground1.setTexture(backgroundImage2);
-        }
-        if(currentInstructionScene == 3) {
-
-            textBackground1.setTexture(backgroundImage3);
-        }
-        if(currentInstructionScene == 4) {
-
-            textBackground1.setTexture(backgroundImage4);
-        }
-        if(currentInstructionScene >= 5) {
-
-            exitScene(this);
-        }
+		textBackground.setTexture(backgroundImage[currentInstructionScene]);
     }
 
 }
