@@ -246,7 +246,6 @@ public class GameScene extends Scene {
 				getWindow().display();
 
 			} catch (Exception e) {
-				//music.stop();
 				Vector2i temp = getStartTilePos();
 				Vector2f temp2 = new Vector2f(temp.x, temp.y);
 				player.move(temp2);
@@ -555,7 +554,7 @@ public class GameScene extends Scene {
 				break;
 			case TEXT_ENTERED:
 				if (event.asTextEvent().unicode >= 32 && event.asTextEvent().unicode <= 126) {
-					if (userName.length() >= 200) break;
+					if (userName.length() >= 15) break;
 					else {
 						userName += (char) event.asTextEvent().unicode;
 						break;
@@ -634,22 +633,26 @@ public class GameScene extends Scene {
 		Vector2i playerPos = rawPlayerToBlockPos();
 		int voidCount = 0;
 
+		Runnable r = () ->{
+			try {
+				playVoidSound();
+				battery.decreaseChargeLevel(1);
+				Thread.sleep(500);
+				fog.drain();
+			} catch (InterruptedException e) {
+				System.err.println("Something went wrong.");
+			}
+		};
+
+		Thread voidEffect = new Thread(r);
+
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (isVoid(playerPos.x + i, playerPos.y + j)) {
 					voidCount++;
 					voidClockToggled = true;
-					Runnable r = () ->{
-						try {
-							playVoidSound();
-							battery.decreaseChargeLevel(1);
-							Thread.sleep(500);
-							fog.drain();
-						} catch (InterruptedException e) {
-							System.err.println("Something went wrong.");
-						}
-					};
-					new Thread(r).start();
+
+					voidEffect.start();
 				}
 			}
 		}
