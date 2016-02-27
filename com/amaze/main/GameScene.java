@@ -246,6 +246,7 @@ public class GameScene extends Scene {
 				getWindow().display();
 
 			} catch (Exception e) {
+				e.printStackTrace();
 				Vector2i temp = getStartTilePos();
 				Vector2f temp2 = new Vector2f(temp.x, temp.y);
 				player.move(temp2);
@@ -633,24 +634,24 @@ public class GameScene extends Scene {
 		Vector2i playerPos = rawPlayerToBlockPos();
 		int voidCount = 0;
 
-		Runnable r = () ->{
-			try {
-				playVoidSound();
-				battery.decreaseChargeLevel(1);
-				Thread.sleep(500);
-				fog.drain();
-			} catch (InterruptedException e) {
-				System.err.println("Something went wrong.");
-			}
-		};
-
-		Thread voidEffect = new Thread(r);
 
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (isVoid(playerPos.x + i, playerPos.y + j)) {
 					voidCount++;
 					voidClockToggled = true;
+					Runnable r = () ->{
+						try {
+							playVoidSound();
+							battery.decreaseChargeLevel(1);
+							Thread.sleep(500);
+							fog.drain();
+						} catch (InterruptedException e) {
+							System.err.println("Something went wrong.");
+						}
+					};
+
+					Thread voidEffect = new Thread(r);
 
 					voidEffect.start();
 				}
