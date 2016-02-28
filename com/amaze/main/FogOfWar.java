@@ -67,9 +67,7 @@ public class FogOfWar {
    * Based off the avatar, check the coordinate and return true if the tile can be rendered
    */
   public boolean getView(int x, int y, Avatar player){
-    System.out.println(player.getXTile());
-    if(x > player.getPosition().x - this.getSize() && x < player.getPosition().x + this.getSize() && y < player.getPosition().y + this.getSize() && y > player.getPosition().y - this.getSize()) return true;
-    return false;
+    return x > player.getPosition().x - this.getSize() && x < player.getPosition().x + this.getSize() && y < player.getPosition().y + this.getSize() && y > player.getPosition().y - this.getSize();
   }
   
   
