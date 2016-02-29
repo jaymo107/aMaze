@@ -14,33 +14,11 @@ import java.io.IOException;
 public abstract class Button extends RectangleShape {
 
     private Window window;
-    private MenuScene menu;
 
     private Texture defaultIcon = new Texture();
     private Texture selectedIcon = new Texture();
 
 	private boolean selected;
-
-    /**
-     * Construct a button with following parameters:
-     *
-     * @param xCord - x-coordinate of the button
-     * @param yCord - y-coordinate of the button
-     * @param width - width of the button
-     * @param height - height of the button
-     */
-    public Button(float xCord, float yCord, float width, float height, Window window, MenuScene menu) throws IOException {
-        this.window = window;
-        this.menu = menu;
-
-        Vector2f position = new Vector2f(xCord, yCord);
-        Vector2f size = new Vector2f(width, height);
-
-        setSize(size);
-        setPosition(position);
-
-        selected = false;
-    }
 
 	public Button(float xCord, float yCord, float width, float height, Window window) throws IOException {
         this.window = window;
@@ -76,12 +54,6 @@ public abstract class Button extends RectangleShape {
      * @return the Window instance that represents the current Window.
      */
     public Window getWindow() { return window; }
-
-	/**
-	 * Obtains the current menu that the button is being placed
-     * @return the MenuScene instance that represents the current menu
-     */
-    public MenuScene getMenu() { return menu; }
 
     public Texture getDefaultIcon() {return defaultIcon; }
 
