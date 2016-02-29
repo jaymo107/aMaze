@@ -384,7 +384,6 @@ public class GameScene extends Scene {
 
 	/**
 	 * Function to rebound the player the amount of steps defined, given a direction.
-	 *
 	 * @param dir The direction the avatar should be rebounded.
 	 */
 	public void reboundPlayer(String dir) {
@@ -630,17 +629,16 @@ public class GameScene extends Scene {
 		}
 	}
 
-	public void voidDetection(){
+	public void voidDetection() {
 		Vector2i playerPos = rawPlayerToBlockPos();
 		int voidCount = 0;
-
 
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (isVoid(playerPos.x + i, playerPos.y + j)) {
 					voidCount++;
 					voidClockToggled = true;
-					Runnable r = () ->{
+					Runnable r = () -> {
 						try {
 							playVoidSound();
 							battery.decreaseChargeLevel(1);
@@ -651,9 +649,7 @@ public class GameScene extends Scene {
 						}
 					};
 
-					Thread voidEffect = new Thread(r);
-
-					voidEffect.start();
+					new Thread(r).start();
 				}
 			}
 		}
