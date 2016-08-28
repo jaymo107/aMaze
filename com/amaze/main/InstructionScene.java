@@ -79,7 +79,7 @@ public class InstructionScene extends Scene {
     }
 
 	/**
-	 * Changes the Instruction scene based-on the parameter tha represents the number of page to increment or decrement
+	 * Changes the Instruction scene based-on the parameter that represents the number of page to increment or decrement
 	 * @param i the integer represents the difference between the current page and the previous/next page.
 	 */
     public void changeInstruction(int i) {

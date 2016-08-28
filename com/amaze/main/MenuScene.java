@@ -220,5 +220,6 @@ public class MenuScene extends Scene {
 	public Music getMusic() {
 		return music;
 	}
+	public static String hello() {return  "Hello";}
 
 }
